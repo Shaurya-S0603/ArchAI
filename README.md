@@ -40,5 +40,8 @@ ArchAI is an advanced AI-powered architectural platform designed to streamline h
 ## How to Contribute
 We welcome collaboration! If you are interested in contributing to ArchAI, please reach out or check the project's roadmap for opportunities to get involved.
 
+## Current Dataset
+- (Google Drive)[https://drive.google.com/drive/folders/1idWlqchss6WcdMSpxU9H99nqsG-B4LLU?usp=sharing]
+
 ## License
 ArchAI is currently under development and is not open-source. Please contact the development team for further details on access and licensing.
