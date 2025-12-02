@@ -25,15 +25,15 @@ ArchAI is an advanced AI-powered architectural platform designed to streamline h
 - **Cloud & APIs**: AWS, Google Maps API (for terrain mapping)
 
 ## Development Roadmap
-### Phase 1: AI Development (Days 1-50)
+### Phase 1: AI Development 
 - Develop AI-based floor plan generation.
 - Implement cost estimation and material selection algorithms.
 
-### Phase 2: 3D Visualization & User Interaction (Days 51-100)
+### Phase 2: 3D Visualization & User Interaction 
 - Build a 2D-to-3D conversion system.
 - Develop interactive simulations and VR/AR compatibility.
 
-### Phase 3: Web Integration & Finalization (Days 101-141)
+### Phase 3: Web Integration & Finalization
 - Integrate cloud storage and API functionalities.
 - Conduct final testing and deployment.
 
