@@ -15,15 +15,15 @@ It is designed to compete with tools like **ArkDesign**,**Trisetra** and **Cooho
 
 ## 🚀 Features
 
-✅ Survey-based home design input
-✅ AI-generated 2D floor plans
-✅ Graph + Shape Grammar–based planning
-✅ Procedural 3D building generation
-✅ Real-time material & cost estimation
-✅ Drag-and-drop layout editing
-✅ Building code compliance checking
-✅ VR/AR-ready exploration
-✅ BIM/CAD export support
+* ✅ Survey-based home design input
+* ✅ AI-generated 2D floor plans
+* ✅ Graph + Shape Grammar–based planning
+* ✅ Procedural 3D building generation
+* ✅ Real-time material & cost estimation
+* ✅ Drag-and-drop layout editing
+* ✅ Building code compliance checking
+* ✅ VR/AR-ready exploration
+* ✅ BIM/CAD export support
 
 ---
 
@@ -43,20 +43,20 @@ It is designed to compete with tools like **ArkDesign**,**Trisetra** and **Cooho
 
 ## 🔄 Current Progress
 
-✔ Unity project setup complete
-✔ Dataset & architecture finalized
-✔ Survey + UI under development
-✔ AI training (initial phase) ongoing
+* ✔ Unity project setup complete
+* ✔ Dataset & architecture finalized
+* ✔ Survey + UI under development
+* ✔ AI training (initial phase) ongoing
 
 ---
 
 ## 🎯 Roadmap
 
-**Phase 1** — Setup & Core System
-**Phase 2** — 2D AI Generator
-**Phase 3** — Compliance System
-**Phase 4** — 3D Conversion
-**Phase 5** — UI/UX & Optimization
+* **Phase 1** — Setup & Core System
+* **Phase 2** — 2D AI Generator
+* **Phase 3** — Compliance System
+* **Phase 4** — 3D Conversion
+* **Phase 5** — UI/UX & Optimization
 
 ---
 
