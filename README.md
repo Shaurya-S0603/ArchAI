@@ -1,47 +1,76 @@
-# ArchAI - AI-Powered Architectural Design Platform
+# 🏗️ ArchAI — Architectural AI System
 
-## Overview
-ArchAI is an advanced AI-powered architectural platform designed to streamline home design, customization, and visualization. Built with Unity 6, it integrates intelligent space planning, AI-driven material selection, cost estimation, and immersive 3D simulations to enhance architectural planning and design workflows.
+ArchAI is an AI-powered architectural design system built using **Unity 6 + Python**, capable of generating intelligent **2D floor plans** and converting them into **interactive 3D environments**.
 
-## Features
-- **AI-Generated 2D Floor Plans**: Generates optimized architectural layouts based on user input and real-world datasets.
-- **Interactive 3D Model Conversion**: Seamlessly converts 2D plans into immersive, interactive 3D environments.
-- **Material & Cost Optimization**: Provides real-time material suggestions and cost estimates based on construction trends.
-- **Regulatory Compliance & BIM Integration**: Ensures adherence to local building codes and compatibility with industry-standard BIM tools.
-- **Virtual & Augmented Reality Support**: Allows users to experience designs in VR for enhanced visualization.
+This system uses a hybrid approach combining:
 
-## Target Users
-- Homeowners planning construction or renovation.
-- Architects and designers seeking AI-driven assistance.
-- Real estate developers for rapid prototyping.
-- Interior designers optimizing layouts.
+* Rule-based generation
+* Graph algorithms
+* Shape grammars
+* Neural networks
 
-## Technology Stack
-- **Game Engine**: Unity 6 (C#)
-- **AI Processing**: Python (PyTorch/TensorFlow) via Unity ML-Agents
-- **3D Modeling**: Blender 4.3, Unity ProBuilder
-- **UI/UX**: Unity UI Toolkit, React.js (for Web Integration)
-- **Database**: Firebase/SQL
-- **Cloud & APIs**: AWS, Google Maps API (for terrain mapping)
+It is designed to compete with tools like **ArkDesign**,**Trisetra** and **Coohom**, while remaining fully customizable and extensible.
 
-## Development Roadmap
-### Phase 1: AI Development 
-- Develop AI-based floor plan generation.
-- Implement cost estimation and material selection algorithms.
+---
 
-### Phase 2: 3D Visualization & User Interaction 
-- Build a 2D-to-3D conversion system.
-- Develop interactive simulations and VR/AR compatibility.
+## 🚀 Features
 
-### Phase 3: Web Integration & Finalization
-- Integrate cloud storage and API functionalities.
-- Conduct final testing and deployment.
+✅ Survey-based home design input
+✅ AI-generated 2D floor plans
+✅ Graph + Shape Grammar–based planning
+✅ Procedural 3D building generation
+✅ Real-time material & cost estimation
+✅ Drag-and-drop layout editing
+✅ Building code compliance checking
+✅ VR/AR-ready exploration
+✅ BIM/CAD export support
 
-## How to Contribute
-We welcome collaboration! If you are interested in contributing to ArchAI, please reach out or check the project's roadmap for opportunities to get involved.
+---
 
-## Current Dataset
-- (Google Drive)[https://drive.google.com/drive/folders/1idWlqchss6WcdMSpxU9H99nqsG-B4LLU?usp=sharing]
+## 🧠 Technology Stack
 
-## License
-ArchAI is currently under development and is not open-source. Please contact the development team for further details on access and licensing.
+| Area    | Technology                       |
+| ------- | -------------------------------- |
+| Engine  | Unity 6 (C#)                     |
+| AI      | Python, PyTorch, Unity ML-Agents |
+| 3D      | Blender 4.3 + Unity ProBuilder   |
+| UI      | Unity UI Toolkit                 |
+| Storage | JSON / Scriptable Objects        |
+| Cloud   | Firebase / AWS                   |
+| Maps    | Google Maps API                  |
+
+---
+
+## 🔄 Current Progress
+
+✔ Unity project setup complete
+✔ Dataset & architecture finalized
+✔ Survey + UI under development
+✔ AI training (initial phase) ongoing
+
+---
+
+## 🎯 Roadmap
+
+**Phase 1** — Setup & Core System
+**Phase 2** — 2D AI Generator
+**Phase 3** — Compliance System
+**Phase 4** — 3D Conversion
+**Phase 5** — UI/UX & Optimization
+
+---
+
+## 🏆 End Goal
+
+A full-featured AI design platform capable of:
+
+* Professional floor plans
+* Realistic 3D visualization
+* Smart recommendations
+* VR walkthroughs
+* Automated compliance checking
+
+---
+
+**Status:** 🚧 Active Development
+**Maintained By:** Shaurya Singhal
