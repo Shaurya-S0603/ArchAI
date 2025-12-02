@@ -73,4 +73,5 @@ A full-featured AI design platform capable of:
 ---
 
 **Status:** 🚧 Active Development
+
 **Maintained By:** Shaurya Singhal
