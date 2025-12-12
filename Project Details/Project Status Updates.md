@@ -9,10 +9,10 @@
 
 ## 📌 Current Overall Status
 
-The ArchAI project is **actively in development**. The surveying system is currently being built and tested alongside **basic UI creation** and **initial AI training**. Core architecture setup is in progress and follows the roadmap defined in the Step-by-Step Development Plan.
+The ArchAI project is **paused-in development**. The surveying system is currently being built and tested and responses to be used as data for model training are being processed. Core architecture setup is in progress and follows the roadmap defined in the Step-by-Step Development Plan. The development will proceed further in short notice.
 
 **Status Summary:**  
-✅ On-going  
+⏸️ Paused  
 ⏳ On schedule  
 📊 Stable progress  
 
@@ -39,7 +39,7 @@ The ArchAI project is **actively in development**. The surveying system is curre
 
 ---
 
-## 🔄 Work in Progress
+## 🔄 Upcoming Work
 
 ### 1. Survey System Development
 - Google Forms–style survey UI is being built
@@ -87,8 +87,8 @@ The ArchAI project is **actively in development**. The surveying system is curre
 | Stage                              | Status     | Estimated Completion |
 |------|------|------|
 Survey System                         | Ongoing    | 10 days  
-Basic UI Creation                      | Ongoing    | 20 days  
-Initial AI Training                    | Ongoing    | 2 months  
+Basic UI Creation                      | Paused    | -
+Initial AI Training                    | Paused    | -
 
 ---
 
@@ -117,14 +117,6 @@ Initial AI Training                    | Ongoing    | 2 months
   - Size optimization
   - Constraint handling
 - Connect Survey → Data Manager
-
----
-
-## 🎯 Key Focus for the Next 4 Weeks
-
-✅ Complete Survey System  
-✅ Achieve functional UI  
-✅ Begin training first AI prototype  
 
 ---
 
