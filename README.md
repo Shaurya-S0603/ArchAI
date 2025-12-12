@@ -73,6 +73,7 @@ A full-featured AI design platform capable of:
 ---
 
 **Status:** 🚧 Active Development
+
 **Form:** Fill out this form to help out in the training of the AI model. (Google Forms)[https://forms.gle/BBR6y4gDgVrAfaFv5]
 
 **Maintained By:** Shaurya Singhal
