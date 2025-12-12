@@ -86,7 +86,7 @@ The ArchAI project is **paused-in development**. The surveying system is current
 
 | Stage                              | Status     | Estimated Completion |
 |------|------|------|
-Survey System                         | Ongoing    | 10 days  
+Survey System                         | Ongoing    | 20-30 days  
 Basic UI Creation                      | Paused    | -
 Initial AI Training                    | Paused    | -
 
