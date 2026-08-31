@@ -1,79 +1,142 @@
-# 🏗️ ArchAI — Architectural AI System
+# ArchAI - Architectural Concept Design Studio
 
-ArchAI is an AI-powered architectural design system built using **Unity 6 + Python**, capable of generating intelligent **2D floor plans** and converting them into **interactive 3D environments**.
+ArchAI is a free and open-source architectural concept application that turns a
+residential design brief into five editable 2D layout directions. It provides
+transparent preliminary planning checks, an editable cost baseline, an interactive
+3D massing preview, and JSON/SVG/OBJ export.
 
-This system uses a hybrid approach combining:
+> **Current release:** executable web MVP. It is not yet the trained AI, BIM,
+> jurisdictional compliance, or VR system described by the long-term research plan.
+> See the [traceability matrix](docs/REQUIREMENTS_TRACEABILITY.md) for the exact
+> implementation boundary.
 
-* Rule-based generation
-* Graph algorithms
-* Shape grammars
-* Neural networks
+## Phase 0 release
 
-It is designed to compete with tools like **ArkDesign**,**Trisetra** and **Coohom**, while remaining fully customizable and extensible.
+| Item | Status |
+|---|---|
+| Release | `v0.1.0 - Phase 0` |
+| Application | Executable Flask web MVP |
+| Cost | No paid API or runtime dependency |
+| Deployment | Local, Docker, or free-tier Render |
+| License | MIT |
+| Safety boundary | Preliminary concepts only; not for construction |
 
----
+## Working features
 
-## 🚀 Features
+- validated survey for site, household, rooms, style, and budget;
+- five deterministic layout concepts ranked by adjacency and compactness;
+- draggable SVG rooms, keyboard movement, undo, and redo;
+- preliminary checks for dimensions, overlaps, bounds, connectivity, functional
+  adjacency, daylight potential, and large-plan egress review;
+- local parametric cost estimate with a budget comparison;
+- dependency-free orbitable 3D concept massing;
+- JSON, SVG, and Wavefront OBJ downloads;
+- responsive, keyboard-accessible interface;
+- testable Flask API and Docker deployment.
 
-* ✅ Survey-based home design input
-* ✅ AI-generated 2D floor plans
-* ✅ Graph + Shape Grammar–based planning
-* ✅ Procedural 3D building generation
-* ✅ Real-time material & cost estimation
-* ✅ Drag-and-drop layout editing
-* ✅ Building code compliance checking
-* ✅ VR/AR-ready exploration
-* ✅ BIM/CAD export support
+ArchAI assists early exploration only. A qualified architect or engineer must
+verify any design used for permitting, procurement, or construction.
 
----
+## Technology
 
-## 🧠 Technology Stack
+| Layer | Technology |
+|---|---|
+| Backend | Python 3.11+ and Flask 3 |
+| Frontend | Semantic HTML, custom CSS, browser-native JavaScript |
+| 2D | SVG |
+| 3D | Browser Canvas 2D isometric massing renderer |
+| Production server | Gunicorn |
+| Tests | Pytest |
+| Packaging | Local virtual environment or Docker |
 
-| Area    | Technology                       |
-| ------- | -------------------------------- |
-| Engine  | Unity 6 (C#)                     |
-| AI      | Python, PyTorch, Unity ML-Agents |
-| 3D      | Blender 4.3 + Unity ProBuilder   |
-| UI      | Unity UI Toolkit                 |
-| Storage | JSON / Scriptable Objects        |
-| Cloud   | Firebase / AWS                   |
-| Maps    | Google Maps API                  |
+"Java" is interpreted as **JavaScript** for this web project. The current
+architecture does not require a Java/JVM service. The rationale is recorded in
+[the architecture decision](docs/ARCHITECTURE.md).
 
----
+## Run locally
 
-## 🔄 Current Progress
+### Windows
 
-* ✔ Unity project setup complete
-* ✔ Dataset & architecture finalized
-* ✔ Survey + UI under development
-* ✔ AI training (initial phase) upcoming
+1. Install Python 3.11 or newer.
+2. Double-click `run.bat`, or run it from Command Prompt:
 
----
+   ```bat
+   run.bat
+   ```
 
-## 🎯 Roadmap
+3. Open `http://127.0.0.1:5000`.
 
-* **Phase 1** — Setup & Core System
-* **Phase 2** — 2D AI Generator
-* **Phase 3** — Compliance System
-* **Phase 4** — 3D Conversion
-* **Phase 5** — UI/UX & Optimization
+The launcher creates `.venv` and installs the requirements on its first run.
 
----
+### macOS or Linux
 
-## 🏆 End Goal
+```bash
+chmod +x run.sh
+./run.sh
+```
 
-A full-featured AI design platform capable of:
+Then open `http://127.0.0.1:5000`.
 
-* Professional floor plans
-* Realistic 3D visualization
-* Smart recommendations
-* VR walkthroughs
-* Automated compliance checking
+### Manual development setup
 
----
+```bash
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+python -m pip install -r requirements-dev.txt
+python app.py
+```
 
-**Status:** 🚧 Active Development
+## Test and lint
 
-**Form:** Fill out this form to help out in the training of the AI model. (Google Forms)[https://forms.gle/BBR6y4gDgVrAfaFv5]
+```bash
+pytest
+ruff check .
+```
 
-**Maintained By:** Shaurya Singhal
+## Docker
+
+```bash
+docker build -t archai .
+docker run --rm -p 10000:10000 archai
+```
+
+Open `http://127.0.0.1:10000`.
+
+## Free web deployment
+
+The included `render.yaml` can deploy the Docker app as a free Render web service.
+Render's free service is suitable for hobby demos and may spin down when idle. No
+paid API is required by ArchAI. You can also deploy the Flask application to the
+limited free PythonAnywhere tier.
+
+- [Render free service documentation](https://render.com/docs/free)
+- [PythonAnywhere Flask setup](https://help.pythonanywhere.com/pages/Flask/)
+- [Flask deployment guidance](https://flask.palletsprojects.com/en/stable/deploying/)
+
+Free-tier terms can change, so verify the provider's current limits before
+deployment and do not add a payment method unless you intentionally want billing.
+
+## API
+
+| Method | Route | Purpose |
+|---|---|---|
+| `GET` | `/api/v1/health` | Deployment health check |
+| `POST` | `/api/v1/layouts/generate` | Validate a brief and generate five analyzed concepts |
+| `POST` | `/api/v1/layouts/analyze` | Recheck an edited concept |
+| `POST` | `/api/v1/exports/obj` | Export room massing as OBJ |
+
+## Project documentation
+
+- [Architecture](docs/ARCHITECTURE.md)
+- [Requirements traceability](docs/REQUIREMENTS_TRACEABILITY.md)
+- [Delivery roadmap](docs/ROADMAP.md)
+- [Current project status](docs/STATUS.md)
+- [Generator model card](docs/MODEL_CARD.md)
+- [Contribution guide](CONTRIBUTING.md)
+
+## License
+
+See [LICENSE](LICENSE). Dataset and model licenses must be reviewed separately
+before any training artifact is redistributed.
+
+Maintained by Shaurya Singhal.

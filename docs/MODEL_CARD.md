@@ -1,0 +1,69 @@
+# ArchAI Layout Generator Card
+
+**Component:** ArchAI transparent layout baseline
+
+**Version:** v0.1.0
+
+**Maintained by:** Shaurya Singhal
+
+## Status
+
+This release is **not a trained neural-network or reinforcement-learning model**.
+It is a deterministic constraint-based baseline used to make the application
+executable, testable, and measurable before ML training begins.
+
+## Purpose
+
+- generate five residential concept layouts from a validated brief;
+- represent room relationships as an adjacency graph;
+- rank concepts using adjacency and compactness proxies;
+- provide a no-GPU fallback for future learned generators.
+
+## Inputs
+
+- site width and depth;
+- bedroom, bathroom, household, and optional-room counts;
+- architectural style;
+- budget and currency;
+- sustainability and accessibility priorities.
+
+## Outputs
+
+- rectangular 2D room geometry in metres;
+- building and site bounds;
+- adjacency, compactness, and circulation-proxy metrics;
+- a concept ranking score.
+
+## Method
+
+The generator builds a room program from editable minimum and target areas,
+orders rooms according to five planning objectives, and recursively partitions
+the building footprint. A shared-wall graph is then scored against functional
+adjacency preferences.
+
+## Evaluation
+
+The current automated suite verifies deterministic results, valid API behavior,
+room-area conservation, edited overlap detection, and OBJ geometry output. These
+tests establish software correctness only; they do not establish architectural
+quality or regulatory compliance.
+
+## Data
+
+No training data is used in v0.1. CubiCasa5K, FloorCAD, or any other dataset must
+undergo license, provenance, bias, and split review before a trained model is
+added or distributed.
+
+## Limitations
+
+- single-floor rectangular residential concepts only;
+- no explicit doors, windows, corridors, structure, furniture, or services;
+- generated geometry may require substantial professional revision;
+- the score is a transparent heuristic, not confidence or design approval;
+- regional, cultural, climatic, and site-specific requirements are not modeled.
+
+## Planned model gate
+
+A trained generator will be released only with a reproducible training pipeline,
+held-out evaluation data, comparison against this baseline, documented failure
+cases, and hard-constraint checks that remain outside the learned model.

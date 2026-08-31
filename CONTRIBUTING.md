@@ -1,67 +1,74 @@
 # Contributing to ArchAI
 
-Thank you for considering contributing to **ArchAI**.
+Thank you for helping build ArchAI. Phase 0 is a Python/Flask web application
+with a browser-native HTML, CSS, and JavaScript frontend.
 
-There are 4 main ways to contribute:
+## Development setup
 
-1. Code improvements
-2. Bug fixes
-3. Feature suggestions
-4. Documentation updates
+Requirements:
 
----
+- Python 3.11 or newer;
+- Git;
+- a modern browser;
+- Docker only when testing the container build.
 
-## 💻 Requirements
-
-* Unity 6
-* Python 3.10+
-* Blender 4.3+
-* Git
-
-Python libraries:
-
-```
-pip install torch numpy matplotlib opencv-python networkx
+```bash
+git clone https://github.com/Shaurya-S0603/ArchAI.git
+cd ArchAI
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+python -m pip install -r requirements-dev.txt
+python app.py
 ```
 
----
+Open `http://127.0.0.1:5000`.
 
-## 🔧 How to Contribute
+## Before opening a pull request
 
-1. Fork the repository
-2. Clone locally
-3. Create a branch
+```bash
+pytest
+ruff format --check .
+ruff check .
+node --check archai/static/js/app.js
+```
 
-   ```
-   git checkout -b feature/your-feature
-   ```
-4. Commit changes
+All tests and checks must pass. Add tests whenever backend behavior changes.
+For UI work, verify keyboard navigation, visible focus, narrow-screen layout,
+and reduced-motion behavior.
 
-   ```
-   git commit -m "Short but clear message"
-   ```
-5. Push & create a Pull Request
+## Branches and commits
 
----
+Use a short branch name such as:
 
-## ✅ Code Rules
+- `feature/room-resizing`
+- `fix/obj-export-groups`
+- `docs/cost-assumptions`
 
-* Clean and commented code
-* Modular scripts
-* Follow C# / Python naming rules
-* No copyrighted data
-* No huge files pending approval
+Prefer Conventional Commit messages:
 
----
+- `feat: add room resize handles`
+- `fix: prevent overlapping room export`
+- `docs: clarify compliance limitations`
+- `test: cover invalid layout requests`
 
-## 🚫 Not Allowed
+## Architecture rules
 
-* Broken builds
-* Personal data
-* Stolen datasets
+- Keep domain logic in `archai/services/`, not Flask route functions.
+- Validate untrusted API data through the domain models.
+- Keep the deterministic no-GPU generator available as a fallback.
+- Do not describe preliminary checks as regulatory certification.
+- Do not add paid APIs or proprietary runtime dependencies to the default build.
+- Document the source, license, date, and assumptions for every dataset or
+  regional rule pack.
+- Never commit credentials, personal data, generated virtual environments, or
+  large model checkpoints.
 
----
+## Scope
 
-Thank you for supporting ArchAI.
+Check [the roadmap](docs/ROADMAP.md) and
+[requirements traceability](docs/REQUIREMENTS_TRACEABILITY.md) before starting a
+large feature. Open an issue first when a change affects the project schema,
+model-training approach, compliance claims, or export compatibility.
 
-**Maintained by:** Shaurya Singhal
+By contributing, you agree that your contribution is provided under the
+[MIT License](LICENSE).

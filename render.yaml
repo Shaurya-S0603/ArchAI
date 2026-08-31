@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: archai-design-studio
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/v1/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: ARCHAI_SECRET_KEY
+        generateValue: true

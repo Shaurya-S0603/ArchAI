@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ArchAI generates editable residential floor-plan concepts with transparent compliance and cost feedback.">
+    <title>ArchAI Design Studio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to design studio</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="ArchAI home">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span><strong>ArchAI</strong><small>Concept Design Studio</small></span>
+      </a>
+      <div class="header-meta">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Local-first MVP</span>
+        <a href="https://github.com/Shaurya-S0603/ArchAI" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Generative residential planning</p>
+          <h1 id="page-title">From a clear brief to an editable concept.</h1>
+          <p class="intro-copy">Generate five layout directions, review transparent planning checks, explore a 3D massing preview, and export your work without a paid API.</p>
+        </div>
+        <div class="intro-note">
+          <span>Important</span>
+          <p>ArchAI supports early-stage exploration. A qualified architect or engineer must verify any design used for construction.</p>
+        </div>
+      </section>
+
+      <div class="studio-layout">
+        <aside class="brief-panel card" aria-labelledby="brief-title">
+          <div class="section-heading">
+            <span class="step">01</span>
+            <div><p class="eyebrow">Project setup</p><h2 id="brief-title">Design brief</h2></div>
+          </div>
+          <form id="brief-form">
+            <fieldset>
+              <legend>Site dimensions</legend>
+              <div class="field-row">
+                <label>Width <span>metres</span><input name="site_width_m" type="number" min="10" max="60" step="0.5" value="18" required></label>
+                <label>Depth <span>metres</span><input name="site_depth_m" type="number" min="10" max="80" step="0.5" value="24" required></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Household and spaces</legend>
+              <div class="field-row field-row--three">
+                <label>People<input name="household_size" type="number" min="1" max="12" value="4" required></label>
+                <label>Bedrooms<input name="bedrooms" type="number" min="1" max="6" value="3" required></label>
+                <label>Bathrooms<input name="bathrooms" type="number" min="1" max="5" value="2" required></label>
+              </div>
+              <span class="field-label">Additional rooms</span>
+              <div class="chip-grid">
+                <label><input type="checkbox" name="other_rooms" value="study"><span>Study</span></label>
+                <label><input type="checkbox" name="other_rooms" value="garage"><span>Garage</span></label>
+                <label><input type="checkbox" name="other_rooms" value="laundry"><span>Laundry</span></label>
+                <label><input type="checkbox" name="other_rooms" value="lounge"><span>Lounge</span></label>
+                <label><input type="checkbox" name="other_rooms" value="storage"><span>Storage</span></label>
+                <label><input type="checkbox" name="other_rooms" value="balcony"><span>Balcony</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Direction and budget</legend>
+              <label>Architectural style
+                <select name="style">
+                  <option value="modern">Modern</option>
+                  <option value="contemporary">Contemporary</option>
+                  <option value="classic">Classic</option>
+                  <option value="industrial">Industrial</option>
+                  <option value="sustainable">Sustainable</option>
+                </select>
+              </label>
+              <div class="field-row field-row--budget">
+                <label>Currency<select name="currency"><option>SGD</option><option>USD</option><option>INR</option><option>EUR</option><option>GBP</option></select></label>
+                <label>Target budget<input name="budget" type="number" min="0" step="1000" value="750000"></label>
+              </div>
+              <div class="toggle-list">
+                <label><input type="checkbox" name="sustainability"><span><strong>Sustainability priority</strong><small>Apply the concept-stage sustainable specification factor.</small></span></label>
+                <label><input type="checkbox" name="accessibility"><span><strong>Accessibility priority</strong><small>Flag route and clearance details for the next stage.</small></span></label>
+              </div>
+            </fieldset>
+
+            <button class="primary-button" type="submit"><span>Generate five concepts</span><span aria-hidden="true">→</span></button>
+            <p id="form-status" class="form-status" role="status" aria-live="polite">Ready to generate locally.</p>
+          </form>
+        </aside>
+
+        <section class="workspace" aria-labelledby="workspace-title">
+          <div class="workspace-header card">
+            <div class="section-heading">
+              <span class="step">02</span>
+              <div><p class="eyebrow">Concept workspace</p><h2 id="workspace-title">Layout explorer</h2></div>
+            </div>
+            <div id="workspace-actions" class="workspace-actions" hidden>
+              <div class="segmented-control" aria-label="Preview mode">
+                <button class="is-active" type="button" data-view="2d" aria-pressed="true">2D plan</button>
+                <button type="button" data-view="3d" aria-pressed="false">3D massing</button>
+              </div>
+              <div class="action-menu">
+                <button class="icon-button" id="undo-button" type="button" title="Undo room move" disabled>↶ <span>Undo</span></button>
+                <button class="icon-button" id="redo-button" type="button" title="Redo room move" disabled>↷ <span>Redo</span></button>
+              </div>
+            </div>
+          </div>
+
+          <div id="empty-state" class="empty-state card">
+            <div class="empty-illustration" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <h3>Your concepts will appear here</h3>
+            <p>Complete the brief, then generate five deterministic planning directions in a few seconds.</p>
+            <ol><li>Choose a direction</li><li>Drag rooms to explore</li><li>Review checks and cost</li></ol>
+          </div>
+
+          <div id="results" hidden>
+            <div id="variation-tabs" class="variation-tabs" role="tablist" aria-label="Generated concepts"></div>
+
+            <div class="canvas-card card">
+              <div class="canvas-toolbar">
+                <div>
+                  <p class="eyebrow" id="concept-objective">Concept objective</p>
+                  <h3 id="concept-name">Concept</h3>
+                </div>
+                <div class="metric-strip" id="metric-strip"></div>
+              </div>
+              <div id="plan-wrap" class="plan-wrap">
+                <svg id="plan-svg" role="img" aria-label="Editable generated floor plan"></svg>
+                <p class="canvas-hint">Drag a room to test an edit. ArchAI rechecks the layout when you release it.</p>
+              </div>
+              <div id="model-wrap" class="model-wrap" hidden>
+                <canvas id="model-canvas" aria-label="Interactive 3D massing preview"></canvas>
+                <p class="canvas-hint">Drag to orbit. Scroll to zoom. This is concept massing, not a structural model.</p>
+              </div>
+            </div>
+
+            <div class="analysis-grid">
+              <article class="analysis-card card" aria-labelledby="compliance-title">
+                <div class="analysis-header"><div><p class="eyebrow">Planning checks</p><h3 id="compliance-title">Preliminary compliance</h3></div><span id="compliance-badge" class="badge"></span></div>
+                <div id="compliance-summary" class="summary-row"></div>
+                <ul id="issue-list" class="issue-list"></ul>
+                <p class="disclaimer" id="compliance-disclaimer"></p>
+              </article>
+              <article class="analysis-card card" aria-labelledby="cost-title">
+                <div class="analysis-header"><div><p class="eyebrow">Parametric baseline</p><h3 id="cost-title">Cost estimate</h3></div><span id="budget-badge" class="badge"></span></div>
+                <div class="cost-total"><span>Concept estimate</span><strong id="cost-total"></strong><small id="cost-rate"></small></div>
+                <div id="cost-breakdown" class="cost-breakdown"></div>
+                <p class="disclaimer">Uses editable local baseline rates—not live supplier quotations.</p>
+              </article>
+            </div>
+
+            <div class="export-card card">
+              <div><p class="eyebrow">Take your work forward</p><h3>Export this concept</h3><p>JSON preserves editable plan data. SVG preserves the 2D drawing. OBJ opens in Blender and other 3D tools.</p></div>
+              <div class="export-actions">
+                <button type="button" data-export="json">JSON</button>
+                <button type="button" data-export="svg">SVG</button>
+                <button type="button" data-export="obj">OBJ</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer><span>ArchAI v0.1 MVP</span><span>Free and open-source concept design</span><span>Not for construction</span></footer>
+    <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </body>
+</html>
