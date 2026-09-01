@@ -33,9 +33,9 @@ test.describe("ArchAI Phase 1 browser workflow", () => {
     await firstRoom.press("Enter");
     await expect(page.locator("#room-editor")).toBeVisible();
 
-    const xInput = page.locator("#room-x");
-    const originalX = Number(await xInput.inputValue());
-    await xInput.fill(String(originalX + 0.25));
+    const widthInput = page.locator("#room-width");
+    const originalWidth = Number(await widthInput.inputValue());
+    await widthInput.fill(String(originalWidth - 0.25));
     await page.getByRole("button", { name: "Apply room edit" }).click();
     await expect(page.locator("#form-status")).toHaveText("Edited concept rechecked.");
     await expect(page.locator("#undo-button")).toBeEnabled();
