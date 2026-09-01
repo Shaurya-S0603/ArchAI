@@ -17,11 +17,11 @@
       <div class="header-meta">
         <span class="status-dot" aria-hidden="true"></span>
         <span>Local-first MVP</span>
-        <a href="https://github.com/Shaurya-S0603/ArchAI" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://github.com/Shaurya-S0603/ArchAI" target="_blank" rel="noreferrer" aria-label="ArchAI on GitHub (opens in a new tab)">GitHub</a>
       </div>
     </header>
 
-    <main id="main-content">
+    <main id="main-content" tabindex="-1">
       <section class="intro" aria-labelledby="page-title">
         <div>
           <p class="eyebrow">Generative residential planning</p>
@@ -32,6 +32,25 @@
           <span>Important</span>
           <p>ArchAI supports early-stage exploration. A qualified architect or engineer must verify any design used for construction.</p>
         </div>
+      </section>
+
+      <section class="project-manager card" aria-labelledby="project-manager-title">
+        <div class="section-heading project-manager__heading">
+          <span class="step">00</span>
+          <div><p class="eyebrow">Local project library</p><h2 id="project-manager-title">Save and resume</h2></div>
+        </div>
+        <label class="project-name">Project name
+          <input id="project-name" type="text" maxlength="80" value="Untitled ArchAI project" autocomplete="off">
+        </label>
+        <button id="save-project-button" class="primary-button compact-button" type="button" disabled>Save project</button>
+        <label class="saved-projects">Saved projects
+          <select id="saved-projects"><option value="">No saved projects</option></select>
+        </label>
+        <div class="project-actions">
+          <button id="load-project-button" type="button" disabled>Load</button>
+          <button id="delete-project-button" class="danger-button" type="button" disabled>Delete</button>
+        </div>
+        <p id="project-status" class="form-status project-status" role="status" aria-live="polite">Projects are stored in this ArchAI installation.</p>
       </section>
 
       <div class="studio-layout">
@@ -100,7 +119,7 @@
               <div><p class="eyebrow">Concept workspace</p><h2 id="workspace-title">Layout explorer</h2></div>
             </div>
             <div id="workspace-actions" class="workspace-actions" hidden>
-              <div class="segmented-control" aria-label="Preview mode">
+              <div class="segmented-control" role="group" aria-label="Preview mode">
                 <button class="is-active" type="button" data-view="2d" aria-pressed="true">2D plan</button>
                 <button type="button" data-view="3d" aria-pressed="false">3D massing</button>
               </div>
@@ -123,7 +142,7 @@
           <div id="results" hidden>
             <div id="variation-tabs" class="variation-tabs" role="tablist" aria-label="Generated concepts"></div>
 
-            <div class="canvas-card card">
+            <div id="concept-panel" class="canvas-card card" role="tabpanel" tabindex="0">
               <div class="canvas-toolbar">
                 <div>
                   <p class="eyebrow" id="concept-objective">Concept objective</p>
@@ -132,13 +151,27 @@
                 <div class="metric-strip" id="metric-strip"></div>
               </div>
               <div id="plan-wrap" class="plan-wrap">
-                <svg id="plan-svg" role="img" aria-label="Editable generated floor plan"></svg>
-                <p class="canvas-hint">Drag a room to test an edit. ArchAI rechecks the layout when you release it.</p>
+                <svg id="plan-svg" role="img" aria-label="Editable generated floor plan" aria-describedby="plan-hint"></svg>
+                <p id="plan-hint" class="canvas-hint">Dark lines are walls, green/amber gaps are doors, and blue gaps are windows. Select a room to edit it without dragging.</p>
               </div>
               <div id="model-wrap" class="model-wrap" hidden>
-                <canvas id="model-canvas" aria-label="Interactive 3D massing preview"></canvas>
-                <p class="canvas-hint">Drag to orbit. Scroll to zoom. This is concept massing, not a structural model.</p>
+                <canvas id="model-canvas" role="img" aria-label="Interactive 3D massing preview" aria-describedby="model-hint">A 2D version of this concept is available using the 2D plan button.</canvas>
+                <p id="model-hint" class="canvas-hint">Drag to orbit and scroll to zoom. The equivalent room information remains available in the 2D plan.</p>
               </div>
+              <section id="room-editor" class="room-editor" aria-labelledby="room-editor-title" hidden>
+                <div>
+                  <p class="eyebrow">No-drag editing</p>
+                  <h4 id="room-editor-title">Selected room</h4>
+                  <p id="room-editor-help">Enter exact dimensions or position, then apply the change.</p>
+                </div>
+                <div class="room-editor__fields">
+                  <label>X position <span>m</span><input id="room-x" type="number" step="0.25" aria-describedby="room-editor-help"></label>
+                  <label>Y position <span>m</span><input id="room-y" type="number" step="0.25" aria-describedby="room-editor-help"></label>
+                  <label>Width <span>m</span><input id="room-width" type="number" min="1.8" step="0.25" aria-describedby="room-editor-help"></label>
+                  <label>Depth <span>m</span><input id="room-depth" type="number" min="1.8" step="0.25" aria-describedby="room-editor-help"></label>
+                  <button id="apply-room-edit" class="primary-button compact-button" type="button">Apply room edit</button>
+                </div>
+              </section>
             </div>
 
             <div class="analysis-grid">
@@ -157,11 +190,14 @@
             </div>
 
             <div class="export-card card">
-              <div><p class="eyebrow">Take your work forward</p><h3>Export this concept</h3><p>JSON preserves editable plan data. SVG preserves the 2D drawing. OBJ opens in Blender and other 3D tools.</p></div>
+              <div><p class="eyebrow">Take your work forward</p><h3>Export this concept</h3><p>JSON remains editable, SVG/PDF remain vector, PNG is presentation-ready, and OBJ opens in 3D tools.</p></div>
               <div class="export-actions">
                 <button type="button" data-export="json">JSON</button>
                 <button type="button" data-export="svg">SVG</button>
+                <button type="button" data-export="png">PNG</button>
+                <button type="button" data-export="pdf">PDF</button>
                 <button type="button" data-export="obj">OBJ</button>
+                <button type="button" data-export="print">Print</button>
               </div>
             </div>
           </div>
@@ -169,7 +205,7 @@
       </div>
     </main>
 
-    <footer><span>ArchAI v0.1 MVP</span><span>Free and open-source concept design</span><span>Not for construction</span></footer>
+    <footer><span>ArchAI v0.1 development preview</span><span>Free and open-source concept design</span><span>Not for construction</span></footer>
     <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
   </body>
 </html>

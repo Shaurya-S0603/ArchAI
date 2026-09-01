@@ -4,8 +4,14 @@ from archai import create_app
 
 
 @pytest.fixture()
-def app():
-    return create_app({"TESTING": True, "SECRET_KEY": "test-secret"})
+def app(tmp_path):
+    return create_app(
+        {
+            "TESTING": True,
+            "SECRET_KEY": "test-secret",
+            "DATABASE": str(tmp_path / "archai-test.sqlite3"),
+        }
+    )
 
 
 @pytest.fixture()

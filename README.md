@@ -3,34 +3,58 @@
 ArchAI is a free and open-source architectural concept application that turns a
 residential design brief into five editable 2D layout directions. It provides
 transparent preliminary planning checks, an editable cost baseline, an interactive
-3D massing preview, and JSON/SVG/OBJ export.
+3D massing preview, and JSON/SVG/PNG/PDF/OBJ export.
 
-> **Current release:** executable web MVP. It is not yet the trained AI, BIM,
+> **Current development preview:** `v0.1.0-dev.1`, completing the Phase 1
+> architectural editor. It is not yet the trained AI, BIM,
 > jurisdictional compliance, or VR system described by the long-term research plan.
 > See the [traceability matrix](docs/REQUIREMENTS_TRACEABILITY.md) for the exact
 > implementation boundary.
 
-## Phase 0 release
+## Development release
 
 | Item | Status |
 |---|---|
-| Release | `v0.1.0 - Phase 0` |
-| Application | Executable Flask web MVP |
+| Release | `v0.1.0-dev.1 - Phase 1 complete` |
+| Application | Executable Flask architectural editor |
 | Cost | No paid API or runtime dependency |
 | Deployment | Local, Docker, or free-tier Render |
 | License | MIT |
 | Safety boundary | Preliminary concepts only; not for construction |
 
+## Phase 1 delivery
+
+- local SQLite project library with forward-only schema migrations;
+- validated save, list, load, update, and delete project APIs;
+- four-corner room resizing with 0.25 m snapping, footprint limits, a 1.8 m
+  minimum dimension, and room-type minimum areas;
+- saved projects retain the brief, all five concepts, the selected concept,
+  analysis, and cost state;
+- server-side revalidation and recalculation before project data is stored.
+- continuous corridor spines with perimeter room strips;
+- deduplicated exterior, interior, and exposed room-boundary wall segments;
+- connected interior doors, an exterior entry door, and habitable-room windows;
+- automatic topology rebuilding after every move, resize, save, and legacy-project load;
+- deterministic furniture-use, door-approach, and accessibility turning zones;
+- browser PNG export, printable plan views, and vector A3 PDF plan sheets;
+- schema v3 project snapshots with automatic in-memory upgrade from schemas v1 and v2;
+- no-drag numeric room editing and keyboard-operable concept tabs;
+- Playwright end-to-end coverage and automated axe WCAG 2.2 A/AA checks in CI.
+
 ## Working features
 
 - validated survey for site, household, rooms, style, and budget;
 - five deterministic layout concepts ranked by adjacency and compactness;
-- draggable SVG rooms, keyboard movement, undo, and redo;
+- draggable and resizable SVG rooms, an exact no-drag editor, keyboard movement,
+  undo, and redo;
+- persistent local projects backed by SQLite;
+- semantic walls, doors, windows, openings, and explicit corridor space;
+- furniture-use and accessibility clearance overlays;
 - preliminary checks for dimensions, overlaps, bounds, connectivity, functional
   adjacency, daylight potential, and large-plan egress review;
 - local parametric cost estimate with a budget comparison;
 - dependency-free orbitable 3D concept massing;
-- JSON, SVG, and Wavefront OBJ downloads;
+- JSON, SVG, PNG, vector PDF, and Wavefront OBJ downloads plus browser printing;
 - responsive, keyboard-accessible interface;
 - testable Flask API and Docker deployment.
 
@@ -42,11 +66,13 @@ verify any design used for permitting, procurement, or construction.
 | Layer | Technology |
 |---|---|
 | Backend | Python 3.11+ and Flask 3 |
+| Persistence | SQLite with built-in schema migrations |
 | Frontend | Semantic HTML, custom CSS, browser-native JavaScript |
 | 2D | SVG |
 | 3D | Browser Canvas 2D isometric massing renderer |
+| Plan sheets | ReportLab vector PDF generation |
 | Production server | Gunicorn |
-| Tests | Pytest |
+| Tests | Pytest, Playwright, and axe-core |
 | Packaging | Local virtual environment or Docker |
 
 "Java" is interpreted as **JavaScript** for this web project. The current
@@ -91,7 +117,14 @@ python app.py
 ```bash
 pytest
 ruff check .
+npm ci
+npx playwright install chromium
+npm run test:e2e
 ```
+
+The browser suite starts its own local Flask server, exercises the complete
+generate/edit/save/load/export workflow, and checks initial and generated states
+for automated WCAG 2.2 A/AA violations.
 
 ## Docker
 
@@ -121,9 +154,17 @@ deployment and do not add a payment method unless you intentionally want billing
 | Method | Route | Purpose |
 |---|---|---|
 | `GET` | `/api/v1/health` | Deployment health check |
-| `POST` | `/api/v1/layouts/generate` | Validate a brief and generate five analyzed concepts |
-| `POST` | `/api/v1/layouts/analyze` | Recheck an edited concept |
+| `POST` | `/api/v1/layouts/generate` | Generate five analyzed concepts with semantic topology |
+| `POST` | `/api/v1/layouts/analyze` | Rebuild topology and recheck an edited concept |
 | `POST` | `/api/v1/exports/obj` | Export room massing as OBJ |
+| `POST` | `/api/v1/exports/pdf` | Export an A3 vector concept plan sheet as PDF |
+| `GET`, `POST` | `/api/v1/projects` | List or create saved projects |
+| `GET`, `PUT`, `DELETE` | `/api/v1/projects/{id}` | Load, update, or delete a project |
+
+Projects are stored by default in `instance/archai.sqlite3`. Set
+`ARCHAI_DATABASE` to an explicit writable path when deploying with persistent
+storage. Hosts with ephemeral filesystems will not retain SQLite data across
+service replacement or redeployment.
 
 ## Project documentation
 
@@ -131,6 +172,8 @@ deployment and do not add a payment method unless you intentionally want billing
 - [Requirements traceability](docs/REQUIREMENTS_TRACEABILITY.md)
 - [Delivery roadmap](docs/ROADMAP.md)
 - [Current project status](docs/STATUS.md)
+- [Accessibility audit](docs/ACCESSIBILITY_AUDIT.md)
+- [v0.1 development release notes](docs/RELEASE_NOTES_v0.1.0-dev.1.md)
 - [Generator model card](docs/MODEL_CARD.md)
 - [Contribution guide](CONTRIBUTING.md)
 

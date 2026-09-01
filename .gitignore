@@ -8,3 +8,7 @@ htmlcov/
 .env
 .DS_Store
 tmp/
+instance/
+node_modules/
+playwright-report/
+test-results/

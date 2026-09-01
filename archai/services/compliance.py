@@ -94,7 +94,7 @@ def analyze_compliance(layout: Layout, brief: DesignBrief | None = None) -> dict
             )
         )
 
-    if layout.rooms:
+    if layout.rooms and not layout.topology:
         visited: set[str] = set()
         queue = deque([layout.rooms[0].id])
         while queue:
@@ -113,24 +113,44 @@ def analyze_compliance(layout: Layout, brief: DesignBrief | None = None) -> dict
                 )
             )
 
-    for room in layout.rooms:
-        if room.type not in {"bedroom", "living", "study"}:
-            continue
-        exterior = (
-            abs(room.x - bounds["x"]) < 0.05
-            or abs(room.y - bounds["y"]) < 0.05
-            or abs(room.x + room.width - right) < 0.05
-            or abs(room.y + room.depth - bottom) < 0.05
-        )
-        if not exterior:
+    if layout.topology:
+        for topology_issue in layout.topology.get("issues", []):
             issues.append(
                 _issue(
-                    "DAYLIGHT_POTENTIAL",
-                    "warning",
-                    f"{room.label} has no exterior wall for a conventional window.",
-                    "Move the room to the perimeter or design a verified light-well solution.",
+                    str(topology_issue["code"]),
+                    str(topology_issue["severity"]),
+                    str(topology_issue["message"]),
+                    str(topology_issue["suggestion"]),
                 )
             )
+        for zoning_issue in layout.zones.get("issues", []):
+            issues.append(
+                _issue(
+                    str(zoning_issue["code"]),
+                    str(zoning_issue["severity"]),
+                    str(zoning_issue["message"]),
+                    str(zoning_issue["suggestion"]),
+                )
+            )
+    else:
+        for room in layout.rooms:
+            if room.type not in {"bedroom", "living", "study"}:
+                continue
+            exterior = (
+                abs(room.x - bounds["x"]) < 0.05
+                or abs(room.y - bounds["y"]) < 0.05
+                or abs(room.x + room.width - right) < 0.05
+                or abs(room.y + room.depth - bottom) < 0.05
+            )
+            if not exterior:
+                issues.append(
+                    _issue(
+                        "DAYLIGHT_POTENTIAL",
+                        "warning",
+                        f"{room.label} has no exterior wall for a conventional window.",
+                        "Move the room to the perimeter or design a verified light-well solution.",
+                    )
+                )
 
     if layout.floor_area >= 200:
         issues.append(
@@ -143,14 +163,31 @@ def analyze_compliance(layout: Layout, brief: DesignBrief | None = None) -> dict
         )
 
     if brief and brief.accessibility:
-        issues.append(
-            _issue(
-                "ACCESSIBILITY_DETAIL",
-                "info",
-                "Accessible route widths and door clearances require door-level geometry.",
-                "Add doors and corridors in the next design stage, then run the detailed rule pack.",
+        narrow_doors = [
+            opening
+            for opening in layout.topology.get("openings", [])
+            if opening.get("kind") in {"door", "entry_door"}
+            and float(opening.get("width_m", 0)) < 1.0
+        ]
+        if narrow_doors:
+            issues.append(
+                _issue(
+                    "ACCESSIBLE_DOOR_WIDTH",
+                    "warning",
+                    f"{len(narrow_doors)} concept door(s) are narrower than the 1.0 m project target.",
+                    "Widen the affected wall segments and rebuild the door topology.",
+                )
             )
-        )
+        else:
+            turning_circles = int(layout.zones.get("summary", {}).get("turning_circles", 0))
+            issues.append(
+                _issue(
+                    "ACCESSIBILITY_DETAIL",
+                    "info",
+                    f"Concept doors use the 1.0 m target and include {turning_circles} turning circle(s).",
+                    "A qualified professional must still verify clear openings, approaches, and turning spaces.",
+                )
+            )
 
     error_count = sum(issue["severity"] == "error" for issue in issues)
     warning_count = sum(issue["severity"] == "warning" for issue in issues)

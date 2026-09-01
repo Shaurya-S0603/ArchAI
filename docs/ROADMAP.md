@@ -1,6 +1,6 @@
 # ArchAI Delivery Roadmap
 
-## Phase 0 - Executable web foundation (current)
+## Phase 0 - Executable web foundation (complete)
 
 - [x] Flask application and versioned JSON API
 - [x] Responsive HTML/CSS/JavaScript design studio
@@ -15,16 +15,20 @@
 
 ## Phase 1 - Architectural editor
 
-- room resizing with handles and minimum-dimension constraints;
-- explicit corridors, doors, windows, wall segments, and openings;
-- topology repair after edits;
-- furniture zones and accessibility clearances;
-- project persistence in SQLite with schema migrations;
-- printable plan sheets and PNG/PDF export;
-- end-to-end browser tests and WCAG 2.2 AA audit.
+- [x] room resizing with handles and minimum-dimension constraints;
+- [x] explicit corridors, doors, windows, wall segments, and openings;
+- [x] topology repair after edits;
+- [x] furniture zones and accessibility clearances;
+- [x] project persistence in SQLite with schema migrations;
+- [x] printable plan sheets and PNG/PDF export;
+- [x] end-to-end browser tests and WCAG 2.2 AA audit.
+
+Current development release: `v0.1.0-dev.1` completes Phase 1 with deterministic
+zoning, printable PNG/PDF output, no-drag room editing, browser workflow tests,
+and automated WCAG 2.2 A/AA checks.
 
 Exit condition: a saved project can be edited, reloaded, printed, and exported
-without geometry corruption.
+without geometry corruption. **Satisfied by the v0.1 development preview.**
 
 ## Phase 2 - Evaluated generative intelligence
 

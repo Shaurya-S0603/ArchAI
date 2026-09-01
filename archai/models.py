@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
+from math import isfinite
 from typing import Any
 
 ALLOWED_STYLES = {"modern", "classic", "contemporary", "industrial", "sustainable"}
@@ -23,6 +24,8 @@ def _bounded_number(data: dict[str, Any], key: str, minimum: float, maximum: flo
         value = float(data[key])
     except (KeyError, TypeError, ValueError) as exc:
         raise ValueError(f"{key} must be a number.") from exc
+    if not isfinite(value):
+        raise ValueError(f"{key} must be a finite number.")
     if not minimum <= value <= maximum:
         raise ValueError(f"{key} must be between {minimum:g} and {maximum:g}.")
     return value
@@ -109,6 +112,7 @@ class Room:
     width: float
     depth: float
     color: str
+    minimum_area: float = 4.0
 
     @property
     def area(self) -> float:
@@ -122,7 +126,7 @@ class Room:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Room:
         try:
-            return cls(
+            room = cls(
                 id=str(data["id"]),
                 type=str(data["type"]),
                 label=str(data["label"]),
@@ -131,9 +135,20 @@ class Room:
                 width=float(data["width"]),
                 depth=float(data["depth"]),
                 color=str(data.get("color", "#a8c7b0")),
+                minimum_area=float(data.get("minimum_area", 4.0)),
             )
         except (KeyError, TypeError, ValueError) as exc:
             raise ValueError("Each room requires id, type, label, x, y, width, and depth.") from exc
+        dimensions = (room.x, room.y, room.width, room.depth, room.minimum_area)
+        if not all(isfinite(value) for value in dimensions):
+            raise ValueError("Room coordinates and dimensions must be finite numbers.")
+        if not room.id.strip() or not room.type.strip() or not room.label.strip():
+            raise ValueError("Each room requires non-empty id, type, and label values.")
+        if room.width <= 0 or room.depth <= 0 or room.minimum_area <= 0:
+            raise ValueError("Room width, depth, and minimum area must be greater than zero.")
+        if max(abs(room.x), abs(room.y), room.width, room.depth, room.minimum_area) > 10_000:
+            raise ValueError("Room coordinates and dimensions exceed the supported range.")
+        return room
 
 
 @dataclass
@@ -148,6 +163,8 @@ class Layout:
     rooms: list[Room]
     score: float = 0
     metrics: dict[str, Any] = field(default_factory=dict)
+    topology: dict[str, Any] = field(default_factory=dict)
+    zones: dict[str, Any] = field(default_factory=dict)
 
     @property
     def floor_area(self) -> float:
@@ -166,17 +183,21 @@ class Layout:
             "score": round(self.score, 1),
             "floor_area": round(self.floor_area, 2),
             "metrics": self.metrics,
+            "topology": self.topology,
+            "zones": self.zones,
         }
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Layout:
         if not isinstance(data, dict) or not isinstance(data.get("rooms"), list):
             raise ValueError("layout must be an object containing a rooms list.")
+        if not 1 <= len(data["rooms"]) <= 100:
+            raise ValueError("layout must contain between 1 and 100 rooms.")
         try:
             bounds = {
                 key: float(data["building_bounds"][key]) for key in ("x", "y", "width", "depth")
             }
-            return cls(
+            layout = cls(
                 id=str(data.get("id", "edited-layout")),
                 name=str(data.get("name", "Edited layout")),
                 objective=str(data.get("objective", "User edited")),
@@ -187,7 +208,24 @@ class Layout:
                 rooms=[Room.from_dict(room) for room in data["rooms"]],
                 score=float(data.get("score", 0)),
                 metrics=dict(data.get("metrics", {})),
+                topology=dict(data.get("topology", {})),
+                zones=dict(data.get("zones", {})),
             )
+            dimensions = (
+                layout.site_width_m,
+                layout.site_depth_m,
+                bounds["x"],
+                bounds["y"],
+                bounds["width"],
+                bounds["depth"],
+            )
+            if not all(isfinite(value) for value in dimensions):
+                raise ValueError("Layout dimensions and building bounds must be finite numbers.")
+            if layout.site_width_m <= 0 or layout.site_depth_m <= 0:
+                raise ValueError("Layout site dimensions must be greater than zero.")
+            if bounds["width"] <= 0 or bounds["depth"] <= 0:
+                raise ValueError("Layout building dimensions must be greater than zero.")
+            return layout
         except (KeyError, TypeError, ValueError) as exc:
             if isinstance(exc, ValueError) and str(exc).startswith("Each room"):
                 raise

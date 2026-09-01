@@ -1,13 +1,14 @@
 # Contributing to ArchAI
 
-Thank you for helping build ArchAI. Phase 0 is a Python/Flask web application
-with a browser-native HTML, CSS, and JavaScript frontend.
+Thank you for helping build ArchAI. The v0.1 development preview is a
+Python/Flask application with a browser-native HTML, CSS, and JavaScript frontend.
 
 ## Development setup
 
 Requirements:
 
 - Python 3.11 or newer;
+- Node.js 20 or newer for browser quality checks;
 - Git;
 - a modern browser;
 - Docker only when testing the container build.
@@ -18,6 +19,8 @@ cd ArchAI
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 python -m pip install -r requirements-dev.txt
+npm ci
+npx playwright install chromium
 python app.py
 ```
 
@@ -30,11 +33,13 @@ pytest
 ruff format --check .
 ruff check .
 node --check archai/static/js/app.js
+npm run test:e2e
 ```
 
 All tests and checks must pass. Add tests whenever backend behavior changes.
-For UI work, verify keyboard navigation, visible focus, narrow-screen layout,
-and reduced-motion behavior.
+For UI work, add or update Playwright coverage and verify keyboard navigation,
+visible focus, narrow-screen layout, reduced-motion behavior, and the axe A/AA
+audit in both initial and generated interface states.
 
 ## Branches and commits
 

@@ -2,7 +2,7 @@
 
 **Component:** ArchAI transparent layout baseline
 
-**Version:** v0.1.0
+**Version:** v0.1.0-dev.1
 
 **Maintained by:** Shaurya Singhal
 
@@ -32,14 +32,20 @@ executable, testable, and measurable before ML training begins.
 - rectangular 2D room geometry in metres;
 - building and site bounds;
 - adjacency, compactness, and circulation-proxy metrics;
+- corridor, wall, door, entry, and window topology;
+- furniture-use, door-approach, and accessible turning zones;
 - a concept ranking score.
 
 ## Method
 
 The generator builds a room program from editable minimum and target areas,
-orders rooms according to five planning objectives, and recursively partitions
-the building footprint. A shared-wall graph is then scored against functional
-adjacency preferences.
+reserves a continuous 1.8 m circulation spine, and allocates rooms as weighted
+perimeter strips on both sides. It then derives atomic wall segments and selects
+a connected spanning set of door openings. Exterior entry and window openings are
+added from perimeter walls. A shared-wall graph is scored against functional
+adjacency preferences. Furniture-use zones are then fitted within supported room
+types, while door-approach zones follow semantic openings and accessible briefs
+receive 1.5 m turning-circle overlays in bathrooms and circulation space.
 
 ## Evaluation
 
@@ -57,7 +63,9 @@ added or distributed.
 ## Limitations
 
 - single-floor rectangular residential concepts only;
-- no explicit doors, windows, corridors, structure, furniture, or services;
+- doors and windows are concept geometry, not detailed construction assemblies;
+- concept zones are not product-specific furniture layouts or accessibility certification;
+- no structural system or building-services coordination;
 - generated geometry may require substantial professional revision;
 - the score is a transparent heuristic, not confidence or design approval;
 - regional, cultural, climatic, and site-specific requirements are not modeled.

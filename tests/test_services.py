@@ -14,6 +14,7 @@ def test_generated_rooms_fill_building_footprint(brief):
     for layout in generate_layouts(design_brief):
         footprint = layout.building_bounds["width"] * layout.building_bounds["depth"]
         assert abs(layout.floor_area - footprint) < 0.2
+        assert all(min(room.width, room.depth) >= 1.79 for room in layout.rooms)
 
 
 def test_documented_bedroom_rule_is_nine_square_metres():

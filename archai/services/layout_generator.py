@@ -16,6 +16,7 @@ from archai.models import DesignBrief, Layout, Room
 
 ROOM_LIBRARY = {
     "living": {"label": "Living room", "target": 24.0, "minimum": 16.0, "color": "#9CC5A1"},
+    "corridor": {"label": "Corridor", "target": 12.0, "minimum": 8.0, "color": "#D9D3C4"},
     "kitchen": {"label": "Kitchen", "target": 13.0, "minimum": 8.0, "color": "#E6B566"},
     "dining": {"label": "Dining", "target": 12.0, "minimum": 9.0, "color": "#F0CF8E"},
     "bedroom": {"label": "Bedroom", "target": 14.0, "minimum": 9.0, "color": "#9DB7D5"},
@@ -38,6 +39,9 @@ VARIATIONS = (
 )
 
 PREFERRED_ADJACENCIES = {
+    frozenset(("corridor", "living")): 5,
+    frozenset(("bedroom", "corridor")): 3,
+    frozenset(("bathroom", "corridor")): 2,
     frozenset(("kitchen", "dining")): 5,
     frozenset(("living", "dining")): 4,
     frozenset(("bedroom", "bathroom")): 3,
@@ -55,7 +59,7 @@ class RoomSpec:
 
 
 def _room_specs(brief: DesignBrief) -> list[RoomSpec]:
-    room_types = ["living", "kitchen", "dining"]
+    room_types = ["corridor", "living", "kitchen", "dining"]
     room_types.extend(["bedroom"] * brief.bedrooms)
     room_types.extend(["bathroom"] * brief.bathrooms)
     room_types.extend(brief.other_rooms)
@@ -81,60 +85,89 @@ def _room_specs(brief: DesignBrief) -> list[RoomSpec]:
 
 def _order_specs(specs: list[RoomSpec], variation_index: int, rng: Random) -> list[RoomSpec]:
     priorities = {
-        0: {"living": 0, "dining": 1, "kitchen": 2, "bedroom": 3, "bathroom": 4},
-        1: {"living": 0, "dining": 1, "kitchen": 2, "lounge": 3},
-        2: {"bedroom": 0, "bathroom": 1, "study": 2, "living": 3},
-        3: {"living": 0, "bedroom": 1, "study": 2, "kitchen": 3},
-        4: {"garage": 0, "utility": 1, "kitchen": 2, "dining": 3},
+        0: {"living": 0, "dining": 1, "corridor": 2, "kitchen": 3, "bedroom": 4},
+        1: {"living": 0, "dining": 1, "kitchen": 2, "corridor": 3, "lounge": 4},
+        2: {"bedroom": 0, "bathroom": 1, "corridor": 2, "study": 3, "living": 4},
+        3: {"living": 0, "bedroom": 1, "corridor": 2, "study": 3, "kitchen": 4},
+        4: {"garage": 0, "utility": 1, "corridor": 2, "kitchen": 3, "dining": 4},
     }[variation_index]
     decorated = [(priorities.get(spec.type, 5), rng.random(), spec) for spec in specs]
     decorated.sort(key=lambda item: (item[0], item[1]))
     return [item[2] for item in decorated]
 
 
-def _best_split(specs: list[RoomSpec], bias: float) -> int:
-    total = sum(spec.target_area for spec in specs)
-    running = 0.0
-    best_index = 1
-    best_distance = float("inf")
-    for index, spec in enumerate(specs[:-1], start=1):
-        running += spec.target_area
-        distance = abs((running / total) - bias)
-        if distance < best_distance:
-            best_distance = distance
-            best_index = index
-    return best_index
+def _balanced_sides(specs: list[RoomSpec]) -> tuple[list[RoomSpec], list[RoomSpec]]:
+    first: list[RoomSpec] = []
+    second: list[RoomSpec] = []
+    first_area = 0.0
+    second_area = 0.0
+    for spec in specs:
+        if first_area <= second_area:
+            first.append(spec)
+            first_area += spec.target_area
+        else:
+            second.append(spec)
+            second_area += spec.target_area
+    return first, second
 
 
-def _partition(
+def _strip_partition(
     specs: list[RoomSpec],
     rect: tuple[float, float, float, float],
-    depth: int,
-    bias: float,
+    split_width: bool,
 ) -> list[tuple[RoomSpec, tuple[float, float, float, float]]]:
-    if len(specs) == 1:
-        return [(specs[0], rect)]
+    x, y, width, depth = rect
+    available_span = width if split_width else depth
+    minimum_span = 1.8
+    if available_span + 0.01 < len(specs) * minimum_span:
+        raise ValueError(
+            "The site is too narrow to give every requested room a 1.8 m minimum dimension. "
+            "Increase the site or reduce the room count."
+        )
+    extra_span = available_span - len(specs) * minimum_span
+    total_weight = sum(spec.target_area for spec in specs)
+    spans = [
+        minimum_span + extra_span * spec.target_area / total_weight for spec in specs
+    ]
+    cursor = x if split_width else y
+    result = []
+    for index, (spec, allocated_span) in enumerate(zip(specs, spans, strict=True)):
+        remaining = (x + width - cursor) if split_width else (y + depth - cursor)
+        span = remaining if index == len(specs) - 1 else allocated_span
+        room_rect = (cursor, y, span, depth) if split_width else (x, cursor, width, span)
+        result.append((spec, room_rect))
+        cursor += span
+    return result
 
-    x, y, width, height = rect
-    split_index = _best_split(specs, bias if depth % 2 == 0 else 1 - bias)
-    first, second = specs[:split_index], specs[split_index:]
-    first_weight = sum(spec.target_area for spec in first)
-    ratio = first_weight / sum(spec.target_area for spec in specs)
 
-    vertical = width / max(height, 0.01) > 1.08
-    if 0.92 <= width / max(height, 0.01) <= 1.08:
-        vertical = depth % 2 == 0
-
-    if vertical:
-        first_width = width * ratio
-        rect_a = (x, y, first_width, height)
-        rect_b = (x + first_width, y, width - first_width, height)
-    else:
-        first_height = height * ratio
-        rect_a = (x, y, width, first_height)
-        rect_b = (x, y + first_height, width, height - first_height)
-
-    return _partition(first, rect_a, depth + 1, bias) + _partition(second, rect_b, depth + 1, bias)
+def _corridor_partition(
+    specs: list[RoomSpec],
+    corridor: RoomSpec,
+    bounds: dict[str, float],
+) -> list[tuple[RoomSpec, tuple[float, float, float, float]]]:
+    first, second = _balanced_sides(specs)
+    corridor_width = 1.8
+    x, y = bounds["x"], bounds["y"]
+    width, depth = bounds["width"], bounds["depth"]
+    if width <= depth:
+        side_depth = (depth - corridor_width) / 2
+        corridor_rect = (x, y + side_depth, width, corridor_width)
+        first_rect = (x, y, width, side_depth)
+        second_rect = (x, y + side_depth + corridor_width, width, side_depth)
+        return (
+            [(corridor, corridor_rect)]
+            + _strip_partition(first, first_rect, split_width=True)
+            + _strip_partition(second, second_rect, split_width=True)
+        )
+    side_width = (width - corridor_width) / 2
+    corridor_rect = (x + side_width, y, corridor_width, depth)
+    first_rect = (x, y, side_width, depth)
+    second_rect = (x + side_width + corridor_width, y, side_width, depth)
+    return (
+        [(corridor, corridor_rect)]
+        + _strip_partition(first, first_rect, split_width=False)
+        + _strip_partition(second, second_rect, split_width=False)
+    )
 
 
 def shared_wall_length(room_a: Room, room_b: Room, tolerance: float = 0.04) -> float:
@@ -162,7 +195,7 @@ def adjacency_pairs(rooms: Iterable[Room]) -> list[tuple[Room, Room, float]]:
     return pairs
 
 
-def _layout_metrics(layout: Layout) -> dict[str, float | int]:
+def calculate_layout_metrics(layout: Layout) -> dict[str, float | int]:
     pairs = adjacency_pairs(layout.rooms)
     achieved = 0
     possible = 0
@@ -187,8 +220,18 @@ def _layout_metrics(layout: Layout) -> dict[str, float | int]:
     }
 
 
+def calculate_layout_score(layout: Layout) -> float:
+    if not layout.metrics:
+        layout.metrics = calculate_layout_metrics(layout)
+    return 0.65 * float(layout.metrics["adjacency_score"]) + 0.35 * float(
+        layout.metrics["compactness"]
+    )
+
+
 def generate_layouts(brief: DesignBrief) -> list[Layout]:
     specs = _room_specs(brief)
+    corridor_spec = next(spec for spec in specs if spec.type == "corridor")
+    space_specs = [spec for spec in specs if spec.type != "corridor"]
     margin_x = brief.site_width_m * 0.08
     margin_y = brief.site_depth_m * 0.08
     bounds = {
@@ -208,13 +251,10 @@ def generate_layouts(brief: DesignBrief) -> list[Layout]:
     layouts: list[Layout] = []
     for index, (name, objective, seed, bias) in enumerate(VARIATIONS):
         rng = Random(seed + brief.bedrooms * 101 + brief.bathrooms * 17)
-        ordered = _order_specs(specs, index, rng)
-        assignments = _partition(
-            ordered,
-            (bounds["x"], bounds["y"], bounds["width"], bounds["depth"]),
-            0,
-            bias,
-        )
+        ordered = _order_specs(space_specs, index, rng)
+        if bias < 0.5:
+            ordered.reverse()
+        assignments = _corridor_partition(ordered, corridor_spec, bounds)
         rooms = [
             Room(
                 id=f"v{index + 1}-room-{room_index + 1}",
@@ -225,6 +265,7 @@ def generate_layouts(brief: DesignBrief) -> list[Layout]:
                 width=round(rect[2], 3),
                 depth=round(rect[3], 3),
                 color=spec.color,
+                minimum_area=spec.minimum_area,
             )
             for room_index, (spec, rect) in enumerate(assignments)
         ]
@@ -238,10 +279,13 @@ def generate_layouts(brief: DesignBrief) -> list[Layout]:
             building_bounds=dict(bounds),
             rooms=rooms,
         )
-        layout.metrics = _layout_metrics(layout)
-        layout.score = 0.65 * float(layout.metrics["adjacency_score"]) + 0.35 * float(
-            layout.metrics["compactness"]
-        )
+        layout.metrics = calculate_layout_metrics(layout)
+        layout.score = calculate_layout_score(layout)
+        from archai.services.topology import build_topology
+        from archai.services.zoning import build_zones
+
+        layout.topology = build_topology(layout, accessibility=brief.accessibility)
+        layout.zones = build_zones(layout, accessibility=brief.accessibility)
         layouts.append(layout)
 
     return sorted(layouts, key=lambda layout: layout.score, reverse=True)
