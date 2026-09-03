@@ -63,6 +63,37 @@ Optional JSON and Markdown destinations can be supplied with `--json` and
 `--markdown`. `--enforce` returns a non-zero status when any frozen threshold
 fails, which makes the benchmark suitable for CI.
 
+## Phase 2B solver comparison
+
+The optional `cp-sat-v1` candidate is evaluated against the frozen deterministic
+baseline on the same dataset digest. It must retain the baseline regression gates,
+improve adjacency by at least 0.05, retain at least 0.08 diversity, and avoid a
+budget-fit or user-alignment regression greater than 0.01.
+
+```bash
+python -m pip install -r requirements-solver.txt
+python -m archai.evaluation.comparison --enforce \
+  --json reports/phase2b-comparison.json \
+  --markdown reports/phase2b-comparison.md
+```
+
+The v0.2.0-dev.2 frozen comparison records:
+
+| Metric | Baseline | CP-SAT candidate | Delta |
+|---|---:|---:|---:|
+| Generation success | 100.0% | 100.0% | 0.0% |
+| Hard-constraint pass | 100.0% | 100.0% | 0.0% |
+| Program match | 100.0% | 100.0% | 0.0% |
+| Adjacency satisfaction | 65.54% | 98.41% | +32.87% |
+| Diversity | 0.2386 | 0.1745 | -0.0641 |
+| Budget fit | 60.8% | 60.6% | -0.2% |
+| Accessibility alignment | 100.0% | 100.0% | 0.0% |
+| User alignment | 96.1% | 96.1% | -0.02% |
+
+The promotion gate passes, but the solver remains an optional research candidate.
+The production API continues to use the transparent deterministic fallback until
+integration latency, failure handling, and real-plan evaluation are complete.
+
 ## Candidate promotion rule
 
 A candidate may replace the deterministic production default only when it:

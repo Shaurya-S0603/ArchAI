@@ -16,6 +16,12 @@ The Phase 2A dataset contains input briefs only. It does not contain copied floo
 plans, scraped images, user projects, addresses, or personal data. Its manifest
 pins the schema version, generator seed, split counts, and SHA-256 digest.
 
+External sources under consideration, including Kaggle listings, are maintained
+in `docs/DATASET_CANDIDATES.md`. Listing a source there does not admit it. A
+Kaggle page, API download, or notebook is a discovery mechanism and does not
+replace the original publisher's license or prove permission to distribute
+derived weights.
+
 ## Fixed splits
 
 | Split | Cases | Permitted use |

@@ -2,20 +2,20 @@
 
 **Last updated:** September 3, 2026
 
-**Release branch:** `development` (Phase 2A review into `main`)
+**Release branch:** `development` (Phase 2B review into `main`)
 
-**Current milestone:** Phase 2A complete - v0.2 evaluation foundation
+**Current milestone:** Phase 2B complete - v0.2 solver candidate
 
 ## Overall status
 
 ArchAI now supports local project persistence, constrained room resizing, semantic
 plan topology, deterministic furniture/accessibility zones, printable plan
-output, and a versioned generator benchmark while retaining the Python, Flask,
-HTML, CSS, and JavaScript stack. The development preview provides an evaluated
-baseline, not the complete trained AI,
+output, a versioned generator benchmark, and an optional CP-SAT research
+candidate while retaining the Python, Flask, HTML, CSS, and JavaScript stack.
+The development preview provides evaluated baseline and solver candidates, not the complete trained AI,
 BIM, code-certification, or VR product described in the research plan.
 
-**Project health:** green through Phase 2A, research-stage for learned generation.
+**Project health:** green through Phase 2B, research-stage for learned generation.
 
 ## Implemented
 
@@ -90,18 +90,34 @@ BIM, code-certification, or VR product described in the research plan.
 - committed deterministic-baseline report and documented evaluation protocol;
 - dedicated GitHub Actions benchmark job using only free local resources.
 
+## Phase 2B implemented
+
+- optional OR-Tools CP-SAT generator, isolated from the default runtime;
+- deterministic room-side and position assignment with five seeded objectives;
+- existing geometry construction, semantic topology, zoning, and hard validation
+  reused after solver assignment;
+- candidate registry, candidate-aware benchmark CLI, comparison CLI, and
+  machine-readable promotion gates;
+- committed 100-case comparison showing 98.41% adjacency satisfaction, 0.1745
+  diversity, and no material budget or user-alignment regression;
+- documented Kaggle shortlist with external data kept quarantined pending exact
+  license, provenance, privacy, derivative, and checkpoint-distribution review;
+- dedicated GitHub Actions solver-comparison job using free CPU resources.
+
 ## Verification
 
-- Python unit/integration tests cover the editor and evaluation pipeline;
+- 34 Python unit/integration tests pass with 93%+ statement coverage across the
+  editor, evaluation pipeline, candidate registry, and comparison CLI;
 - Python lint clean;
 - all JavaScript modules pass syntax checks;
 - Flask development and Gunicorn production entrypoints respond successfully.
 - the 100-case baseline passes every enforced regression gate;
+- the 100-case CP-SAT comparison passes every Phase 2B promotion gate;
 - browser tests and accessibility checks run locally and in CI.
 
 ## Next milestone
 
-Phase 2B implements an open-source constraint-solver candidate and compares it
-against the frozen baseline. External-data and trained-model work remains blocked
-until the dataset-governance review is satisfied. See `docs/ROADMAP.md`,
-`docs/DATASET_GOVERNANCE.md`, and `docs/EVALUATION_PROTOCOL.md`.
+Phase 2C implements a license-reviewed real-plan preprocessing pipeline. External
+data and trained-model work remains blocked until a dataset passes the complete
+governance checklist. See `docs/ROADMAP.md`, `docs/DATASET_GOVERNANCE.md`,
+`docs/DATASET_CANDIDATES.md`, and `docs/EVALUATION_PROTOCOL.md`.

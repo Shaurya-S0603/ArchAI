@@ -5,8 +5,8 @@ residential design brief into five editable 2D layout directions. It provides
 transparent preliminary planning checks, an editable cost baseline, an interactive
 3D massing preview, and JSON/SVG/PNG/PDF/OBJ export.
 
-> **Current development preview:** `v0.2.0-dev.1`, completing the Phase 2A
-> evaluation foundation. It is not yet the trained AI, BIM,
+> **Current development preview:** `v0.2.0-dev.2`, completing the Phase 2B
+> constraint-solver candidate. It is not yet the trained AI, BIM,
 > jurisdictional compliance, or VR system described by the long-term research plan.
 > See the [traceability matrix](docs/REQUIREMENTS_TRACEABILITY.md) for the exact
 > implementation boundary.
@@ -15,8 +15,8 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 
 | Item | Status |
 |---|---|
-| Release | `v0.2.0-dev.1 - Phase 2A evaluation foundation` |
-| Application | Executable and benchmarked Flask architectural editor |
+| Release | `v0.2.0-dev.2 - Phase 2B solver candidate` |
+| Application | Executable Flask editor with benchmarked baseline and solver candidate |
 | Cost | No paid API or runtime dependency |
 | Deployment | Local, Docker, or free-tier Render |
 | License | MIT |
@@ -53,6 +53,19 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 - enforced baseline thresholds in a dedicated GitHub Actions job;
 - deterministic Phase 1 generator retained as the transparent CPU fallback.
 
+## Phase 2B delivery
+
+- optional deterministic CP-SAT generator candidate powered by the Apache-2.0
+  OR-Tools package;
+- five solver objectives that optimize requested room adjacency while preserving
+  the existing corridor, topology, zoning, and hard-check pipeline;
+- shared candidate registry and CLI selection for reproducible evaluation;
+- baseline-versus-candidate comparison report with predeclared promotion gates;
+- full 100-case gate pass: adjacency improved from 65.5% to 98.4%, with all hard,
+  program, accessibility, budget-regression, and alignment-regression gates passing;
+- Kaggle and original-source dataset candidates documented without admitting or
+  downloading data whose license or provenance is unresolved.
+
 ## Working features
 
 - validated survey for site, household, rooms, style, and budget;
@@ -86,6 +99,7 @@ verify any design used for permitting, procurement, or construction.
 | Production server | Gunicorn |
 | Tests | Pytest, Playwright, and axe-core |
 | Evaluation | Versioned JSONL benchmark and standard-library Python harness |
+| Optional solver | OR-Tools CP-SAT 9.15 (research/evaluation extra) |
 | Packaging | Local virtual environment or Docker |
 
 "Java" is interpreted as **JavaScript** for this web project. The current
@@ -134,6 +148,7 @@ npm ci
 npx playwright install chromium
 npm run test:e2e
 python -m archai.evaluation --enforce
+python -m archai.evaluation.comparison --enforce
 ```
 
 The browser suite starts its own local Flask server, exercises the complete
@@ -149,6 +164,9 @@ python scripts/generate_benchmark.py
 python -m archai.evaluation --enforce \
   --json reports/phase2a-baseline.json \
   --markdown reports/phase2a-baseline.md
+python -m archai.evaluation.comparison --enforce \
+  --json reports/phase2b-comparison.json \
+  --markdown reports/phase2b-comparison.md
 ```
 
 ## Docker
@@ -200,8 +218,10 @@ service replacement or redeployment.
 - [Accessibility audit](docs/ACCESSIBILITY_AUDIT.md)
 - [v0.1 development release notes](docs/RELEASE_NOTES_v0.1.0-dev.1.md)
 - [Dataset governance](docs/DATASET_GOVERNANCE.md)
+- [External dataset candidate register](docs/DATASET_CANDIDATES.md)
 - [Evaluation protocol](docs/EVALUATION_PROTOCOL.md)
-- [v0.2 development release notes](docs/RELEASE_NOTES_v0.2.0-dev.1.md)
+- [v0.2.0-dev.1 release notes](docs/RELEASE_NOTES_v0.2.0-dev.1.md)
+- [v0.2.0-dev.2 release notes](docs/RELEASE_NOTES_v0.2.0-dev.2.md)
 - [Generator model card](docs/MODEL_CARD.md)
 - [Contribution guide](CONTRIBUTING.md)
 

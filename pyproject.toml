@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "archai-design-studio"
-version = "0.2.0.dev1"
-description = "Free and open-source evaluated architectural concept generator"
+version = "0.2.0.dev2"
+description = "Free and open-source constraint-guided architectural concept generator"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }
@@ -17,7 +17,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+solver = [
+  "ortools==9.15.6755",
+]
 dev = [
+  "ortools==9.15.6755",
   "pytest>=8.3,<9",
   "pytest-cov>=6,<7",
   "ruff>=0.11,<1",

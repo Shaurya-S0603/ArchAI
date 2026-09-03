@@ -13,6 +13,9 @@ from archai.evaluation.benchmark import (
     program_match_score,
     report_to_markdown,
 )
+from archai.evaluation.candidates import get_candidate
+from archai.evaluation.comparison import compare_reports
+from archai.evaluation.comparison import main as comparison_main
 from archai.evaluation.dataset import (
     BENCHMARK_SCHEMA_VERSION,
     BenchmarkCase,
@@ -122,3 +125,39 @@ def test_benchmark_cli_writes_reports(tmp_path, monkeypatch):
     assert main() == 0
     assert json.loads(json_report.read_text(encoding="utf-8"))["passed"] is True
     assert "Regression gates" in markdown_report.read_text(encoding="utf-8")
+
+
+def test_candidate_registry_and_comparison_require_matching_datasets():
+    with pytest.raises(ValueError, match="Unknown generator"):
+        get_candidate("not-a-candidate")
+
+    baseline = evaluate_benchmark(build_synthetic_cases(count=1))
+    candidate = dict(baseline)
+    candidate["dataset_sha256"] = "different"
+    with pytest.raises(ValueError, match="same benchmark"):
+        compare_reports(baseline, candidate)
+
+
+def test_solver_comparison_cli_writes_reports(tmp_path, monkeypatch):
+    dataset = tmp_path / "dataset"
+    json_report = tmp_path / "reports" / "comparison.json"
+    markdown_report = tmp_path / "reports" / "comparison.md"
+    write_benchmark(dataset, count=4)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "archai-compare",
+            "--dataset",
+            str(dataset),
+            "--json",
+            str(json_report),
+            "--markdown",
+            str(markdown_report),
+            "--enforce",
+        ],
+    )
+
+    assert comparison_main() == 0
+    assert json.loads(json_report.read_text(encoding="utf-8"))["passed"] is True
+    assert "Promotion gate: **PASS**" in markdown_report.read_text(encoding="utf-8")

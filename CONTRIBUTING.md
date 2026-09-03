@@ -35,6 +35,7 @@ ruff check .
 node --check archai/static/js/app.js
 npm run test:e2e
 python -m archai.evaluation --enforce
+python -m archai.evaluation.comparison --enforce
 ```
 
 All tests and checks must pass. Add tests whenever backend behavior changes.
@@ -44,6 +45,10 @@ audit in both initial and generated interface states.
 Changes to generation, topology, zoning, or compliance must also pass the full
 100-case benchmark. Include fresh JSON and Markdown reports when deliberately
 changing a frozen metric or threshold.
+Solver work must install `requirements-solver.txt` and pass the Phase 2B
+comparison. External data must be registered and approved under
+`docs/DATASET_GOVERNANCE.md` before any sample, cache, or derived artifact is
+committed.
 
 ## Branches and commits
 

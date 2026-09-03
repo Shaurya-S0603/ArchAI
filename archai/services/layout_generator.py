@@ -126,9 +126,7 @@ def _strip_partition(
         )
     extra_span = available_span - len(specs) * minimum_span
     total_weight = sum(spec.target_area for spec in specs)
-    spans = [
-        minimum_span + extra_span * spec.target_area / total_weight for spec in specs
-    ]
+    spans = [minimum_span + extra_span * spec.target_area / total_weight for spec in specs]
     cursor = x if split_width else y
     result = []
     for index, (spec, allocated_span) in enumerate(zip(specs, spans, strict=True)):
@@ -168,6 +166,63 @@ def _corridor_partition(
         + _strip_partition(first, first_rect, split_width=False)
         + _strip_partition(second, second_rect, split_width=False)
     )
+
+
+def building_bounds_for_brief(brief: DesignBrief) -> dict[str, float]:
+    """Return the shared buildable rectangle used by generator candidates."""
+
+    margin_x = brief.site_width_m * 0.08
+    margin_y = brief.site_depth_m * 0.08
+    return {
+        "x": round(margin_x, 3),
+        "y": round(margin_y, 3),
+        "width": round(brief.site_width_m - 2 * margin_x, 3),
+        "depth": round(brief.site_depth_m - 2 * margin_y, 3),
+    }
+
+
+def layout_from_assignments(
+    brief: DesignBrief,
+    variation_index: int,
+    name: str,
+    objective: str,
+    bounds: dict[str, float],
+    assignments: list[tuple[RoomSpec, tuple[float, float, float, float]]],
+) -> Layout:
+    """Build and enrich a layout from a candidate's rectangle assignments."""
+
+    rooms = [
+        Room(
+            id=f"v{variation_index + 1}-room-{room_index + 1}",
+            type=spec.type,
+            label=spec.label,
+            x=round(rect[0], 3),
+            y=round(rect[1], 3),
+            width=round(rect[2], 3),
+            depth=round(rect[3], 3),
+            color=spec.color,
+            minimum_area=spec.minimum_area,
+        )
+        for room_index, (spec, rect) in enumerate(assignments)
+    ]
+    layout = Layout(
+        id=f"archai-v{variation_index + 1}",
+        name=name,
+        objective=objective,
+        style=brief.style,
+        site_width_m=brief.site_width_m,
+        site_depth_m=brief.site_depth_m,
+        building_bounds=dict(bounds),
+        rooms=rooms,
+    )
+    layout.metrics = calculate_layout_metrics(layout)
+    layout.score = calculate_layout_score(layout)
+    from archai.services.topology import build_topology
+    from archai.services.zoning import build_zones
+
+    layout.topology = build_topology(layout, accessibility=brief.accessibility)
+    layout.zones = build_zones(layout, accessibility=brief.accessibility)
+    return layout
 
 
 def shared_wall_length(room_a: Room, room_b: Room, tolerance: float = 0.04) -> float:
@@ -232,14 +287,7 @@ def generate_layouts(brief: DesignBrief) -> list[Layout]:
     specs = _room_specs(brief)
     corridor_spec = next(spec for spec in specs if spec.type == "corridor")
     space_specs = [spec for spec in specs if spec.type != "corridor"]
-    margin_x = brief.site_width_m * 0.08
-    margin_y = brief.site_depth_m * 0.08
-    bounds = {
-        "x": round(margin_x, 3),
-        "y": round(margin_y, 3),
-        "width": round(brief.site_width_m - 2 * margin_x, 3),
-        "depth": round(brief.site_depth_m - 2 * margin_y, 3),
-    }
+    bounds = building_bounds_for_brief(brief)
     available_area = bounds["width"] * bounds["depth"]
     minimum_area = sum(spec.minimum_area for spec in specs)
     if minimum_area > available_area:
@@ -255,37 +303,6 @@ def generate_layouts(brief: DesignBrief) -> list[Layout]:
         if bias < 0.5:
             ordered.reverse()
         assignments = _corridor_partition(ordered, corridor_spec, bounds)
-        rooms = [
-            Room(
-                id=f"v{index + 1}-room-{room_index + 1}",
-                type=spec.type,
-                label=spec.label,
-                x=round(rect[0], 3),
-                y=round(rect[1], 3),
-                width=round(rect[2], 3),
-                depth=round(rect[3], 3),
-                color=spec.color,
-                minimum_area=spec.minimum_area,
-            )
-            for room_index, (spec, rect) in enumerate(assignments)
-        ]
-        layout = Layout(
-            id=f"archai-v{index + 1}",
-            name=name,
-            objective=objective,
-            style=brief.style,
-            site_width_m=brief.site_width_m,
-            site_depth_m=brief.site_depth_m,
-            building_bounds=dict(bounds),
-            rooms=rooms,
-        )
-        layout.metrics = calculate_layout_metrics(layout)
-        layout.score = calculate_layout_score(layout)
-        from archai.services.topology import build_topology
-        from archai.services.zoning import build_zones
-
-        layout.topology = build_topology(layout, accessibility=brief.accessibility)
-        layout.zones = build_zones(layout, accessibility=brief.accessibility)
-        layouts.append(layout)
+        layouts.append(layout_from_assignments(brief, index, name, objective, bounds, assignments))
 
     return sorted(layouts, key=lambda layout: layout.score, reverse=True)

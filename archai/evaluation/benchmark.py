@@ -195,6 +195,7 @@ def _evaluate_case(case: BenchmarkCase, generator: Generator) -> dict[str, Any]:
 def evaluate_benchmark(
     cases: list[BenchmarkCase],
     generator: Generator = generate_layouts,
+    candidate_name: str = "deterministic-baseline",
     thresholds: dict[str, float] | None = None,
 ) -> dict[str, Any]:
     if not cases:
@@ -241,7 +242,7 @@ def evaluate_benchmark(
     return {
         "report_schema_version": 1,
         "application_version": VERSION,
-        "candidate": "deterministic-baseline",
+        "candidate": candidate_name,
         "evaluated_at": datetime.now(UTC).replace(microsecond=0).isoformat(),
         "dataset_sha256": dataset_digest(cases),
         "summary": summary,

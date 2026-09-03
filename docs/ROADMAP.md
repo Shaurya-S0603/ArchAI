@@ -37,7 +37,7 @@ without geometry corruption. **Satisfied by the v0.1 development preview.**
 - [x] establish and enforce the transparent heuristic baseline;
 - [x] define validity, adjacency, diversity, budget, accessibility, and
   user-alignment metrics;
-- [ ] implement and benchmark an open-source constraint-solver candidate;
+- [x] implement and benchmark an open-source constraint-solver candidate;
 - [ ] add a license-reviewed real-plan preprocessing pipeline;
 - [ ] implement a graph-conditioned learned candidate generator;
 - [ ] add deterministic constraint repair and candidate diversity selection;
@@ -46,14 +46,14 @@ without geometry corruption. **Satisfied by the v0.1 development preview.**
 - publish reproducible training scripts, checkpoints, model card, and failure cases;
 - keep the deterministic generator as a no-GPU fallback.
 
-Current development release: `v0.2.0-dev.1` completes Phase 2A. The transparent
-baseline generates all 100 cases successfully, passes every hard-constraint and
-room-program gate, records 65.54% adjacency satisfaction, and records 0.2386
-concept diversity.
+Current development release: `v0.2.0-dev.2` completes Phase 2B. The optional
+CP-SAT candidate passes every predeclared promotion gate on the frozen 100-case
+benchmark and improves adjacency satisfaction from 65.54% to 98.41%. The
+transparent generator remains the production default and no-GPU fallback.
 
-Next slice: Phase 2B adds an open-source constraint-solver candidate behind the
-same evaluation interface. It will not become the production default unless it
-passes every hard gate and improves predeclared validation metrics.
+Next slice: Phase 2C adds a license-reviewed external-plan preprocessing pipeline.
+The candidate register deliberately blocks Kaggle mirrors with unknown or
+unverified rights from entering training or release artifacts.
 
 Exit condition: the trained generator is measurably better than the transparent
 baseline and never bypasses hard constraints.

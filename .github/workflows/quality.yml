@@ -48,6 +48,30 @@ jobs:
           path: benchmark-artifacts/
           retention-days: 30
 
+  solver-comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install solver dependencies
+        run: python -m pip install -r requirements-solver.txt
+      - name: Compare CP-SAT candidate to the frozen baseline
+        run: >-
+          python -m archai.evaluation.comparison
+          --enforce
+          --json solver-artifacts/comparison.json
+          --markdown solver-artifacts/comparison.md
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2b-solver-comparison
+          path: solver-artifacts/
+          retention-days: 30
+
   browser:
     runs-on: ubuntu-latest
     timeout-minutes: 20
