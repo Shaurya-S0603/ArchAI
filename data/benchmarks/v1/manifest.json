@@ -1,0 +1,21 @@
+{
+  "case_count": 100,
+  "excluded_uses": [
+    "Building-code certification",
+    "Structural validation",
+    "Training-data quality claims",
+    "Real-world demographic representation claims"
+  ],
+  "intended_use": "Regression evaluation and candidate-generator comparison.",
+  "license": "MIT",
+  "name": "archai-synthetic-residential-v1",
+  "provenance": "Deterministically generated from ArchAI's documented input ranges; contains no external plans or personal data.",
+  "schema_version": 1,
+  "seed": 20260903,
+  "sha256": "7a545e2b28422980a8c60ffe888504300d2583a2de3aa36bdc29b7db9d7f9533",
+  "splits": {
+    "development": 60,
+    "test": 20,
+    "validation": 20
+  }
+}

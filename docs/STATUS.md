@@ -1,20 +1,21 @@
 # ArchAI - Project Status
 
-**Last updated:** September 1, 2026
+**Last updated:** September 3, 2026
 
-**Release branch:** `development` (draft review into `main`)
+**Release branch:** `development` (Phase 2A review into `main`)
 
-**Current milestone:** Phase 1 complete - v0.1 development preview
+**Current milestone:** Phase 2A complete - v0.2 evaluation foundation
 
 ## Overall status
 
 ArchAI now supports local project persistence, constrained room resizing, semantic
-plan topology, deterministic furniture/accessibility zones, and printable plan
-output while retaining the Python, Flask, HTML, CSS, and JavaScript stack.
-The development preview is an editor release, not the complete trained AI,
+plan topology, deterministic furniture/accessibility zones, printable plan
+output, and a versioned generator benchmark while retaining the Python, Flask,
+HTML, CSS, and JavaScript stack. The development preview provides an evaluated
+baseline, not the complete trained AI,
 BIM, code-certification, or VR product described in the research plan.
 
-**Project health:** green for Phase 1, research-stage for later phases.
+**Project health:** green through Phase 2A, research-stage for learned generation.
 
 ## Implemented
 
@@ -77,19 +78,30 @@ BIM, code-certification, or VR product described in the research plan.
   generated interface states;
 - GitHub Actions jobs for Python quality and Chromium browser quality.
 
+## Phase 2A implemented
+
+- 100 deterministic synthetic briefs with fixed development, validation, and
+  test splits;
+- versioned JSONL contract plus manifest provenance, license, exclusions, seed,
+  and SHA-256 integrity;
+- independent metrics for generation success, hard constraints, program match,
+  functional adjacency, diversity, budget, accessibility, and user alignment;
+- JSON and Markdown report outputs plus non-zero regression-gate failures;
+- committed deterministic-baseline report and documented evaluation protocol;
+- dedicated GitHub Actions benchmark job using only free local resources.
+
 ## Verification
 
-- 21 backend tests passing with 92% Python statement coverage;
+- Python unit/integration tests cover the editor and evaluation pipeline;
 - Python lint clean;
 - all JavaScript modules pass syntax checks;
 - Flask development and Gunicorn production entrypoints respond successfully.
-- browser tests and accessibility checks run locally and on the development CI workflow.
+- the 100-case baseline passes every enforced regression gate;
+- browser tests and accessibility checks run locally and in CI.
 
 ## Next milestone
 
-Phase 2 begins with licensed-data provenance, evaluation metrics, and transparent
-baseline comparisons before any trained generator is shipped.
-
-The trained generator begins only after a licensed data pipeline and held-out
-evaluation framework are established. See `docs/ROADMAP.md` and
-`docs/REQUIREMENTS_TRACEABILITY.md`.
+Phase 2B implements an open-source constraint-solver candidate and compares it
+against the frozen baseline. External-data and trained-model work remains blocked
+until the dataset-governance review is satisfied. See `docs/ROADMAP.md`,
+`docs/DATASET_GOVERNANCE.md`, and `docs/EVALUATION_PROTOCOL.md`.

@@ -3,7 +3,7 @@
 This matrix separates what is executable now from what remains research or product
 work. It prevents roadmap statements from being mistaken for shipped capability.
 
-| Documented capability | v0.1 development status | Evidence / next step |
+| Documented capability | v0.2 development status | Evidence / next step |
 |---|---|---|
 | Structured design survey | Working | Browser form plus `DesignBrief` validation |
 | Five optimized layout concepts | Working baseline | Deterministic corridor/perimeter partition generation and adjacency scoring; ML is not yet used |
@@ -20,7 +20,9 @@ work. It prevents roadmap statements from being mistaken for shipped capability.
 | Interactive 3D model | Partial | Orbitable browser massing preview; semantic openings are still limited to the 2D plan |
 | JSON/SVG/PNG/PDF/OBJ export | Working | Browser downloads, browser-native PNG rasterization, and Python OBJ/PDF endpoints |
 | IFC/BIM export | Not implemented | Add a semantic building model and IfcOpenShell exporter |
-| Trained neural/RL generator | Not implemented | Establish dataset licenses, evaluation set, baseline metrics, and reproducible training first |
+| Trained neural/RL generator | Not implemented | Build the solver baseline and license-reviewed data pipeline before reproducible training |
+| Versioned generator evaluation | Working baseline | 100 synthetic briefs, immutable digest, fixed splits, independent metrics, reports, and CI gates |
+| Dataset governance | Working policy | External datasets are excluded until license, provenance, privacy, split, and redistribution review |
 | Site/sun/wind analysis | Not implemented | Add geospatial input and verified environmental model |
 | VR/AR walkthrough | Not implemented | Build WebXR experience after stable 3D semantic geometry |
 | Structural integrity verification | Not implemented | Keep outside automated claims without a validated engineering integration |

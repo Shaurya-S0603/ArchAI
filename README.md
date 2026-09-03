@@ -5,8 +5,8 @@ residential design brief into five editable 2D layout directions. It provides
 transparent preliminary planning checks, an editable cost baseline, an interactive
 3D massing preview, and JSON/SVG/PNG/PDF/OBJ export.
 
-> **Current development preview:** `v0.1.0-dev.1`, completing the Phase 1
-> architectural editor. It is not yet the trained AI, BIM,
+> **Current development preview:** `v0.2.0-dev.1`, completing the Phase 2A
+> evaluation foundation. It is not yet the trained AI, BIM,
 > jurisdictional compliance, or VR system described by the long-term research plan.
 > See the [traceability matrix](docs/REQUIREMENTS_TRACEABILITY.md) for the exact
 > implementation boundary.
@@ -15,8 +15,8 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 
 | Item | Status |
 |---|---|
-| Release | `v0.1.0-dev.1 - Phase 1 complete` |
-| Application | Executable Flask architectural editor |
+| Release | `v0.2.0-dev.1 - Phase 2A evaluation foundation` |
+| Application | Executable and benchmarked Flask architectural editor |
 | Cost | No paid API or runtime dependency |
 | Deployment | Local, Docker, or free-tier Render |
 | License | MIT |
@@ -40,6 +40,18 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 - schema v3 project snapshots with automatic in-memory upgrade from schemas v1 and v2;
 - no-drag numeric room editing and keyboard-operable concept tabs;
 - Playwright end-to-end coverage and automated axe WCAG 2.2 A/AA checks in CI.
+
+## Phase 2A delivery
+
+- versioned, deterministic 100-case synthetic residential benchmark;
+- explicit dataset provenance, license, exclusions, digest, and fixed
+  development/validation/test splits;
+- generator-independent metrics for generation success, hard constraints,
+  room-program adherence, functional adjacency, concept diversity, budget fit,
+  accessibility alignment, and overall user alignment;
+- machine-readable JSON and human-readable Markdown benchmark reports;
+- enforced baseline thresholds in a dedicated GitHub Actions job;
+- deterministic Phase 1 generator retained as the transparent CPU fallback.
 
 ## Working features
 
@@ -73,6 +85,7 @@ verify any design used for permitting, procurement, or construction.
 | Plan sheets | ReportLab vector PDF generation |
 | Production server | Gunicorn |
 | Tests | Pytest, Playwright, and axe-core |
+| Evaluation | Versioned JSONL benchmark and standard-library Python harness |
 | Packaging | Local virtual environment or Docker |
 
 "Java" is interpreted as **JavaScript** for this web project. The current
@@ -120,11 +133,23 @@ ruff check .
 npm ci
 npx playwright install chromium
 npm run test:e2e
+python -m archai.evaluation --enforce
 ```
 
 The browser suite starts its own local Flask server, exercises the complete
 generate/edit/save/load/export workflow, and checks initial and generated states
 for automated WCAG 2.2 A/AA violations.
+
+The generator benchmark evaluates the committed 100-case dataset and returns a
+non-zero exit code if a required quality threshold regresses. To regenerate the
+dataset and save fresh reports:
+
+```bash
+python scripts/generate_benchmark.py
+python -m archai.evaluation --enforce \
+  --json reports/phase2a-baseline.json \
+  --markdown reports/phase2a-baseline.md
+```
 
 ## Docker
 
@@ -174,6 +199,9 @@ service replacement or redeployment.
 - [Current project status](docs/STATUS.md)
 - [Accessibility audit](docs/ACCESSIBILITY_AUDIT.md)
 - [v0.1 development release notes](docs/RELEASE_NOTES_v0.1.0-dev.1.md)
+- [Dataset governance](docs/DATASET_GOVERNANCE.md)
+- [Evaluation protocol](docs/EVALUATION_PROTOCOL.md)
+- [v0.2 development release notes](docs/RELEASE_NOTES_v0.2.0-dev.1.md)
 - [Generator model card](docs/MODEL_CARD.md)
 - [Contribution guide](CONTRIBUTING.md)
 

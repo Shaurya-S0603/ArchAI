@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "archai-design-studio"
-version = "0.1.0.dev1"
-description = "Free and open-source architectural concept editor"
+version = "0.2.0.dev1"
+description = "Free and open-source evaluated architectural concept generator"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }

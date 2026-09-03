@@ -32,12 +32,28 @@ without geometry corruption. **Satisfied by the v0.1 development preview.**
 
 ## Phase 2 - Evaluated generative intelligence
 
-- document dataset licenses, provenance, exclusions, and splits;
-- establish heuristic and constraint-solver baselines;
-- define validity, adjacency, diversity, and user-alignment metrics;
+- [x] document dataset licenses, provenance, exclusions, and splits;
+- [x] freeze a deterministic 100-case synthetic benchmark with integrity checks;
+- [x] establish and enforce the transparent heuristic baseline;
+- [x] define validity, adjacency, diversity, budget, accessibility, and
+  user-alignment metrics;
+- [ ] implement and benchmark an open-source constraint-solver candidate;
+- [ ] add a license-reviewed real-plan preprocessing pipeline;
+- [ ] implement a graph-conditioned learned candidate generator;
+- [ ] add deterministic constraint repair and candidate diversity selection;
+- [ ] train and validate a learned ranker;
 - train a model only when it beats the baseline on a held-out evaluation set;
 - publish reproducible training scripts, checkpoints, model card, and failure cases;
 - keep the deterministic generator as a no-GPU fallback.
+
+Current development release: `v0.2.0-dev.1` completes Phase 2A. The transparent
+baseline generates all 100 cases successfully, passes every hard-constraint and
+room-program gate, records 65.54% adjacency satisfaction, and records 0.2386
+concept diversity.
+
+Next slice: Phase 2B adds an open-source constraint-solver candidate behind the
+same evaluation interface. It will not become the production default unless it
+passes every hard gate and improves predeclared validation metrics.
 
 Exit condition: the trained generator is measurably better than the transparent
 baseline and never bypasses hard constraints.

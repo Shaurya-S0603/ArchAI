@@ -25,6 +25,29 @@ jobs:
       - name: Test Python
         run: pytest --cov=archai --cov-fail-under=90
 
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Evaluate deterministic baseline
+        run: >-
+          python -m archai.evaluation
+          --enforce
+          --json benchmark-artifacts/baseline.json
+          --markdown benchmark-artifacts/baseline.md
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2a-benchmark
+          path: benchmark-artifacts/
+          retention-days: 30
+
   browser:
     runs-on: ubuntu-latest
     timeout-minutes: 20
