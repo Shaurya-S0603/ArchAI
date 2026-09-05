@@ -2,7 +2,7 @@ def test_health_endpoint(client):
     response = client.get("/api/v1/health")
     assert response.status_code == 200
     assert response.get_json()["status"] == "ok"
-    assert response.get_json()["version"] == "0.1.0-dev.1"
+    assert response.get_json()["version"] == "0.2.0-dev.3"
 
 
 def test_home_page_loads(client):
@@ -105,8 +105,9 @@ def test_project_can_be_saved_loaded_updated_and_deleted(client, brief):
     assert update_response.status_code == 200
     updated = update_response.get_json()["project"]
     assert updated["name"] == "Courtyard study revised"
-    assert updated["results"][0]["layout"]["rooms"][0]["width"] == (
-        created["results"][0]["layout"]["rooms"][0]["width"]
+    assert (
+        updated["results"][0]["layout"]["rooms"][0]["width"]
+        == (created["results"][0]["layout"]["rooms"][0]["width"])
     )
 
     assert client.delete(f"/api/v1/projects/{project_id}").status_code == 204

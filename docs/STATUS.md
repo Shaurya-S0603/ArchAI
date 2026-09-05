@@ -1,20 +1,21 @@
 # ArchAI - Project Status
 
-**Last updated:** September 1, 2026
+**Last updated:** September 5, 2026
 
-**Release branch:** `development` (draft review into `main`)
+**Release branch:** `development` (Phase 2 review into `main`)
 
-**Current milestone:** Phase 1 complete - v0.1 development preview
+**Current milestone:** Phase 2C data foundation - v0.2.0-dev.3
 
 ## Overall status
 
 ArchAI now supports local project persistence, constrained room resizing, semantic
-plan topology, deterministic furniture/accessibility zones, and printable plan
-output while retaining the Python, Flask, HTML, CSS, and JavaScript stack.
-The development preview is an editor release, not the complete trained AI,
+plan topology, deterministic furniture/accessibility zones, printable plan
+output, a versioned generator benchmark, and an optional CP-SAT research
+candidate while retaining the Python, Flask, HTML, CSS, and JavaScript stack.
+The development preview provides evaluated baseline and solver candidates, not the complete trained AI,
 BIM, code-certification, or VR product described in the research plan.
 
-**Project health:** green for Phase 1, research-stage for later phases.
+**Project health:** Phase 2C data interface implemented; learned generation remains research work.
 
 ## Implemented
 
@@ -77,19 +78,65 @@ BIM, code-certification, or VR product described in the research plan.
   generated interface states;
 - GitHub Actions jobs for Python quality and Chromium browser quality.
 
+## Phase 2A implemented
+
+- 100 deterministic synthetic briefs with fixed development, validation, and
+  test splits;
+- versioned JSONL contract plus manifest provenance, license, exclusions, seed,
+  and SHA-256 integrity;
+- independent metrics for generation success, hard constraints, program match,
+  functional adjacency, diversity, budget, accessibility, and user alignment;
+- JSON and Markdown report outputs plus non-zero regression-gate failures;
+- committed deterministic-baseline report and documented evaluation protocol;
+- dedicated GitHub Actions benchmark job using only free local resources.
+
+## Phase 2B implemented
+
+- optional OR-Tools CP-SAT generator, isolated from the default runtime;
+- deterministic room-side and position assignment with five seeded objectives;
+- existing geometry construction, semantic topology, zoning, and hard validation
+  reused after solver assignment;
+- candidate registry, candidate-aware benchmark CLI, comparison CLI, and
+  machine-readable promotion gates;
+- committed 100-case comparison showing 98.41% adjacency satisfaction, 0.1745
+  diversity, and no material budget or user-alignment regression;
+- documented Kaggle shortlist with external data kept quarantined pending exact
+  license, provenance, privacy, derivative, and checkpoint-distribution review;
+- dedicated GitHub Actions solver-comparison job using free CPU resources.
+
 ## Verification
 
-- 21 backend tests passing with 92% Python statement coverage;
+- Python unit/integration tests cover the
+  editor, evaluation pipeline, candidate registry, and comparison CLI;
 - Python lint clean;
 - all JavaScript modules pass syntax checks;
 - Flask development and Gunicorn production entrypoints respond successfully.
-- browser tests and accessibility checks run locally and on the development CI workflow.
+- the 100-case baseline passes every enforced regression gate;
+- the 100-case CP-SAT comparison passes every Phase 2B promotion gate;
+- browser tests and accessibility checks run locally and in CI.
 
 ## Next milestone
 
-Phase 2 begins with licensed-data provenance, evaluation metrics, and transparent
-baseline comparisons before any trained generator is shipped.
+Phase 2D implements the supervised graph-conditioned baseline using admitted
+synthetic data. External sources remain blocked pending review.
+See `docs/TRAINING_DATA_PIPELINE.md` for Phase 2C's contract and reproduction.
+Independent real-plan validation, constraint repair and release-scale
+stress/performance checks are still open.
 
-The trained generator begins only after a licensed data pipeline and held-out
-evaluation framework are established. See `docs/ROADMAP.md` and
-`docs/REQUIREMENTS_TRACEABILITY.md`.
+## Phase 2C implemented
+
+- separate room-graph schema v1; metre units, 4-32 rectangular rooms, explicit
+  taxonomy and minimum-area/overlap/boundary/connectivity validation;
+- bounded 2 mm edge snapping to normalize millimetre rounding;
+- source checksums and training/derivative/redistribution/privacy review records;
+- exact and coarse geometry duplicate buckets, with transitive building groups;
+- 120-brief pilot: 600 input plans, 8 duplicates removed, 592 accepted;
+  477 train / 55 validation / 60 test across all 13 room types;
+- exclusion of all 100 benchmark briefs and matching baseline geometry groups;
+- immutable artifacts, canonical revalidation, padded batches and visual QA;
+- deterministic solver work limit replacing the flaky 0.1-second cutoff;
+- dedicated CI pilot regression gate and dataset report artifacts.
+
+Local release verification: 68 tests passing; 94.06% statement coverage; Ruff,
+JavaScript syntax and whitespace checks clean. The 100-case solver comparison
+and frozen pilot report gates pass. CI verifies the published development tree.

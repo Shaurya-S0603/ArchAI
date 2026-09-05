@@ -25,6 +25,84 @@ jobs:
       - name: Test Python
         run: pytest --cov=archai --cov-fail-under=90
 
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Evaluate deterministic baseline
+        run: >-
+          python -m archai.evaluation
+          --enforce
+          --json benchmark-artifacts/baseline.json
+          --markdown benchmark-artifacts/baseline.md
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2a-benchmark
+          path: benchmark-artifacts/
+          retention-days: 30
+
+  solver-comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install solver dependencies
+        run: python -m pip install -r requirements-solver.txt
+      - name: Compare CP-SAT candidate to the frozen baseline
+        run: >-
+          python -m archai.evaluation.comparison
+          --enforce
+          --json solver-artifacts/comparison.json
+          --markdown solver-artifacts/comparison.md
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2b-solver-comparison
+          path: solver-artifacts/
+          retention-days: 30
+
+  dataset-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install application dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Build and verify the synthetic pilot
+        run: |
+          python -m archai.datasets pilot --output dataset-artifacts/pilot --count 120
+          python -m archai.datasets validate dataset-artifacts/pilot
+      - name: Verify frozen pilot geometry and split counts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          actual = json.loads(Path('dataset-artifacts/pilot/report.json').read_text())
+          expected = json.loads(Path('reports/phase2c-dataset.json').read_text())
+          assert actual == expected, 'Pilot regression: review preprocessing/version changes'
+          PY
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2c-synthetic-pilot
+          path: dataset-artifacts/
+          retention-days: 30
+
   browser:
     runs-on: ubuntu-latest
     timeout-minutes: 20

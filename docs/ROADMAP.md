@@ -32,12 +32,34 @@ without geometry corruption. **Satisfied by the v0.1 development preview.**
 
 ## Phase 2 - Evaluated generative intelligence
 
-- document dataset licenses, provenance, exclusions, and splits;
-- establish heuristic and constraint-solver baselines;
-- define validity, adjacency, diversity, and user-alignment metrics;
+- [x] document dataset licenses, provenance, exclusions, and splits;
+- [x] freeze a deterministic 100-case synthetic benchmark with integrity checks;
+- [x] establish and enforce the transparent heuristic baseline;
+- [x] define validity, adjacency, diversity, budget, accessibility, and
+  user-alignment metrics;
+- [x] implement and benchmark an open-source constraint-solver candidate;
+- [x] add a governed rectangular-plan preprocessing and training-data interface;
+- [ ] admit an external real-plan source and validate its source-specific adapter;
+- [ ] implement a graph-conditioned learned candidate generator;
+- [ ] add deterministic constraint repair and candidate diversity selection;
+- [ ] train and validate a learned ranker;
 - train a model only when it beats the baseline on a held-out evaluation set;
 - publish reproducible training scripts, checkpoints, model card, and failure cases;
 - keep the deterministic generator as a no-GPU fallback.
+
+Current development release: `v0.2.0-dev.3` completes Phase 2C's data foundation:
+canonical room graphs, recorded source reviews, reproducible grouped splits,
+immutable artifacts and masked training batches. Its fresh synthetic pilot
+retains 592 plans from 120 briefs. No external dataset is admitted.
+CP-SAT now uses a deterministic work budget and passes the existing comparison
+gates again. The transparent generator remains the production default.
+
+Next slice: Phase 2D builds a small supervised graph-conditioned baseline and
+training/evaluation loop over admitted synthetic data. Freeze the candidate
+before test evaluation; add deterministic repair before application integration.
+Data expansion, diverse solver teachers and independent licensed real-plan
+evaluation remain necessary before broader release claims. Kaggle sources with
+unresolved rights remain quarantined.
 
 Exit condition: the trained generator is measurably better than the transparent
 baseline and never bypasses hard constraints.

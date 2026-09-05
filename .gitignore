@@ -12,3 +12,11 @@ instance/
 node_modules/
 playwright-report/
 test-results/
+data/raw/
+data/processed/
+data/quarantine/
+dataset-artifacts/
+solver-artifacts/
+benchmark-artifacts/
+ml/checkpoints/
+ml/runs/

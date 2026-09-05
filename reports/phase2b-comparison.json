@@ -1,0 +1,74 @@
+{
+  "application_version": "0.2.0-dev.2",
+  "baseline": {
+    "candidate": "deterministic-baseline",
+    "summary": {
+      "budget_fit_rate": 0.608,
+      "case_count": 100,
+      "case_success_rate": 1.0,
+      "concept_count_pass_rate": 1.0,
+      "hard_constraint_pass_rate": 1.0,
+      "mean_accessibility_score": 1.0,
+      "mean_adjacency_satisfaction": 0.6554,
+      "mean_diversity_score": 0.2386,
+      "mean_user_alignment_score": 0.9608,
+      "program_match_rate": 1.0
+    }
+  },
+  "candidate": {
+    "candidate": "cp-sat-v1",
+    "summary": {
+      "budget_fit_rate": 0.606,
+      "case_count": 100,
+      "case_success_rate": 1.0,
+      "concept_count_pass_rate": 1.0,
+      "hard_constraint_pass_rate": 1.0,
+      "mean_accessibility_score": 1.0,
+      "mean_adjacency_satisfaction": 0.9841,
+      "mean_diversity_score": 0.1745,
+      "mean_user_alignment_score": 0.9606,
+      "program_match_rate": 1.0
+    }
+  },
+  "comparison_schema_version": 1,
+  "dataset_sha256": "7a545e2b28422980a8c60ffe888504300d2583a2de3aa36bdc29b7db9d7f9533",
+  "deltas": {
+    "budget_fit_rate": -0.002,
+    "case_success_rate": 0.0,
+    "concept_count_pass_rate": 0.0,
+    "hard_constraint_pass_rate": 0.0,
+    "mean_accessibility_score": 0.0,
+    "mean_adjacency_satisfaction": 0.3287,
+    "mean_diversity_score": -0.0641,
+    "mean_user_alignment_score": -0.0002,
+    "program_match_rate": 0.0
+  },
+  "gates": {
+    "adjacency_gain": {
+      "actual": 0.3287,
+      "minimum": 0.05,
+      "passed": true
+    },
+    "alignment_regression": {
+      "actual": -0.0002,
+      "minimum": -0.01,
+      "passed": true
+    },
+    "budget_regression": {
+      "actual": -0.002,
+      "minimum": -0.01,
+      "passed": true
+    },
+    "candidate_diversity": {
+      "actual": 0.1745,
+      "minimum": 0.08,
+      "passed": true
+    },
+    "candidate_regression_gates": {
+      "actual": true,
+      "passed": true,
+      "required": true
+    }
+  },
+  "passed": true
+}
