@@ -1,10 +1,10 @@
 # ArchAI - Project Status
 
-**Last updated:** September 3, 2026
+**Last updated:** September 5, 2026
 
-**Release branch:** `development` (Phase 2B review into `main`)
+**Release branch:** `development` (Phase 2 review into `main`)
 
-**Current milestone:** Phase 2B complete - v0.2 solver candidate
+**Current milestone:** Phase 2C data foundation - v0.2.0-dev.3
 
 ## Overall status
 
@@ -15,7 +15,7 @@ candidate while retaining the Python, Flask, HTML, CSS, and JavaScript stack.
 The development preview provides evaluated baseline and solver candidates, not the complete trained AI,
 BIM, code-certification, or VR product described in the research plan.
 
-**Project health:** green through Phase 2B, research-stage for learned generation.
+**Project health:** Phase 2C data interface implemented; learned generation remains research work.
 
 ## Implemented
 
@@ -106,7 +106,7 @@ BIM, code-certification, or VR product described in the research plan.
 
 ## Verification
 
-- 34 Python unit/integration tests pass with 93%+ statement coverage across the
+- Python unit/integration tests cover the
   editor, evaluation pipeline, candidate registry, and comparison CLI;
 - Python lint clean;
 - all JavaScript modules pass syntax checks;
@@ -117,7 +117,26 @@ BIM, code-certification, or VR product described in the research plan.
 
 ## Next milestone
 
-Phase 2C implements a license-reviewed real-plan preprocessing pipeline. External
-data and trained-model work remains blocked until a dataset passes the complete
-governance checklist. See `docs/ROADMAP.md`, `docs/DATASET_GOVERNANCE.md`,
-`docs/DATASET_CANDIDATES.md`, and `docs/EVALUATION_PROTOCOL.md`.
+Phase 2D implements the supervised graph-conditioned baseline using admitted
+synthetic data. External sources remain blocked pending review.
+See `docs/TRAINING_DATA_PIPELINE.md` for Phase 2C's contract and reproduction.
+Independent real-plan validation, constraint repair and release-scale
+stress/performance checks are still open.
+
+## Phase 2C implemented
+
+- separate room-graph schema v1; metre units, 4-32 rectangular rooms, explicit
+  taxonomy and minimum-area/overlap/boundary/connectivity validation;
+- bounded 2 mm edge snapping to normalize millimetre rounding;
+- source checksums and training/derivative/redistribution/privacy review records;
+- exact and coarse geometry duplicate buckets, with transitive building groups;
+- 120-brief pilot: 600 input plans, 8 duplicates removed, 592 accepted;
+  477 train / 55 validation / 60 test across all 13 room types;
+- exclusion of all 100 benchmark briefs and matching baseline geometry groups;
+- immutable artifacts, canonical revalidation, padded batches and visual QA;
+- deterministic solver work limit replacing the flaky 0.1-second cutoff;
+- dedicated CI pilot regression gate and dataset report artifacts.
+
+Local release verification: 68 tests passing; 94.06% statement coverage; Ruff,
+JavaScript syntax and whitespace checks clean. The 100-case solver comparison
+and frozen pilot report gates pass. CI verifies the published development tree.

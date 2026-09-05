@@ -168,7 +168,10 @@ def _solve_order(
 
     model.maximize(sum(adjacency_terms) * 1_000 - imbalance * 10 - sum(deviations))
     solver = cp_model.CpSolver()
-    solver.parameters.max_time_in_seconds = 0.1
+    # Wall-clock cutoffs can stop at different solutions (or before any solution)
+    # under CPU contention. A work budget preserves repeatability for this pinned
+    # OR-Tools version and single-worker search; it is not a wall-time SLA.
+    solver.parameters.max_deterministic_time = 0.1
     solver.parameters.num_search_workers = 1
     solver.parameters.random_seed = seed
     status = solver.solve(model)
@@ -190,6 +193,7 @@ def _solve_order(
         "status": solver.status_name(status),
         "objective": round(solver.objective_value, 3),
         "best_bound": round(solver.best_objective_bound, 3),
+        "deterministic_time_limit": 0.1,
     }
     return first_side, second_side, diagnostics
 

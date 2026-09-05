@@ -11,6 +11,7 @@ scope, exclusions, and redistribution conditions have been recorded and reviewed
 | Dataset | Role | Cases | Source | License | Redistribution |
 |---|---|---:|---|---|---|
 | `archai-synthetic-residential-v1` | Regression evaluation | 100 | Deterministic ArchAI code | MIT | Included in this repository |
+| `archai-synthetic-roomgraphs-v1` | Training-interface pilot | 592 plans / 120 briefs | Fresh ArchAI briefs/layouts | MIT | Code/report committed; full data generated locally or in CI |
 
 The Phase 2A dataset contains input briefs only. It does not contain copied floor
 plans, scraped images, user projects, addresses, or personal data. Its manifest
@@ -59,6 +60,12 @@ silently added to a dataset. Any future contribution workflow requires clear
 consent, de-identification, deletion handling, and a separate governance review.
 
 ## Change control
+
+Phase 2C enforces recorded source reviews and input checksums. The current source
+record is synthetic-only and does not approve any external dataset. The manifest
+validator checks the evidence record; it cannot authenticate legal permissions.
+External review and the candidate register remain authoritative admission steps.
+See `TRAINING_DATA_PIPELINE.md` for schemas, grouped split policy and limitations.
 
 Changing any case, split, schema, seed, or preprocessing rule requires a new
 dataset version and digest. Existing benchmark versions remain immutable so old

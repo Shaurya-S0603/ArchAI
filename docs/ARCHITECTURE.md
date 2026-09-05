@@ -125,3 +125,10 @@ ArchAI is an early-design assistant. A generated layout is not a permit drawing,
 structural calculation, fire-safety certificate, accessibility certification, or
 professional architectural service. Jurisdiction-specific rules must be versioned,
 cited, tested, and reviewed by qualified professionals before release.
+
+## Phase 2C offline data boundary
+
+`archai/datasets/` contains the strict canonical schema, reviewed-source ingestion,
+transitive duplicate/building groups, immutable dataset writer/loader, visual QA
+and split-selected batch interface. It has no project-store access and adds no
+Flask route. See [training-data contract](TRAINING_DATA_PIPELINE.md).

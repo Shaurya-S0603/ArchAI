@@ -5,8 +5,8 @@ residential design brief into five editable 2D layout directions. It provides
 transparent preliminary planning checks, an editable cost baseline, an interactive
 3D massing preview, and JSON/SVG/PNG/PDF/OBJ export.
 
-> **Current development preview:** `v0.2.0-dev.2`, completing the Phase 2B
-> constraint-solver candidate. It is not yet the trained AI, BIM,
+> **Current development preview:** `v0.2.0-dev.3`, adding the Phase 2C
+> training-data pipeline and solver repeatability fix. It is not yet the trained AI, BIM,
 > jurisdictional compliance, or VR system described by the long-term research plan.
 > See the [traceability matrix](docs/REQUIREMENTS_TRACEABILITY.md) for the exact
 > implementation boundary.
@@ -15,7 +15,7 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 
 | Item | Status |
 |---|---|
-| Release | `v0.2.0-dev.2 - Phase 2B solver candidate` |
+| Release | `v0.2.0-dev.3 - Phase 2C data foundation` |
 | Application | Executable Flask editor with benchmarked baseline and solver candidate |
 | Cost | No paid API or runtime dependency |
 | Deployment | Local, Docker, or free-tier Render |
@@ -65,6 +65,26 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
   program, accessibility, budget-regression, and alignment-regression gates passing;
 - Kaggle and original-source dataset candidates documented without admitting or
   downloading data whose license or provenance is unresolved.
+
+## Phase 2C delivery
+
+- strict rectangle-to-room-graph preprocessing with recorded source reviews;
+- geometry normalization, taxonomy validation and rejection reports;
+- building/duplicate-group train, validation and test splits;
+- immutable datasets, visual QA contact sheets and padded training batches;
+- a 592-plan synthetic pilot from 120 fresh briefs, excluding the frozen benchmark;
+- deterministic CP-SAT work limits replacing load-dependent wall-clock cutoffs;
+- a fifth CI job enforcing the pilot digest and split counts.
+
+```bash
+python -m archai.datasets pilot --output data/processed/pilot-v1
+python -m archai.datasets validate data/processed/pilot-v1
+```
+
+See the [training-data contract](docs/TRAINING_DATA_PIPELINE.md),
+[pilot report](reports/phase2c-dataset.md), and
+[solver re-evaluation](reports/phase2c-solver-comparison.md).
+External datasets still require admission; a learned generator is the next milestone.
 
 ## Working features
 
@@ -222,6 +242,7 @@ service replacement or redeployment.
 - [Evaluation protocol](docs/EVALUATION_PROTOCOL.md)
 - [v0.2.0-dev.1 release notes](docs/RELEASE_NOTES_v0.2.0-dev.1.md)
 - [v0.2.0-dev.2 release notes](docs/RELEASE_NOTES_v0.2.0-dev.2.md)
+- [v0.2.0-dev.3 release notes](docs/RELEASE_NOTES_v0.2.0-dev.3.md)
 - [Generator model card](docs/MODEL_CARD.md)
 - [Contribution guide](CONTRIBUTING.md)
 

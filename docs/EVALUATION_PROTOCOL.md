@@ -112,3 +112,15 @@ behavior, architectural preference, jurisdictional rules, structural safety, or
 construction readiness. Public fixtures can be overfit. Phase 2 must therefore
 add license-reviewed real-world evaluation data before making broader quality
 claims.
+
+## Phase 2C solver repeatability correction
+
+The 0.1-second wall-clock cutoff proved sensitive to CPU load in regression tests.
+The solver now uses a deterministic work budget of 0.1 with one worker and fixed
+seeds. The original reports remain frozen; the fresh full comparison is in
+`reports/phase2c-solver-comparison.md`. All existing gates pass. This change
+requires separate latency validation before production promotion.
+
+Phase 2C training-interface data uses fresh briefs and separate grouped splits.
+Its pilot excludes the 100 frozen briefs and their baseline geometry classes;
+see `TRAINING_DATA_PIPELINE.md` for exact exclusion limits.

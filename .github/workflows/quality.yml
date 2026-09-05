@@ -72,6 +72,37 @@ jobs:
           path: solver-artifacts/
           retention-days: 30
 
+  dataset-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install application dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Build and verify the synthetic pilot
+        run: |
+          python -m archai.datasets pilot --output dataset-artifacts/pilot --count 120
+          python -m archai.datasets validate dataset-artifacts/pilot
+      - name: Verify frozen pilot geometry and split counts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          actual = json.loads(Path('dataset-artifacts/pilot/report.json').read_text())
+          expected = json.loads(Path('reports/phase2c-dataset.json').read_text())
+          assert actual == expected, 'Pilot regression: review preprocessing/version changes'
+          PY
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2c-synthetic-pilot
+          path: dataset-artifacts/
+          retention-days: 30
+
   browser:
     runs-on: ubuntu-latest
     timeout-minutes: 20
