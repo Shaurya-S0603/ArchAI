@@ -18,6 +18,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+ml = [
+  "torch==2.10.0",
+]
 solver = [
   "ortools==9.15.6755",
 ]

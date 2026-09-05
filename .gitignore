@@ -1,4 +1,5 @@
 .venv/
+.venv-ml/
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -20,3 +21,4 @@ solver-artifacts/
 benchmark-artifacts/
 ml/checkpoints/
 ml/runs/
+ml-artifacts/
