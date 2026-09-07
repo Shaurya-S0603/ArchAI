@@ -40,26 +40,28 @@ without geometry corruption. **Satisfied by the v0.1 development preview.**
 - [x] implement and benchmark an open-source constraint-solver candidate;
 - [x] add a governed rectangular-plan preprocessing and training-data interface;
 - [ ] admit an external real-plan source and validate its source-specific adapter;
-- [ ] implement a graph-conditioned learned candidate generator;
+- [x] implement and train an offline graph-conditioned learned baseline;
+- [ ] qualify a repaired learned candidate for product integration;
 - [ ] add deterministic constraint repair and candidate diversity selection;
 - [ ] train and validate a learned ranker;
-- train a model only when it beats the baseline on a held-out evaluation set;
+- promote a trained model only when it beats the baseline on a held-out evaluation set;
 - publish reproducible training scripts, checkpoints, model card, and failure cases;
 - keep the deterministic generator as a no-GPU fallback.
 
-Current development release: `v0.2.0-dev.3` completes Phase 2C's data foundation:
-canonical room graphs, recorded source reviews, reproducible grouped splits,
-immutable artifacts and masked training batches. Its fresh synthetic pilot
-retains 592 plans from 120 briefs. No external dataset is admitted.
-CP-SAT now uses a deterministic work budget and passes the existing comparison
-gates again. The transparent generator remains the production default.
+Current development release: `v0.2.0-dev.4` adds Phase 2D's supervised graph model,
+reproducible CPU training, validation-selected checkpoints and held-out evaluation
+over the 592-plan admitted synthetic pilot. Coordinate MAE improves over a
+train-fitted type reference, but raw geometry has overlaps in every test plan.
+The transparent generator remains the production default. No external dataset
+is admitted. See [the experiment](../reports/phase2d-baseline.md).
 
-Next slice: Phase 2D builds a small supervised graph-conditioned baseline and
-training/evaluation loop over admitted synthetic data. Freeze the candidate
-before test evaluation; add deterministic repair before application integration.
-Data expansion, diverse solver teachers and independent licensed real-plan
-evaluation remain necessary before broader release claims. Kaggle sources with
-unresolved rights remain quarantined.
+Next slice: Phase 2E implements deterministic repair and rejection of infeasible
+neural proposals, then compares the complete pipeline to the existing generators.
+Prioritize program, area, dimension, overlap, boundary and circulation constraints;
+measure repair displacement and failure rates. Add diverse candidate generation
+and selection, CPU p95 and 1,000-brief stress evaluation. Diverse solver teachers
+and independent licensed real-plan evaluation remain necessary. Kaggle sources
+with unresolved rights remain quarantined.
 
 Exit condition: the trained generator is measurably better than the transparent
 baseline and never bypasses hard constraints.

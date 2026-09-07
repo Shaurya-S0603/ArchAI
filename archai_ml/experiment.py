@@ -1,17 +1,17 @@
 """Reproducible CPU training, immutable checkpoints and separate held-out evaluation."""
 
-from collections import Counter
-from dataclasses import asdict, dataclass
 import hashlib
 import io
 import json
 import math
-from pathlib import Path
 import platform
 import random
 import shutil
 import subprocess
 import tempfile
+from collections import Counter
+from dataclasses import asdict, dataclass
+from pathlib import Path
 
 import torch
 from torch import nn

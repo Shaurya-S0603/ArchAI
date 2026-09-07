@@ -1,11 +1,9 @@
 """Optional ML tests. The web-only environment intentionally has no torch import."""
 
-# ruff: noqa: E402 -- skip this optional module before importing its torch consumers.
-
-from copy import deepcopy
-from dataclasses import replace
 import hashlib
 import json
+from copy import deepcopy
+from dataclasses import replace
 from types import SimpleNamespace
 
 import pytest
@@ -16,8 +14,13 @@ from archai.datasets.pilot import build_pilot
 from archai_ml.__main__ import main
 from archai_ml.data import TrainingData, collate, encode_programs
 from archai_ml.experiment import (
-    TrainConfig, TypeMeanReference, deterministic_cpu, evaluate_run, load_run,
-    publish_directory, train,
+    TrainConfig,
+    TypeMeanReference,
+    deterministic_cpu,
+    evaluate_run,
+    load_run,
+    publish_directory,
+    train,
 )
 from archai_ml.model import RoomGraphModel
 from archai_ml.objective import evaluate, loss_terms

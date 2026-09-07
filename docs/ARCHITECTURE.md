@@ -132,3 +132,17 @@ cited, tested, and reviewed by qualified professionals before release.
 transitive duplicate/building groups, immutable dataset writer/loader, visual QA
 and split-selected batch interface. It has no project-store access and adds no
 Flask route. See [training-data contract](TRAINING_DATA_PIPELINE.md).
+
+## Phase 2D offline learned-model boundary
+
+`archai_ml/` is an optional package with CPU PyTorch dependencies in
+`requirements-ml.txt`. It consumes integrity-checked Phase 2C datasets and creates
+program features without observed target geometry. The graph regressor predicts
+raw boxes and shared-boundary labels. Training selects a checkpoint on validation;
+test scoring is a separate command bound to that dataset and checkpoint digest.
+
+The application does not import `archai_ml` and no neural candidate is registered
+for production. Neural boxes require deterministic repair, topology construction
+and complete release gates before API integration. Dedicated ML CI verifies the
+optional package independently of the existing backend coverage gate.
+See [training and evaluation](LEARNED_BASELINE.md).

@@ -130,9 +130,9 @@ Type IDs are one-based with zero padding. Room masks distinguish data from paddi
 use the outer product of the room mask for adjacency loss and exclude the diagonal.
 Box/adjacency tensors are targets and must not be fed as input features by mistake.
 These dependency-free nested lists can be converted to tensors by Phase 2D.
-No implicit all-split mode or ML framework import exists. The pilot validates the
-interface; it does not yet implement requested-adjacency conditioning, training,
-checkpointing or a model architecture.
+No implicit all-split mode or ML framework import exists in the Phase 2C package.
+Phase 2D now implements a separate optional tensor adapter, desired-graph
+conditioning, training and checkpointing; see [the model guide](LEARNED_BASELINE.md).
 
 ## Current evidence and remaining gates
 

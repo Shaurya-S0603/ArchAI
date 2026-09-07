@@ -5,9 +5,10 @@ residential design brief into five editable 2D layout directions. It provides
 transparent preliminary planning checks, an editable cost baseline, an interactive
 3D massing preview, and JSON/SVG/PNG/PDF/OBJ export.
 
-> **Current development preview:** `v0.2.0-dev.3`, adding the Phase 2C
-> training-data pipeline and solver repeatability fix. It is not yet the trained AI, BIM,
-> jurisdictional compliance, or VR system described by the long-term research plan.
+> **Current development preview:** `v0.2.0-dev.4`, adding Phase 2D's first
+> supervised graph model and reproducible CPU training. The model is an offline
+> research baseline; the application uses the deterministic generator. BIM,
+> jurisdictional compliance and VR remain future work.
 > See the [traceability matrix](docs/REQUIREMENTS_TRACEABILITY.md) for the exact
 > implementation boundary.
 
@@ -15,7 +16,7 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 
 | Item | Status |
 |---|---|
-| Release | `v0.2.0-dev.3 - Phase 2C data foundation` |
+| Release | `v0.2.0-dev.4 - Phase 2D supervised baseline` |
 | Application | Executable Flask editor with benchmarked baseline and solver candidate |
 | Cost | No paid API or runtime dependency |
 | Deployment | Local, Docker, or free-tier Render |
@@ -84,7 +85,22 @@ python -m archai.datasets validate data/processed/pilot-v1
 See the [training-data contract](docs/TRAINING_DATA_PIPELINE.md),
 [pilot report](reports/phase2c-dataset.md), and
 [solver re-evaluation](reports/phase2c-solver-comparison.md).
-External datasets still require admission; a learned generator is the next milestone.
+External datasets still require admission.
+
+## Phase 2D delivery
+
+- optional PyTorch CPU model with four graph layers, room-box and adjacency heads;
+- program-only inputs, padding masks and explicit training/validation/test selection;
+- seeded training, validation-selected checkpoints and integrity-checked loading;
+- held-out metrics, a train-only reference, raw predictions and QA contact sheets;
+- 120-epoch experiment on 477 training / 55 validation / 60 test synthetic plans;
+- 28 ML tests, 98.11% ML coverage and a sixth CI job for training/evaluation.
+
+Held-out coordinate MAE improves 49.98% over the mean-per-type reference, but all
+60 raw proposals still contain overlaps. Constraint repair is required before
+integration; this result does not show superiority to the production generator.
+See the [experiment report](reports/phase2d-baseline.md),
+[training guide](docs/LEARNED_BASELINE.md) and [model card](docs/MODEL_CARD.md).
 
 ## Working features
 
@@ -243,6 +259,8 @@ service replacement or redeployment.
 - [v0.2.0-dev.1 release notes](docs/RELEASE_NOTES_v0.2.0-dev.1.md)
 - [v0.2.0-dev.2 release notes](docs/RELEASE_NOTES_v0.2.0-dev.2.md)
 - [v0.2.0-dev.3 release notes](docs/RELEASE_NOTES_v0.2.0-dev.3.md)
+- [v0.2.0-dev.4 release notes](docs/RELEASE_NOTES_v0.2.0-dev.4.md)
+- [Learned baseline and reproduction](docs/LEARNED_BASELINE.md)
 - [Generator model card](docs/MODEL_CARD.md)
 - [Contribution guide](CONTRIBUTING.md)
 

@@ -1,10 +1,10 @@
 # ArchAI - Project Status
 
-**Last updated:** September 5, 2026
+**Last updated:** September 7, 2026
 
 **Release branch:** `development` (Phase 2 review into `main`)
 
-**Current milestone:** Phase 2C data foundation - v0.2.0-dev.3
+**Current milestone:** Phase 2D supervised baseline - v0.2.0-dev.4
 
 ## Overall status
 
@@ -15,7 +15,7 @@ candidate while retaining the Python, Flask, HTML, CSS, and JavaScript stack.
 The development preview provides evaluated baseline and solver candidates, not the complete trained AI,
 BIM, code-certification, or VR product described in the research plan.
 
-**Project health:** Phase 2C data interface implemented; learned generation remains research work.
+**Project health:** Offline supervised model trained and evaluated; overlap blocks product promotion.
 
 ## Implemented
 
@@ -117,11 +117,10 @@ BIM, code-certification, or VR product described in the research plan.
 
 ## Next milestone
 
-Phase 2D implements the supervised graph-conditioned baseline using admitted
-synthetic data. External sources remain blocked pending review.
-See `docs/TRAINING_DATA_PIPELINE.md` for Phase 2C's contract and reproduction.
-Independent real-plan validation, constraint repair and release-scale
-stress/performance checks are still open.
+Phase 2E adds deterministic repair, validates the repaired candidate against the
+frozen generators, and establishes diversity/stress/performance evidence.
+External sources remain blocked pending review. See `docs/LEARNED_BASELINE.md`
+and `reports/phase2d-baseline.md` for the implemented model and remaining gates.
 
 ## Phase 2C implemented
 
@@ -140,3 +139,20 @@ stress/performance checks are still open.
 Local release verification: 68 tests passing; 94.06% statement coverage; Ruff,
 JavaScript syntax and whitespace checks clean. The 100-case solver comparison
 and frozen pilot report gates pass. CI verifies the published development tree.
+
+## Phase 2D implemented
+
+- optional 60,261-parameter CPU graph model with four message-passing layers;
+- program-only features and desired graph conditioning, masked box/edge supervision;
+- train-only mean-type reference, seeded training and validation checkpoint selection;
+- immutable checksummed runs, CPU weights-only loading and dataset binding;
+- independent held-out evaluation, raw predictions and fixed-ID contact sheets;
+- 120 epochs on 477 training and 55 validation plans; epoch 96 selected;
+- 60 held-out plans: MAE 0.105837 versus 0.211610 reference, adjacency F1 76.35%;
+- all test plans overlap; no neural production-promotion claim;
+- 28 optional ML tests passing at 98.11% coverage, with a dedicated CI job.
+
+The original experiment ran in GitHub Actions on September 5, 2026. Local package
+installation was blocked by the workspace network approval; compiled-source and
+whitespace checks run locally, and runtime verification runs in CI. The full
+evidence and prioritized next actions are recorded in the Phase 2D report.

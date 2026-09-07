@@ -1,0 +1,151 @@
+{
+  "recorded_at": "2026-09-07",
+  "experiment_date": "2026-09-05",
+  "workflow_url": "https://github.com/Shaurya-S0603/ArchAI/actions/runs/33982821297",
+  "training": {
+    "best_epoch": 96,
+    "best_validation": {
+      "adjacency_f1": 0.7623655913978494,
+      "box_mae": 0.10165881359671045,
+      "box_mse": 0.025676902260367326,
+      "geometric_valid_rate": 0,
+      "inside_rate": 1,
+      "loss": 0.04190664020451632,
+      "mean_room_iou": 0.12188080014206293,
+      "minimum_area_rate": 0.9090909090909091,
+      "no_overlap_rate": 0,
+      "plan_count": 55,
+      "room_count": 635
+    },
+    "config": {
+      "batch_size": 32,
+      "epochs": 120,
+      "hidden_size": 64,
+      "layers": 4,
+      "learning_rate": 0.002,
+      "seed": 20260906
+    },
+    "dataset_digest": "e0efc4064fec21e0ca430ae356705052ba6002c70908fc3470606ddc944fd9aa",
+    "environment": {
+      "device": "cpu",
+      "git_revision": "d98423c405fc278cd2b56b6b59dbc5ccd3419f89",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "python": "3.12.14",
+      "python_source_digest": "eedac2f78d81dd9555ed9eb88d991b139695f34a9d2a0c0efdb9781cbc28606f",
+      "pytorch": "2.10.0+cpu",
+      "threads": 1
+    },
+    "initial_validation": {
+      "adjacency_f1": 0.42170900692840646,
+      "box_mae": 0.25831236351193404,
+      "box_mse": 0.09187258022038017,
+      "geometric_valid_rate": 0,
+      "inside_rate": 1,
+      "loss": 0.14553458473899147,
+      "mean_room_iou": 0.06354975062092458,
+      "minimum_area_rate": 1,
+      "no_overlap_rate": 0,
+      "plan_count": 55,
+      "room_count": 635
+    },
+    "model_version": "room-graph-regressor-v1",
+    "parameters": 60261,
+    "production_ready": false,
+    "reference_validation": {
+      "adjacency_f1": 0.7192878338278932,
+      "box_mae": 0.20004959707185038,
+      "box_mse": 0.05428138792984129,
+      "geometric_valid_rate": 0,
+      "inside_rate": 1,
+      "loss": 0.07957897213372317,
+      "mean_room_iou": 0.0728175906684455,
+      "minimum_area_rate": 1,
+      "no_overlap_rate": 0,
+      "plan_count": 55,
+      "room_count": 635
+    },
+    "research_gate_passed": true,
+    "source_id": "archai-synthetic-roomgraphs-v1",
+    "source_review": {
+      "checkpoint_distribution": true,
+      "date": "2026-09-05",
+      "derivatives": true,
+      "evidence": "Repository LICENSE; generated solely from ArchAI code and fresh briefs; no external plans or saved user projects.",
+      "privacy": true,
+      "redistribution": true,
+      "reviewer": "ArchAI synthetic pipeline policy",
+      "training": true
+    },
+    "split_counts": {
+      "test": 60,
+      "train": 477,
+      "validation": 55
+    },
+    "state_digest": "344a53149ef17be0a3b21e5284c4df742c27c59852629cbfbbc788d7a543f3c1",
+    "test_used_for_selection": false,
+    "training_groups": 97,
+    "training_plans": 477,
+    "validation_groups": 11,
+    "validation_plans": 55
+  },
+  "held_out": {
+    "best_epoch": 96,
+    "dataset_digest": "e0efc4064fec21e0ca430ae356705052ba6002c70908fc3470606ddc944fd9aa",
+    "environment": {
+      "device": "cpu",
+      "git_revision": "d98423c405fc278cd2b56b6b59dbc5ccd3419f89",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "python": "3.12.14",
+      "python_source_digest": "eedac2f78d81dd9555ed9eb88d991b139695f34a9d2a0c0efdb9781cbc28606f",
+      "pytorch": "2.10.0+cpu",
+      "threads": 1
+    },
+    "metrics": {
+      "adjacency_f1": 0.7634703196347032,
+      "box_mae": 0.10583724456579507,
+      "box_mse": 0.027605605611995775,
+      "geometric_valid_rate": 0,
+      "inside_rate": 1,
+      "loss": 0.043471303582191465,
+      "mean_room_iou": 0.09622198610889668,
+      "minimum_area_rate": 1,
+      "no_overlap_rate": 0,
+      "plan_count": 60,
+      "room_count": 735
+    },
+    "model_version": "room-graph-regressor-v1",
+    "production_ready": false,
+    "reference": {
+      "adjacency_f1": 0.7236641221374046,
+      "box_mae": 0.21161010119379783,
+      "box_mse": 0.059378918498551765,
+      "geometric_valid_rate": 0,
+      "inside_rate": 1,
+      "loss": 0.08412032127380371,
+      "mean_room_iou": 0.06276190362009061,
+      "minimum_area_rate": 1,
+      "no_overlap_rate": 0,
+      "plan_count": 60,
+      "room_count": 735
+    },
+    "split": "test",
+    "state_digest": "344a53149ef17be0a3b21e5284c4df742c27c59852629cbfbbc788d7a543f3c1",
+    "unmet_release_gates": [
+      "constraint repair and connected door/circulation topology",
+      "four distinct valid concepts out of five",
+      "1,000-brief stress test and CPU p95 below five seconds",
+      "independent licensed real-plan evaluation",
+      "blinded human preference above 60 percent"
+    ]
+  },
+  "verification": {
+    "ml_tests": 28,
+    "ml_statement_coverage": 98.11
+  },
+  "artifact": {
+    "id": 9974285117,
+    "name": "phase2d-learned-baseline",
+    "sha256": "5623e0f2847a3b8ba5ecc342a7d13ad270c117b86eec78feffa87d4dba5875cc",
+    "expires_at": "2026-10-05T18:05:43Z"
+  }
+}

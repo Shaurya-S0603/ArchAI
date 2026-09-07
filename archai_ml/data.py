@@ -1,8 +1,8 @@
 """Program-only graph inputs and explicitly selected, integrity-checked targets."""
 
-from collections import Counter
 import json
 import math
+from collections import Counter
 from pathlib import Path
 from random import Random
 
