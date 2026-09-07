@@ -24,7 +24,13 @@ from archai_ml.experiment import (
     publish_directory,
 )
 from archai_ml.preview import prediction_sheet
-from archai_ml.repair import REPAIR_VERSION, RepairConfig, program_specs, repair_candidates
+from archai_ml.repair import (
+    DEFAULT_REPAIR_CONFIG,
+    REPAIR_VERSION,
+    RepairConfig,
+    program_specs,
+    repair_candidates,
+)
 
 
 def normalized_boxes(layout):
@@ -48,7 +54,7 @@ def raw_validity(brief, boxes):
 
 
 class RepairedCandidate:
-    def __init__(self, run: Path, config=RepairConfig(), reference=False):
+    def __init__(self, run: Path, config=DEFAULT_REPAIR_CONFIG, reference=False):
         config.validate()
         started = time.perf_counter()
         self.model, self.training = load_run(run)
@@ -168,6 +174,17 @@ def run_comparison(run, output, config, benchmark=Path("data/benchmarks/v1"), li
         subtitle="First six benchmark briefs, first selected repair. Restricted corridor/slot projection.",
     )
     stress_result = stress(candidate, stress_count) if stress_count else None
+    stress_gates = None
+    if stress_result:
+        files["stress-cases.json"] = json_bytes(candidate.history)
+        stress_gates = {
+            "no_failed_briefs": stress_result["failed_cases"] == 0,
+            "strict_geometry_and_topology": stress_result["strict_validated_rate"] == 1,
+            "five_concept_contract": stress_result["five_distinct_rate"] == 1,
+        }
+        component_gates["stress_valid_repair"] = (
+            stress_gates["no_failed_briefs"] and stress_gates["strict_geometry_and_topology"]
+        )
     report = {"repair_version": REPAIR_VERSION, "config": asdict(config),
               "model_state_digest": candidate.training["state_digest"],
               "training_dataset_digest": candidate.training["dataset_digest"],
@@ -179,11 +196,12 @@ def run_comparison(run, output, config, benchmark=Path("data/benchmarks/v1"), li
               "neural_vs_reference_adjacency_delta": round(summary["mean_adjacency_satisfaction"]
                   - prior["summary"]["mean_adjacency_satisfaction"], 4),
               "component_gates": component_gates, "component_passed": all(component_gates.values()),
-              "generator_gates": generator_gates, "stress": stress_result, "production_ready": False,
+              "generator_gates": generator_gates, "stress": stress_result,
+              "stress_gates": stress_gates, "production_ready": False,
               "remaining_release_requirements": ["independent licensed real-plan validation",
                                                  "blinded human preference above 60 percent",
                                                  "production API integration and fallback validation"]}
-    if not stress_result or stress_result["cases"] < 1000 or stress_result["failed_cases"]:
+    if not stress_result or stress_result["cases"] < 1000 or not all(stress_gates.values()):
         report["remaining_release_requirements"].append("1000-brief complete-generator stress gate")
     files["report.json"] = json_bytes(report)
     publish_directory(Path(output), files, {"repair_version": REPAIR_VERSION,

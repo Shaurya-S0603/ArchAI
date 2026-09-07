@@ -226,6 +226,10 @@ def test_complete_comparison_cli_artifacts_and_frozen_binding(frozen_run, tmp_pa
                             limit=1, frozen=frozen_run / "frozen.json", stress_count=1)
     assert report["component_passed"]
     assert report["stress"]["cases"] == 1
+    assert report["component_gates"]["stress_valid_repair"]
+    assert report["stress_gates"]["strict_geometry_and_topology"]
+    assert len(json.loads((tmp_path / "comparison/stress-cases.json").read_text())) == 1
+    assert "1000-brief complete-generator stress gate" in report["remaining_release_requirements"]
     assert report["frozen_solver"] is None  # A partial sample cannot compare to all 100 solver cases.
     assert (tmp_path / "comparison/preview.png").read_bytes().startswith(b"\x89PNG")
     config_path = tmp_path / "config.json"

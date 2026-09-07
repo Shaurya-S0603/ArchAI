@@ -55,6 +55,9 @@ class RepairConfig:
             raise ValueError("Invalid concept separation.")
 
 
+DEFAULT_REPAIR_CONFIG = RepairConfig()
+
+
 def program_specs(brief):
     return sorted(_room_specs(brief), key=lambda s: (s.type, s.label))
 
@@ -149,7 +152,7 @@ def _slots(template, bounds):
     return slots
 
 
-def project_layout(brief, proposal, template, variant=0, config=RepairConfig()):
+def project_layout(brief, proposal, template, variant=0, config=DEFAULT_REPAIR_CONFIG):
     config.validate()
     specs = validate_proposal(brief, proposal)
     bounds = building_bounds_for_brief(brief)
@@ -235,6 +238,17 @@ def project_layout(brief, proposal, template, variant=0, config=RepairConfig()):
     return layout
 
 
+def _minimum_matching_cost(first, second):
+    @lru_cache(None)
+    def match(i, used):
+        if i == len(first):
+            return 0.0
+        return min(math.dist(first[i], second[j]) + match(i + 1, used | (1 << j))
+                   for j in range(len(second)) if not used & (1 << j))
+
+    return match(0, 0)
+
+
 def concept_distance(first, second):
     """Mean center distance / footprint diagonal; match repeated room types optimally."""
     bounds = first.building_bounds
@@ -254,19 +268,12 @@ def concept_distance(first, second):
             a = group["a"]
             b = [(w - x if flip_x else x, h - y if flip_y else y) for x, y in group["b"]]
 
-            @lru_cache(None)
-            def match(i, used):
-                if i == len(a):
-                    return 0.0
-                return min(math.dist(a[i], b[j]) + match(i + 1, used | (1 << j))
-                           for j in range(len(b)) if not used & (1 << j))
-
-            total += match(0, 0)
+            total += _minimum_matching_cost(a, b)
         totals.append(total / (len(first.rooms) * math.hypot(w, h)))
     return min(totals)
 
 
-def repair_candidates(brief, proposal, config=RepairConfig()):
+def repair_candidates(brief, proposal, config=DEFAULT_REPAIR_CONFIG):
     from archai.evaluation.benchmark import adjacency_satisfaction_score
 
     config.validate()
