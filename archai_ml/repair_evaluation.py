@@ -112,8 +112,8 @@ def summarize_history(candidate):
 
 
 def stress(candidate, count):
-    if type(count) is not int or not 1 <= count <= 10000:
-        raise ValueError("Stress count must be between 1 and 10000.")
+    if type(count) is not int or not 1 <= count <= 1000:
+        raise ValueError("Stress count must be between 1 and 1000.")
     candidate.history.clear()
     cases = build_synthetic_cases(count=count, seed=20260907)
     for case in cases:

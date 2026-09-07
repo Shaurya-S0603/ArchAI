@@ -142,11 +142,30 @@ def _slots(template, bounds):
     """Snap common endpoints once onto millimetres, preserving shared boundaries."""
     canonical = _canonical(template)
     w, h = bounds["width"], bounds["depth"]
+    mappings = []
+    for axis, limit in ((0, w), (1, h)):
+        values = sorted({0.0, 1.0} | {v for room in canonical["rooms"] for v in
+                        (room["box"][axis], room["box"][axis] + room["box"][axis + 2])})
+        clusters = []
+        # Canonical starts and sizes are independently rounded to eight decimals.
+        # Merge only that representation error before choosing a shared mm edge.
+        for value in values:
+            if not clusters or value - clusters[-1][0] > 2e-8 + 1e-12:
+                clusters.append([value])
+            else:
+                clusters[-1].append(value)
+        mapping = {}
+        for cluster in clusters:
+            anchor = (0.0 if 0.0 in cluster else 1.0 if 1.0 in cluster
+                      else sum(cluster) / len(cluster))
+            edge = round(anchor * limit * 1000)
+            mapping.update({value: edge for value in cluster})
+        mappings.append(mapping)
     slots = []
     for room in canonical["rooms"]:
         x, y, rw, rh = room["box"]
-        left, top = round(x * w * 1000), round(y * h * 1000)
-        right, bottom = round((x + rw) * w * 1000), round((y + rh) * h * 1000)
+        left, top = mappings[0][x], mappings[1][y]
+        right, bottom = mappings[0][x + rw], mappings[1][y + rh]
         slots.append({"type": room["type"],
                       "box": [left / 1000, top / 1000, (right - left) / 1000, (bottom - top) / 1000]})
     return slots

@@ -196,6 +196,22 @@ def test_matching_and_reflection_do_not_inflate_diversity(example):
         concept_distance(good, altered)
 
 
+def test_shared_edges_survive_half_millimetre_quantization():
+    # All five templates for this stress brief previously acquired gaps/overlaps
+    # when a shared edge landed on opposite sides of a half-millimetre tie.
+    brief = build_synthetic_cases(count=10, seed=20260907)[9].brief
+    for template in generate_layouts(brief):
+        bounds = template.building_bounds
+        boxes = [s["box"] for s in repair._slots(template, bounds)]
+        assert sum(w * h for x, y, w, h in boxes) == pytest.approx(
+            bounds["width"] * bounds["depth"], abs=1e-8)
+        for i, (x, y, w, h) in enumerate(boxes):
+            for a, b, c, d in boxes[:i]:
+                area = max(0, min(x + w, a + c) - max(x, a)) * max(
+                    0, min(y + h, b + d) - max(y, b))
+                assert area <= 1e-8
+
+
 def test_selection_returns_only_valid_distinct_concepts_and_reports_shortfall(example):
     brief, _, proposal = example
     selected, diagnostics = repair_candidates(brief, proposal, RepairConfig(passes=1))
@@ -264,3 +280,5 @@ def test_failures_are_recorded_and_stress_rejects_bad_counts(frozen_run, monkeyp
     assert candidate.history[0]["error"] == "infeasible fixture"
     with pytest.raises(ValueError, match="Stress count"):
         stress(candidate, 0)
+    with pytest.raises(ValueError, match="Stress count"):
+        stress(candidate, 1001)
