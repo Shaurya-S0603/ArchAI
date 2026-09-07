@@ -1,0 +1,6 @@
+{
+  "deterministic_limit": 0.03,
+  "adjacency_reward": 500,
+  "passes": 2,
+  "minimum_separation": 0.025
+}

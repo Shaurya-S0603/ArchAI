@@ -7,14 +7,17 @@ from PIL import Image, ImageDraw
 from archai.services.layout_generator import ROOM_LIBRARY
 
 
-def prediction_sheet(rows, predictions):
+def prediction_sheet(
+    rows, predictions,
+    title="ArchAI Phase 2D | Target (left) / raw neural prediction (right)",
+    subtitle="First six held-out IDs. Overlap is shown, not repaired. Concept research only.",
+):
     by_id = {r["id"]: r for r in rows}
     selected = sorted(predictions, key=lambda p: p["id"])[:6]
     image = Image.new("RGB", (960, 80 + 240 * len(selected)), "#f7f7f2")
     draw = ImageDraw.Draw(image, "RGBA")
-    draw.text((24, 18), "ArchAI Phase 2D | Target (left) / raw neural prediction (right)", fill="black")
-    draw.text((24, 42), "First six held-out IDs. Overlap is shown, not repaired. Concept research only.",
-              fill="black")
+    draw.text((24, 18), title, fill="black")
+    draw.text((24, 42), subtitle, fill="black")
     for k, prediction in enumerate(selected):
         row = by_id[prediction["id"]]
         w, h = row["footprint_m"]
