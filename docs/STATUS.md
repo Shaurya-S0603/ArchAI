@@ -1,158 +1,72 @@
-# ArchAI - Project Status
+# ArchAI project status
 
-**Last updated:** September 7, 2026
+**Updated:** September 7, 2026
+**Development version:** `v0.2.0-dev.5` — Phase 2E constrained neural repair
+**Review:** `development` into `main`, draft PR #2
 
-**Release branch:** `development` (Phase 2 review into `main`)
+The repair component is implemented and evaluated. The complete learned generator
+is not ready for product integration: distinct five-concept output and measurable
+neural benefit remain open. The Flask application uses the deterministic generator.
 
-**Current milestone:** Phase 2D supervised baseline - v0.2.0-dev.4
+## Delivered
 
-## Overall status
+| Area | Current capability | Evidence |
+|---|---|---|
+| Editor | SQLite persistence, room editing, topology, zoning, 2D/3D and exports | [Changelog](../CHANGELOG.md) |
+| Evaluation | Frozen 100-brief benchmark and optional CP-SAT generator | [Protocol](EVALUATION_PROTOCOL.md) |
+| Data | Governed canonical room graphs; 592 admitted synthetic plans | [Pipeline](TRAINING_DATA_PIPELINE.md) |
+| Learning | Frozen 60,261-parameter CPU model, validation-selected epoch 96 | [Experiment](../reports/phase2d-baseline.md) |
+| Repair | Constrained slot assignment, independent strict validation and distinct selection | [Contract](CONSTRAINT_REPAIR.md) |
 
-ArchAI now supports local project persistence, constrained room resizing, semantic
-plan topology, deterministic furniture/accessibility zones, printable plan
-output, a versioned generator benchmark, and an optional CP-SAT research
-candidate while retaining the Python, Flask, HTML, CSS, and JavaScript stack.
-The development preview provides evaluated baseline and solver candidates, not the complete trained AI,
-BIM, code-certification, or VR product described in the research plan.
+## Phase 2E evidence and release gates
 
-**Project health:** Offline supervised model trained and evaluated; overlap blocks product promotion.
+All 100 benchmark briefs return valid repair: 443 layouts, all with exact room
+programs, valid dimensions/areas, no overlaps, complete footprint coverage,
+connected doors, entry and habitable-room windows. The raw model overlaps on
+every benchmark brief. Repair does not certify structural or regulatory compliance.
 
-## Implemented
+| Gate | Result | Status |
+|---|---|---|
+| At least one strict repair per benchmark brief | 100/100 | Pass |
+| Adjacency gain over the heuristic | 65.54% to 99.48%, +33.94 percentage points | Pass |
+| Four distinct concepts per brief | 79/100 | Open |
+| Five-concept output contract | 72/100 | Open |
+| Observed warm CPU p95 under 5 seconds | 0.970 s in the final feature run | Pass on measured runner |
+| Neural improvement over matched repair reference | Adjacency 99.48% vs 99.62%; five-concept rate 72% vs 68% | Mixed; superiority unproven |
+| Fresh-brief repair stress | 1,000/1,000 valid; 4,447 layouts; zero crashes | Pass for repair |
+| Full five-concept stress contract | Five concepts for 71.1% of stress briefs | Open |
+| Independent licensed real-plan validation | No external source admitted | Open |
+| Blinded preference above 60% and product fallback integration | Not evaluated/integrated | Open |
 
-- Flask application factory, production WSGI entrypoint, and versioned JSON API;
-- validated residential design survey;
-- five deterministic corridor/perimeter layout concepts;
-- room adjacency graph and ranking metrics;
-- generic preliminary rule checks with clear professional-review boundaries;
-- parametric local cost baseline and budget comparison;
-- editable SVG plan with pointer/keyboard movement and undo/redo;
-- interactive browser 3D massing preview;
-- JSON, SVG, PNG, vector PDF, and OBJ exports plus browser printing;
-- Windows and Unix launchers, Dockerfile, and free Render blueprint;
-- automated Python tests and lint configuration;
-- architecture, traceability, roadmap, and corrected model documentation.
+The [repair report](../reports/phase2e-repair.md) contains run links, exact timings,
+stress results, immutable model/data identities and the remaining generator gates.
+The [roadmap](ROADMAP.md) records the next development slice.
 
-## Phase 1A implemented
+## Verification and repository hygiene
 
-- SQLite project store with a forward-only migration ledger;
-- save, list, load, update, and delete project API routes;
-- server-side schema validation plus compliance and cost recomputation on save;
-- browser project library with accessible status feedback;
-- four corner resize handles with grid snapping, footprint bounds, minimum room
-  dimensions, and room-type minimum areas;
-- undo/redo support for move and resize operations.
+CI separately verifies backend tests/coverage, baseline regression, solver
+comparison, pilot integrity, ML/repair tests and frozen training, repaired-model
+comparison, and Chromium/accessibility. The repaired research module has 53 tests;
+the web/backend suite has 68, with 98.62% and 94.06% coverage respectively.
+All seven jobs pass on the corrected Phase 2E feature commit. Runtime verification is performed in GitHub Actions;
+local checks cover compiled source, JavaScript syntax, links and whitespace.
 
-## Phase 1B implemented
+Historical release notes are consolidated in one changelog. Repeated README and
+status material and obsolete feature-branch workflow entries are removed. Frozen
+reports, benchmark inputs, source provenance and small QA fixtures are retained
+because they support reproducibility. Generated datasets, checkpoints, databases,
+build output and runtime reports belong outside tracked source. The production
+Docker context is limited to web runtime files.
 
-- one continuous 1.8 m corridor spine in every generated concept;
-- perimeter room strips that preserve minimum dimensions and corridor access;
-- deterministic deduplicated exterior, interior, and exposed-boundary walls;
-- a connected spanning set of interior doors plus one exterior entry door;
-- exterior windows for every generated habitable room;
-- automatic wall/opening rebuilding after geometry edits;
-- topology-aware compliance and accessibility door-width feedback;
-- semantic topology in JSON persistence and SVG exports;
-- automatic schema v1 to schema v2 project upgrades on load.
+## Next actions and decisions
 
-## Phase 1C implemented
+1. Phase 2F: improve distinct proposals/templates under the same strict constraints.
+2. Use fresh development/validation briefs for iteration and a new locked release
+   holdout; do not tune against the already reported benchmark/test results.
+3. Demonstrate a neural contribution against the matched reference and strong
+   CP-SAT baseline before production integration.
+4. Complete real-plan source admission and blinded human evaluation. No decision
+   is needed to continue synthetic research. Source licensing requires review
+   before external data or restricted checkpoints are introduced.
 
-- deterministic furniture-use zones for supported room types;
-- door-approach clearances derived from semantic openings;
-- 1.5 m turning-circle overlays for accessible bathrooms and circulation space;
-- automatic zoning rebuilding after generation, editing, analysis, save, and load;
-- schema v3 project snapshots with automatic upgrades from schemas v1 and v2;
-- browser-native PNG downloads and print-specific page styling;
-- vector A3 landscape PDF plan sheets with title block, scale, north arrow,
-  planning checks, and a professional-review disclaimer;
-- free, local PDF generation with the BSD-licensed ReportLab toolkit.
-
-## Phase 1D quality gate implemented
-
-- exact numeric room editing as a no-drag alternative;
-- keyboard-operated concept tabs, room selection, movement, focus treatment, and
-  skip navigation;
-- minimum interactive target sizing and focus-obscuring safeguards;
-- serial Playwright coverage for generation, editing, undo, 3D switching,
-  persistence, reload, and PDF export;
-- automated axe checks for WCAG 2.0, 2.1, and 2.2 A/AA rules in initial and
-  generated interface states;
-- GitHub Actions jobs for Python quality and Chromium browser quality.
-
-## Phase 2A implemented
-
-- 100 deterministic synthetic briefs with fixed development, validation, and
-  test splits;
-- versioned JSONL contract plus manifest provenance, license, exclusions, seed,
-  and SHA-256 integrity;
-- independent metrics for generation success, hard constraints, program match,
-  functional adjacency, diversity, budget, accessibility, and user alignment;
-- JSON and Markdown report outputs plus non-zero regression-gate failures;
-- committed deterministic-baseline report and documented evaluation protocol;
-- dedicated GitHub Actions benchmark job using only free local resources.
-
-## Phase 2B implemented
-
-- optional OR-Tools CP-SAT generator, isolated from the default runtime;
-- deterministic room-side and position assignment with five seeded objectives;
-- existing geometry construction, semantic topology, zoning, and hard validation
-  reused after solver assignment;
-- candidate registry, candidate-aware benchmark CLI, comparison CLI, and
-  machine-readable promotion gates;
-- committed 100-case comparison showing 98.41% adjacency satisfaction, 0.1745
-  diversity, and no material budget or user-alignment regression;
-- documented Kaggle shortlist with external data kept quarantined pending exact
-  license, provenance, privacy, derivative, and checkpoint-distribution review;
-- dedicated GitHub Actions solver-comparison job using free CPU resources.
-
-## Verification
-
-- Python unit/integration tests cover the
-  editor, evaluation pipeline, candidate registry, and comparison CLI;
-- Python lint clean;
-- all JavaScript modules pass syntax checks;
-- Flask development and Gunicorn production entrypoints respond successfully.
-- the 100-case baseline passes every enforced regression gate;
-- the 100-case CP-SAT comparison passes every Phase 2B promotion gate;
-- browser tests and accessibility checks run locally and in CI.
-
-## Next milestone
-
-Phase 2E adds deterministic repair, validates the repaired candidate against the
-frozen generators, and establishes diversity/stress/performance evidence.
-External sources remain blocked pending review. See `docs/LEARNED_BASELINE.md`
-and `reports/phase2d-baseline.md` for the implemented model and remaining gates.
-
-## Phase 2C implemented
-
-- separate room-graph schema v1; metre units, 4-32 rectangular rooms, explicit
-  taxonomy and minimum-area/overlap/boundary/connectivity validation;
-- bounded 2 mm edge snapping to normalize millimetre rounding;
-- source checksums and training/derivative/redistribution/privacy review records;
-- exact and coarse geometry duplicate buckets, with transitive building groups;
-- 120-brief pilot: 600 input plans, 8 duplicates removed, 592 accepted;
-  477 train / 55 validation / 60 test across all 13 room types;
-- exclusion of all 100 benchmark briefs and matching baseline geometry groups;
-- immutable artifacts, canonical revalidation, padded batches and visual QA;
-- deterministic solver work limit replacing the flaky 0.1-second cutoff;
-- dedicated CI pilot regression gate and dataset report artifacts.
-
-Local release verification: 68 tests passing; 94.06% statement coverage; Ruff,
-JavaScript syntax and whitespace checks clean. The 100-case solver comparison
-and frozen pilot report gates pass. CI verifies the published development tree.
-
-## Phase 2D implemented
-
-- optional 60,261-parameter CPU graph model with four message-passing layers;
-- program-only features and desired graph conditioning, masked box/edge supervision;
-- train-only mean-type reference, seeded training and validation checkpoint selection;
-- immutable checksummed runs, CPU weights-only loading and dataset binding;
-- independent held-out evaluation, raw predictions and fixed-ID contact sheets;
-- 120 epochs on 477 training and 55 validation plans; epoch 96 selected;
-- 60 held-out plans: MAE 0.105837 versus 0.211610 reference, adjacency F1 76.35%;
-- all test plans overlap; no neural production-promotion claim;
-- 28 optional ML tests passing at 98.11% coverage, with a dedicated CI job.
-
-The original experiment ran in GitHub Actions on September 5, 2026. Local package
-installation was blocked by the workspace network approval; compiled-source and
-whitespace checks run locally, and runtime verification runs in CI. The full
-evidence and prioritized next actions are recorded in the Phase 2D report.
+Promotion of draft PR #2 to `main` remains a separate user decision.

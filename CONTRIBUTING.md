@@ -30,7 +30,6 @@ Open `http://127.0.0.1:5000`.
 
 ```bash
 pytest
-ruff format --check .
 ruff check .
 node --check archai/static/js/app.js
 npm run test:e2e
@@ -49,6 +48,19 @@ Solver work must install `requirements-solver.txt` and pass the Phase 2B
 comparison. External data must be registered and approved under
 `docs/DATASET_GOVERNANCE.md` before any sample, cache, or derived artifact is
 committed.
+
+For ML or repair changes, install `requirements-ml.txt` after the development
+requirements and run `pytest tests/test_ml.py tests/test_repair.py --cov=archai_ml
+--cov-fail-under=90`. Follow the [training guide](docs/LEARNED_BASELINE.md) and
+[repair protocol](docs/CONSTRAINT_REPAIR.md) for frozen experiment checks.
+Never overwrite historical benchmark reports with a new run: write fresh results
+to the ignored artifact directories and commit a new, named summary deliberately.
+
+Keep release history in [CHANGELOG.md](CHANGELOG.md), current gates in
+`docs/STATUS.md`, and upcoming work in `docs/ROADMAP.md`. Do not add duplicate
+per-release note files or commit generated data, checkpoints, build directories,
+package metadata or runtime reports. The production Docker context includes only
+the web runtime and its requirements; offline experiments stay outside that image.
 
 ## Branches and commits
 

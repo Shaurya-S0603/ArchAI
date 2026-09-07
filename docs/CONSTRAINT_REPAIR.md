@@ -19,7 +19,10 @@ depths must be positive. Unknown fields, wrong room programs, NaNs and invalid
 sizes are rejected. There are no observed boxes or edges in neural inputs.
 
 Five layouts from the unchanged deterministic generator define feasible slot
-templates. Shared endpoints are normalized and put on a common millimetre grid.
+templates. Shared endpoints are normalized and put on a common millimetre grid. Canonical
+start/size rounding error is clustered within 2e-8 normalized units before each
+shared edge is quantized once; independently rounding each room can introduce
+one-millimetre gaps at half-millimetre ties.
 For each template, CP-SAT assigns each room to exactly one slot and each slot to
 exactly one room. The corridor retains its slot. Assignment choices violating
 1.8 m minimum dimensions or room-type minimum areas are forbidden.
@@ -84,7 +87,7 @@ denominator. Runtime measures model inference, templates, all solves, validation
 and selection; checkpoint loading is reported separately. Observed CPU latency
 on a CI machine is not a hardware-independent SLA.
 
-To run an additional complete-generator stress sample on fresh deterministic briefs:
+To run an additional repair-pipeline stress sample on fresh deterministic briefs:
 
 ```bash
 python -m archai_ml.repair_evaluation --run ml/runs/phase2d-v1 \
@@ -96,7 +99,11 @@ python -m archai_ml.repair_evaluation --run ml/runs/phase2d-v1 \
 
 `--enforce` requires every supported benchmark brief to return at least one
 strictly valid repaired plan with the exact room program. This is the Phase 2E
-repair-component gate, not the complete five-concept model-release gate.
+repair-component gate, not the complete five-concept model-release gate. When
+`--stress-count` is supplied, every stress brief must also return a strictly valid
+repair. Stress case records and separate five-concept stress gates are retained.
+Routine CI runs the full 100-brief comparison; the release stress run uses 1,000
+fresh briefs and is linked from the committed report.
 
 Generator quality is reported separately against the unchanged comparison gates,
 including a ten-percentage-point adjacency gain over the heuristic, at least four
@@ -108,3 +115,6 @@ Full release still needs independent licensed real-plan validation, blinded huma
 preference above 60%, complete-generator stress evidence and application/fallback
 integration. Any failed diversity or generator-quality gate remains a blocker.
 No external data is admitted by this increment.
+
+See [the Phase 2E results](../reports/phase2e-repair.md) for measured outcomes and
+explicit unmet generator gates.

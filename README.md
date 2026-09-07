@@ -5,9 +5,9 @@ residential design brief into five editable 2D layout directions. It provides
 transparent preliminary planning checks, an editable cost baseline, an interactive
 3D massing preview, and JSON/SVG/PNG/PDF/OBJ export.
 
-> **Current development preview:** `v0.2.0-dev.4`, adding Phase 2D's first
-> supervised graph model and reproducible CPU training. The model is an offline
-> research baseline; the application uses the deterministic generator. BIM,
+> **Current development preview:** `v0.2.0-dev.5`, adding Phase 2E's constrained
+> neural repair and matched generator evaluation. Repaired research outputs pass
+> strict validity checks; diversity still blocks product integration. BIM,
 > jurisdictional compliance and VR remain future work.
 > See the [traceability matrix](docs/REQUIREMENTS_TRACEABILITY.md) for the exact
 > implementation boundary.
@@ -16,91 +16,37 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 
 | Item | Status |
 |---|---|
-| Release | `v0.2.0-dev.4 - Phase 2D supervised baseline` |
+| Release | `v0.2.0-dev.5 - Phase 2E constrained neural repair` |
 | Application | Executable Flask editor with benchmarked baseline and solver candidate |
 | Cost | No paid API or runtime dependency |
 | Deployment | Local, Docker, or free-tier Render |
 | License | MIT |
 | Safety boundary | Preliminary concepts only; not for construction |
 
-## Phase 1 delivery
+## Model development
 
-- local SQLite project library with forward-only schema migrations;
-- validated save, list, load, update, and delete project APIs;
-- four-corner room resizing with 0.25 m snapping, footprint limits, a 1.8 m
-  minimum dimension, and room-type minimum areas;
-- saved projects retain the brief, all five concepts, the selected concept,
-  analysis, and cost state;
-- server-side revalidation and recalculation before project data is stored.
-- continuous corridor spines with perimeter room strips;
-- deduplicated exterior, interior, and exposed room-boundary wall segments;
-- connected interior doors, an exterior entry door, and habitable-room windows;
-- automatic topology rebuilding after every move, resize, save, and legacy-project load;
-- deterministic furniture-use, door-approach, and accessibility turning zones;
-- browser PNG export, printable plan views, and vector A3 PDF plan sheets;
-- schema v3 project snapshots with automatic in-memory upgrade from schemas v1 and v2;
-- no-drag numeric room editing and keyboard-operable concept tabs;
-- Playwright end-to-end coverage and automated axe WCAG 2.2 A/AA checks in CI.
+| Milestone | Delivered | Evidence |
+|---|---|---|
+| Phase 1 | Persistent, editable 2D/3D plans, topology, zoning, exports and browser accessibility checks | [Changelog](CHANGELOG.md) |
+| Phase 2A | Frozen 100-brief generator benchmark and CI regression gates | [Baseline](reports/phase2a-baseline.md) |
+| Phase 2B | Optional CP-SAT generator and reviewed dataset candidate register | [Comparison](reports/phase2b-comparison.md) |
+| Phase 2C | Governed room graphs, deduplication, splits and 592-plan synthetic pilot | [Data contract](docs/TRAINING_DATA_PIPELINE.md) |
+| Phase 2D | Reproducible supervised CPU graph model and held-out evaluation | [Experiment](reports/phase2d-baseline.md) |
+| Phase 2E | Strict proposal repair, distinct-concept selection and matched evaluation | [Repair report](reports/phase2e-repair.md) |
 
-## Phase 2A delivery
+Phase 2E repairs overlapping proposals from the frozen Phase 2D model using
+corridor-slot constraints. Every one of the 100 benchmark briefs returns at least
+one strictly valid plan: 443 total, all with connected door circulation and no
+room overlaps. Adjacency satisfaction is 99.48%, versus the heuristic's 65.54%.
 
-- versioned, deterministic 100-case synthetic residential benchmark;
-- explicit dataset provenance, license, exclusions, digest, and fixed
-  development/validation/test splits;
-- generator-independent metrics for generation success, hard constraints,
-  room-program adherence, functional adjacency, concept diversity, budget fit,
-  accessibility alignment, and overall user alignment;
-- machine-readable JSON and human-readable Markdown benchmark reports;
-- enforced baseline thresholds in a dedicated GitHub Actions job;
-- deterministic Phase 1 generator retained as the transparent CPU fallback.
+Only 79% of briefs return at least four distinct concepts and 72% return five.
+The matched reference-plus-repair scores 99.62% adjacency, so this result does not
+establish neural superiority. The application continues to use its deterministic
+five-concept generator. External datasets remain pending source admission.
 
-## Phase 2B delivery
-
-- optional deterministic CP-SAT generator candidate powered by the Apache-2.0
-  OR-Tools package;
-- five solver objectives that optimize requested room adjacency while preserving
-  the existing corridor, topology, zoning, and hard-check pipeline;
-- shared candidate registry and CLI selection for reproducible evaluation;
-- baseline-versus-candidate comparison report with predeclared promotion gates;
-- full 100-case gate pass: adjacency improved from 65.5% to 98.4%, with all hard,
-  program, accessibility, budget-regression, and alignment-regression gates passing;
-- Kaggle and original-source dataset candidates documented without admitting or
-  downloading data whose license or provenance is unresolved.
-
-## Phase 2C delivery
-
-- strict rectangle-to-room-graph preprocessing with recorded source reviews;
-- geometry normalization, taxonomy validation and rejection reports;
-- building/duplicate-group train, validation and test splits;
-- immutable datasets, visual QA contact sheets and padded training batches;
-- a 592-plan synthetic pilot from 120 fresh briefs, excluding the frozen benchmark;
-- deterministic CP-SAT work limits replacing load-dependent wall-clock cutoffs;
-- a fifth CI job enforcing the pilot digest and split counts.
-
-```bash
-python -m archai.datasets pilot --output data/processed/pilot-v1
-python -m archai.datasets validate data/processed/pilot-v1
-```
-
-See the [training-data contract](docs/TRAINING_DATA_PIPELINE.md),
-[pilot report](reports/phase2c-dataset.md), and
-[solver re-evaluation](reports/phase2c-solver-comparison.md).
-External datasets still require admission.
-
-## Phase 2D delivery
-
-- optional PyTorch CPU model with four graph layers, room-box and adjacency heads;
-- program-only inputs, padding masks and explicit training/validation/test selection;
-- seeded training, validation-selected checkpoints and integrity-checked loading;
-- held-out metrics, a train-only reference, raw predictions and QA contact sheets;
-- 120-epoch experiment on 477 training / 55 validation / 60 test synthetic plans;
-- 28 ML tests, 98.11% ML coverage and a sixth CI job for training/evaluation.
-
-Held-out coordinate MAE improves 49.98% over the mean-per-type reference, but all
-60 raw proposals still contain overlaps. Constraint repair is required before
-integration; this result does not show superiority to the production generator.
-See the [experiment report](reports/phase2d-baseline.md),
-[training guide](docs/LEARNED_BASELINE.md) and [model card](docs/MODEL_CARD.md).
+Use the [training guide](docs/LEARNED_BASELINE.md) to reproduce the frozen CPU run,
+then the [repair contract](docs/CONSTRAINT_REPAIR.md) to evaluate it. PyTorch and
+OR-Tools remain optional research dependencies; no paid service is required.
 
 ## Working features
 
@@ -135,6 +81,7 @@ verify any design used for permitting, procurement, or construction.
 | Production server | Gunicorn |
 | Tests | Pytest, Playwright, and axe-core |
 | Evaluation | Versioned JSONL benchmark and standard-library Python harness |
+| Optional learned model | PyTorch CPU graph regressor and constrained proposal repair |
 | Optional solver | OR-Tools CP-SAT 9.15 (research/evaluation extra) |
 | Packaging | Local virtual environment or Docker |
 
@@ -192,17 +139,15 @@ generate/edit/save/load/export workflow, and checks initial and generated states
 for automated WCAG 2.2 A/AA violations.
 
 The generator benchmark evaluates the committed 100-case dataset and returns a
-non-zero exit code if a required quality threshold regresses. To regenerate the
-dataset and save fresh reports:
+non-zero exit code if a required quality threshold regresses. To save fresh reports without overwriting the frozen evidence:
 
 ```bash
-python scripts/generate_benchmark.py
 python -m archai.evaluation --enforce \
-  --json reports/phase2a-baseline.json \
-  --markdown reports/phase2a-baseline.md
+  --json benchmark-artifacts/baseline.json \
+  --markdown benchmark-artifacts/baseline.md
 python -m archai.evaluation.comparison --enforce \
-  --json reports/phase2b-comparison.json \
-  --markdown reports/phase2b-comparison.md
+  --json solver-artifacts/comparison.json \
+  --markdown solver-artifacts/comparison.md
 ```
 
 ## Docker
@@ -247,19 +192,16 @@ service replacement or redeployment.
 
 ## Project documentation
 
+- [Release changelog](CHANGELOG.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Requirements traceability](docs/REQUIREMENTS_TRACEABILITY.md)
 - [Delivery roadmap](docs/ROADMAP.md)
 - [Current project status](docs/STATUS.md)
 - [Accessibility audit](docs/ACCESSIBILITY_AUDIT.md)
-- [v0.1 development release notes](docs/RELEASE_NOTES_v0.1.0-dev.1.md)
 - [Dataset governance](docs/DATASET_GOVERNANCE.md)
 - [External dataset candidate register](docs/DATASET_CANDIDATES.md)
 - [Evaluation protocol](docs/EVALUATION_PROTOCOL.md)
-- [v0.2.0-dev.1 release notes](docs/RELEASE_NOTES_v0.2.0-dev.1.md)
-- [v0.2.0-dev.2 release notes](docs/RELEASE_NOTES_v0.2.0-dev.2.md)
-- [v0.2.0-dev.3 release notes](docs/RELEASE_NOTES_v0.2.0-dev.3.md)
-- [v0.2.0-dev.4 release notes](docs/RELEASE_NOTES_v0.2.0-dev.4.md)
+- [Constraint repair and reproduction](docs/CONSTRAINT_REPAIR.md)
 - [Learned baseline and reproduction](docs/LEARNED_BASELINE.md)
 - [Generator model card](docs/MODEL_CARD.md)
 - [Contribution guide](CONTRIBUTING.md)

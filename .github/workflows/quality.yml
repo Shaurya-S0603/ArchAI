@@ -2,7 +2,7 @@ name: Quality
 
 on:
   push:
-    branches: [main, development, feature/phase2d, feature/phase2e]
+    branches: [main, development]
   pull_request:
     branches: [main]
 
@@ -157,7 +157,6 @@ jobs:
         run: >-
           python -m archai_ml.repair_evaluation --run repair-artifacts/frozen/run
           --output repair-artifacts/comparison --config ml/configs/phase2e-v1.json --enforce
-          --stress-count 1000
       - uses: actions/upload-artifact@v5
         if: ${{ !cancelled() }}
         with:

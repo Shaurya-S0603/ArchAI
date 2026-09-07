@@ -2,7 +2,7 @@
 
 **Component:** ArchAI transparent baseline, CP-SAT candidate and supervised graph research model
 
-**Version:** v0.2.0-dev.4
+**Version:** v0.2.0-dev.5
 
 **Maintained by:** Shaurya Singhal
 
@@ -10,9 +10,10 @@
 
 The production application uses the deterministic baseline. Two offline research
 candidates are available: the CP-SAT solver and Phase 2D's trained supervised
-graph regressor. The neural model has overlap failures on every held-out test
-plan and is not approved for product integration. No reinforcement-learning
-model is included.
+graph regressor with Phase 2E constrained repair. Raw neural proposals overlap;
+repair returns strictly valid plans on the 100-brief benchmark. Five-concept
+shortfalls and unproven neural benefit block product integration. No
+reinforcement-learning model is included.
 
 ## Purpose
 
@@ -92,6 +93,29 @@ outputs overlap. The combined raw geometry pass rate is 0%. Validation has
 minimum-area failures as well. This is not a comparison against the heuristic or
 solver, and adjacency F1 does not measure a connected door graph.
 See [the experiment and failures](../reports/phase2d-baseline.md).
+
+## Phase 2E repair evidence
+
+The frozen model supplies room boxes to a CP-SAT assignment over fixed corridor
+slots. Program, dimensions, areas, boundary, overlap, coverage and actual door
+connectivity are checked independently after geometry is built. At most five
+valid concepts are returned after type-matched duplicate/reflection rejection.
+This is a restricted projection, not arbitrary wall/box optimization.
+
+On the 100-brief generator benchmark, all briefs return valid repair: 443 layouts,
+99.48% adjacency, 0.1699 diversity and 61.0% budget fit. Four distinct concepts are
+returned for 79% of briefs and five for 72%. The train-only reference with identical
+repair settings reaches 99.62% adjacency and 68% five-concept completion. Neural
+repair changes normalized coordinates by 0.10742 on average; substantial repair
+means the solver can dominate proposal geometry. All raw benchmark proposals overlap.
+
+The observed warm CPU p95 is 0.970 seconds, excluding the separately
+reported 0.981-second checkpoint load. Timings describe the CI machine, not every
+CPU or deployment. The fixed Phase 2C CP-SAT report records 99.39% adjacency on
+this benchmark; it is a historical comparison, not a fresh timing measurement.
+See [repair evidence and stress results](../reports/phase2e-repair.md) and
+[the exact contract](CONSTRAINT_REPAIR.md). All 1,000 fresh stress briefs return strict repair (4,447 layouts, zero crashes),
+but five concepts are returned for only 71.1%. Full generator gates remain unmet.
 
 ## Data
 

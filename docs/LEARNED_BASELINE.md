@@ -21,7 +21,7 @@ python -m archai_ml evaluate --dataset data/processed/pilot-v1 \
   --run ml/runs/phase2d-v1 --output ml/runs/phase2d-test-v1 --split test
 python -m archai_ml predict --run ml/runs/phase2d-v1 \
   --program ml/configs/example-program.json
-pytest tests/test_ml.py --cov=archai_ml --cov-fail-under=90
+pytest tests/test_ml.py tests/test_repair.py --cov=archai_ml --cov-fail-under=90
 ```
 
 On Windows activate `.venv-ml\Scripts\activate` instead. The ML requirements file
@@ -132,11 +132,15 @@ error can average incompatible arrangements and produce overlapping rooms.
 Lower coordinate error does not establish better usable plans than the heuristic
 or CP-SAT solver. There is no learned generator in the production candidate registry.
 
-Phase 2E should first project proposals through deterministic constraint repair,
-reject infeasible results, and benchmark the complete repaired pipeline. Then
-add a justified stochastic representation and selection of at least four distinct
-valid concepts out of five. Keep area/program/connectivity gates mandatory and
-measure CPU p95 and a 1,000-brief stress run. Diverse solver teachers and an
-independent, licensed real-plan holdout are needed to assess generalization.
-Blinded human preference remains an unmet release gate. Kaggle sources remain
-quarantined until their recorded source review is actually satisfied.
+Phase 2E now projects the frozen proposals through deterministic slot repair,
+rebuilds topology, rejects failed solves and selects distinct valid concepts.
+All 100 benchmark briefs return valid repairs, but only 72% return five concepts;
+the matched reference has slightly better adjacency. See [repair contract](CONSTRAINT_REPAIR.md)
+and [the comparison](../reports/phase2e-repair.md).
+
+Phase 2F should improve proposal/template diversity and test neural contribution
+against the same repair applied to a train-only reference. Define new development
+and validation briefs before tuning; reserve a fresh locked holdout for release.
+Diverse solver teachers and an independent, licensed real-plan holdout are needed
+to assess generalization. Blinded human preference and application integration
+remain open. Kaggle sources require their recorded source review to be satisfied.

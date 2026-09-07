@@ -1,0 +1,166 @@
+{
+  "baseline": {
+    "budget_fit_rate": 0.608,
+    "case_count": 100,
+    "case_success_rate": 1,
+    "concept_count_pass_rate": 1,
+    "hard_constraint_pass_rate": 1,
+    "mean_accessibility_score": 1,
+    "mean_adjacency_satisfaction": 0.6554,
+    "mean_diversity_score": 0.2386,
+    "mean_user_alignment_score": 0.9608,
+    "program_match_rate": 1
+  },
+  "benchmark_digest": "7a545e2b28422980a8c60ffe888504300d2583a2de3aa36bdc29b7db9d7f9533",
+  "component_gates": {
+    "every_brief_returns_valid_repair": true,
+    "room_program": true,
+    "stress_valid_repair": true,
+    "strict_geometry_and_topology": true
+  },
+  "component_passed": true,
+  "config": {
+    "adjacency_reward": 500,
+    "deterministic_limit": 0.03,
+    "minimum_separation": 0.025,
+    "passes": 2
+  },
+  "environment": {
+    "device": "cpu",
+    "git_revision": "9bdd19f15e02da7d57bdbb5f60b8c647d67085c0",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "python_source_digest": "69ed2b1384ee4518bdf2ca06cbbf5ff888f215d48ab5924f9d280d078e17b5b0",
+    "pytorch": "2.10.0+cpu",
+    "threads": 1
+  },
+  "evidence": {
+    "artifact_url": "https://github.com/Shaurya-S0603/ArchAI/actions/runs/34093445161/artifacts/10008163120",
+    "before_fix": {
+      "cause": "Independent room-edge quantization introduced millimetre gaps/overlaps at shared half-millimetre boundaries.",
+      "resolution": "Cluster only canonical representation error, then quantize each shared endpoint once. Strict tolerances and solver settings are unchanged.",
+      "stress_cases": 1000,
+      "stress_failed_briefs": 12,
+      "workflow_url": "https://github.com/Shaurya-S0603/ArchAI/actions/runs/34091507351"
+    },
+    "date": "2026-09-07",
+    "verification": {
+      "backend_coverage_percent": 94.06,
+      "backend_tests": 68,
+      "ci_jobs_passed": 7,
+      "ml_repair_coverage_percent": 98.62,
+      "ml_repair_tests": 53
+    },
+    "workflow_url": "https://github.com/Shaurya-S0603/ArchAI/actions/runs/34093445161"
+  },
+  "frozen_solver": {
+    "budget_fit_rate": 0.606,
+    "case_count": 100,
+    "case_success_rate": 1,
+    "concept_count_pass_rate": 1,
+    "hard_constraint_pass_rate": 1,
+    "mean_accessibility_score": 1,
+    "mean_adjacency_satisfaction": 0.9939,
+    "mean_diversity_score": 0.1642,
+    "mean_user_alignment_score": 0.9606,
+    "program_match_rate": 1
+  },
+  "generator_gates": {
+    "adjacency_gain_ten_percentage_points": true,
+    "existing_comparison": false,
+    "five_concept_contract": false,
+    "four_distinct_concepts": false,
+    "observed_cpu_p95_under_five_seconds": true
+  },
+  "model_state_digest": "344a53149ef17be0a3b21e5284c4df742c27c59852629cbfbbc788d7a543f3c1",
+  "neural": {
+    "budget_fit_rate": 0.61,
+    "case_count": 100,
+    "case_success_rate": 1,
+    "concept_count_pass_rate": 0.72,
+    "hard_constraint_pass_rate": 1,
+    "mean_accessibility_score": 1,
+    "mean_adjacency_satisfaction": 0.9948,
+    "mean_diversity_score": 0.1699,
+    "mean_user_alignment_score": 0.961,
+    "program_match_rate": 1
+  },
+  "neural_diagnostics": {
+    "cases": 100,
+    "checkpoint_load_seconds": 0.9810993180000054,
+    "cpu_seconds_max": 1.0047161430000102,
+    "cpu_seconds_p50": 0.8149601179999877,
+    "cpu_seconds_p95": 0.9695391510000064,
+    "failed_cases": 0,
+    "failed_solver_attempts": 0,
+    "five_distinct_rate": 0.72,
+    "four_distinct_rate": 0.79,
+    "mean_coordinate_displacement": 0.10742435117867032,
+    "raw_geometry_valid_rate": 0,
+    "raw_no_overlap_rate": 0,
+    "returned_layouts": 443,
+    "strict_validated_rate": 1
+  },
+  "neural_vs_reference_adjacency_delta": -0.0014,
+  "production_ready": false,
+  "reference": {
+    "budget_fit_rate": 0.61,
+    "case_count": 100,
+    "case_success_rate": 1,
+    "concept_count_pass_rate": 0.68,
+    "hard_constraint_pass_rate": 1,
+    "mean_accessibility_score": 1,
+    "mean_adjacency_satisfaction": 0.9962,
+    "mean_diversity_score": 0.1638,
+    "mean_user_alignment_score": 0.961,
+    "program_match_rate": 1
+  },
+  "reference_diagnostics": {
+    "cases": 100,
+    "checkpoint_load_seconds": 0.041773527000003696,
+    "cpu_seconds_max": 1.0925000529999807,
+    "cpu_seconds_p50": 0.7620176580000191,
+    "cpu_seconds_p95": 1.0264890699999967,
+    "failed_cases": 0,
+    "failed_solver_attempts": 0,
+    "five_distinct_rate": 0.68,
+    "four_distinct_rate": 0.79,
+    "mean_coordinate_displacement": 0.19747559232435796,
+    "raw_geometry_valid_rate": 0,
+    "raw_no_overlap_rate": 0,
+    "returned_layouts": 443,
+    "strict_validated_rate": 1
+  },
+  "remaining_release_requirements": [
+    "independent licensed real-plan validation",
+    "blinded human preference above 60 percent",
+    "production API integration and fallback validation",
+    "1000-brief complete-generator stress gate"
+  ],
+  "repair_version": "corridor-slot-projection-v1",
+  "solver_source": "reports/phase2c-solver-comparison.json",
+  "stress": {
+    "briefs_digest": "b2864281d9242c79014efd51b16a1fbed69342da9adcdd3652e0d29fd5a3de47",
+    "cases": 1000,
+    "checkpoint_load_seconds": 0.9810993180000054,
+    "cpu_seconds_max": 1.072606591000067,
+    "cpu_seconds_p50": 0.7673657230000117,
+    "cpu_seconds_p95": 0.9544693060000213,
+    "failed_cases": 0,
+    "failed_solver_attempts": 4,
+    "five_distinct_rate": 0.711,
+    "four_distinct_rate": 0.813,
+    "mean_coordinate_displacement": 0.10629936873590756,
+    "raw_geometry_valid_rate": 0,
+    "raw_no_overlap_rate": 0,
+    "returned_layouts": 4447,
+    "seed": 20260907,
+    "strict_validated_rate": 1
+  },
+  "stress_gates": {
+    "five_concept_contract": false,
+    "no_failed_briefs": true,
+    "strict_geometry_and_topology": true
+  },
+  "training_dataset_digest": "e0efc4064fec21e0ca430ae356705052ba6002c70908fc3470606ddc944fd9aa"
+}

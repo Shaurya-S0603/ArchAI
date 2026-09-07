@@ -23,7 +23,7 @@
 - [x] printable plan sheets and PNG/PDF export;
 - [x] end-to-end browser tests and WCAG 2.2 AA audit.
 
-Current development release: `v0.1.0-dev.1` completes Phase 1 with deterministic
+The `v0.1.0-dev.1` release completed Phase 1 with deterministic
 zoning, printable PNG/PDF output, no-drag room editing, browser workflow tests,
 and automated WCAG 2.2 A/AA checks.
 
@@ -42,26 +42,30 @@ without geometry corruption. **Satisfied by the v0.1 development preview.**
 - [ ] admit an external real-plan source and validate its source-specific adapter;
 - [x] implement and train an offline graph-conditioned learned baseline;
 - [ ] qualify a repaired learned candidate for product integration;
-- [ ] add deterministic constraint repair and candidate diversity selection;
+- [x] add deterministic constraint repair and candidate diversity selection;
+- [ ] satisfy the five-concept contract with at least four distinct valid concepts;
 - [ ] train and validate a learned ranker;
 - promote a trained model only when it beats the baseline on a held-out evaluation set;
 - publish reproducible training scripts, checkpoints, model card, and failure cases;
 - keep the deterministic generator as a no-GPU fallback.
 
-Current development release: `v0.2.0-dev.4` adds Phase 2D's supervised graph model,
-reproducible CPU training, validation-selected checkpoints and held-out evaluation
-over the 592-plan admitted synthetic pilot. Coordinate MAE improves over a
-train-fitted type reference, but raw geometry has overlaps in every test plan.
-The transparent generator remains the production default. No external dataset
-is admitted. See [the experiment](../reports/phase2d-baseline.md).
+Current development release: `v0.2.0-dev.5` completes Phase 2E's restricted
+repair component. All 100 benchmark briefs produce strictly valid repair; 79%
+return four distinct concepts and 72% return five. The matched reference has
+slightly higher adjacency, so the complete learned generator remains unqualified.
+See [repair evidence](../reports/phase2e-repair.md).
 
-Next slice: Phase 2E implements deterministic repair and rejection of infeasible
-neural proposals, then compares the complete pipeline to the existing generators.
-Prioritize program, area, dimension, overlap, boundary and circulation constraints;
-measure repair displacement and failure rates. Add diverse candidate generation
-and selection, CPU p95 and 1,000-brief stress evaluation. Diverse solver teachers
-and independent licensed real-plan evaluation remain necessary. Kaggle sources
-with unresolved rights remain quarantined.
+Next slice, Phase 2F, in priority order:
+
+1. Create new development/validation briefs before improving the search for diverse
+   templates and proposals. Keep strict repair and duplicate rejection mandatory.
+2. Establish a neural benefit using identical repair budgets for learned and
+   train-only reference proposals; improve beyond the restricted teacher family.
+3. Meet the five-result and diversity gates on a new locked holdout, then repeat
+   end-to-end CPU latency and 1,000-brief stress evaluation.
+4. Admit an independently licensed real-plan source and arrange blinded preference
+   evaluation before application/fallback integration. External sources with
+   unresolved rights remain quarantined.
 
 Exit condition: the trained generator is measurably better than the transparent
 baseline and never bypasses hard constraints.

@@ -73,8 +73,8 @@ budget-fit or user-alignment regression greater than 0.01.
 ```bash
 python -m pip install -r requirements-solver.txt
 python -m archai.evaluation.comparison --enforce \
-  --json reports/phase2b-comparison.json \
-  --markdown reports/phase2b-comparison.md
+  --json solver-artifacts/comparison.json \
+  --markdown solver-artifacts/comparison.md
 ```
 
 The v0.2.0-dev.2 frozen comparison records:
@@ -124,3 +124,15 @@ requires separate latency validation before production promotion.
 Phase 2C training-interface data uses fresh briefs and separate grouped splits.
 Its pilot excludes the 100 frozen briefs and their baseline geometry classes;
 see `TRAINING_DATA_PIPELINE.md` for exact exclusion limits.
+
+## Phase 2E repair comparison
+
+The [repair contract](CONSTRAINT_REPAIR.md) adds strict post-repair geometry and
+actual-door connectivity validation, plus type-matched/reflection-aware distinct
+selection. Up to five valid concepts may be returned; missing concepts fail the
+existing five-result gate. The component gate requires at least one strict repair
+per supported brief. It does not replace or weaken generator promotion gates.
+
+Compare the frozen neural model against the same repair applied to its train-only
+reference. Record all rejected attempts, shortfalls, displacement and CPU timing;
+keep failed briefs in the denominator. See [results](../reports/phase2e-repair.md).
