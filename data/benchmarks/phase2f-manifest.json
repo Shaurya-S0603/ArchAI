@@ -1,0 +1,59 @@
+{
+  "cohorts": {
+    "development": {
+      "count": 32,
+      "excluded_collisions": 2,
+      "sha256": "bec697f64fa9be127524c7504b8d13b1153da56aab513138a8184e31ef5c3bbe"
+    },
+    "stress": {
+      "count": 1000,
+      "excluded_collisions": 49,
+      "sha256": "0c069cdd79897d92ab024101140998dae4b30f4c6db6d4efaf78e43ed9ee3723"
+    },
+    "test": {
+      "count": 100,
+      "excluded_collisions": 3,
+      "sha256": "b145b84e5abd39a74cba2481649b5526b6156e462c9a4bdb99eb067b07d72daa"
+    },
+    "validation": {
+      "count": 32,
+      "excluded_collisions": 1,
+      "sha256": "54b95b17037353f57cf7870e4929416f4e32c3aa253fcc19175c5437bc32210e"
+    }
+  },
+  "excluded_programs": 1206,
+  "protocol": {
+    "cohorts": {
+      "development": {
+        "count": 32,
+        "seed": 20260908
+      },
+      "stress": {
+        "count": 1000,
+        "seed": 20260911
+      },
+      "test": {
+        "count": 100,
+        "seed": 20260910
+      },
+      "validation": {
+        "count": 32,
+        "seed": 20260909
+      }
+    },
+    "maximum_search_nodes": 20000,
+    "minimum_separation": 0.025,
+    "reflow_fractions": [
+      0.5,
+      0.25,
+      0.75,
+      0.125,
+      0.875,
+      0.0,
+      1.0,
+      0.375,
+      0.625
+    ],
+    "version": "adaptive-corridor-diversity-v1"
+  }
+}

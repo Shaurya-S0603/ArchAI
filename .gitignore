@@ -23,6 +23,7 @@ ml/checkpoints/
 ml/runs/
 ml-artifacts/
 repair-artifacts/
+diversity-artifacts/
 build/
 dist/
 *.egg-info/

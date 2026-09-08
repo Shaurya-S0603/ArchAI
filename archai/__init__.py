@@ -17,16 +17,20 @@ def create_app(test_config: dict | None = None) -> Flask:
         ),
         JSON_SORT_KEYS=False,
         MAX_CONTENT_LENGTH=2 * 1024 * 1024,
+        ARCHAI_GENERATOR=os.environ.get("ARCHAI_GENERATOR", "deterministic-baseline"),
+        ARCHAI_MODEL_RUN=os.environ.get("ARCHAI_MODEL_RUN"),
     )
     if test_config:
         app.config.update(test_config)
 
     from archai.database import init_app as init_database
     from archai.routes import api, pages
+    from archai.services.generation_engine import init_app as init_generator
 
     app.register_blueprint(pages)
     app.register_blueprint(api, url_prefix="/api/v1")
     init_database(app)
+    init_generator(app)
 
     @app.errorhandler(413)
     def payload_too_large(_error):

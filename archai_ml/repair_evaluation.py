@@ -54,7 +54,7 @@ def raw_validity(brief, boxes):
 
 
 class RepairedCandidate:
-    def __init__(self, run: Path, config=DEFAULT_REPAIR_CONFIG, reference=False):
+    def __init__(self, run: Path, config=DEFAULT_REPAIR_CONFIG, reference=False, repairer=None):
         config.validate()
         started = time.perf_counter()
         self.model, self.training = load_run(run)
@@ -62,6 +62,7 @@ class RepairedCandidate:
             self.model = TypeMeanReference(json.loads((Path(run) / "reference.json").read_text()))
         self.load_seconds = time.perf_counter() - started
         self.config, self.history, self.examples = config, [], []
+        self.repairer = repairer
         self.name = "repaired-type-reference-v1" if reference else "repaired-neural-v1"
 
     def __call__(self, brief):
@@ -74,7 +75,7 @@ class RepairedCandidate:
         proposal = {"room_types": program["room_types"], "boxes": boxes}
         record = {"brief_digest": digest(brief.to_dict()), "raw": raw_validity(brief, boxes)}
         try:
-            layouts, diagnostics = repair_candidates(brief, proposal, self.config)
+            layouts, diagnostics = (self.repairer or repair_candidates)(brief, proposal, self.config)
         except ValueError as exc:
             self.history.append({**record, "returned": 0, "error": str(exc),
                                  "seconds": time.perf_counter() - started})

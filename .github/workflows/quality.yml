@@ -2,7 +2,7 @@ name: Quality
 
 on:
   push:
-    branches: [main, development]
+    branches: [main, development, feature/phase2f]
   pull_request:
     branches: [main]
 
@@ -117,7 +117,7 @@ jobs:
           python -m pip install -r requirements-dev.txt
           python -m pip install -r requirements-ml.txt
       - name: Test model, masks, splits and checkpoint integrity
-        run: pytest tests/test_ml.py tests/test_repair.py --cov=archai_ml --cov-fail-under=90
+        run: pytest tests/test_ml.py tests/test_repair.py tests/test_diversity.py tests/test_generation_engine.py tests/test_qualification.py --cov=archai_ml --cov-fail-under=90
       - name: Regenerate admitted pilot
         run: python -m archai.datasets pilot --output ml-artifacts/pilot --count 120
       - name: Train frozen supervised configuration using train and validation only
@@ -162,6 +162,35 @@ jobs:
         with:
           name: phase2e-repair-comparison
           path: repair-artifacts/comparison/
+          retention-days: 30
+
+  diversity-comparison:
+    needs: learned-baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install CPU model and solver dependencies
+        run: |
+          python -m pip install -r requirements-dev.txt
+          python -m pip install -r requirements-ml.txt
+      - uses: actions/download-artifact@v8
+        with:
+          name: phase2d-learned-baseline
+          path: diversity-artifacts/frozen
+      - name: Evaluate fresh development and validation cohorts with matched reference
+        run: >-
+          python -m archai_ml.qualification --run diversity-artifacts/frozen/run
+          --output diversity-artifacts/development --stage development --enforce
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2f-diversity
+          path: diversity-artifacts/development/
           retention-days: 30
 
   browser:
