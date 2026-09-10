@@ -10,6 +10,7 @@ from archai.datasets.schema import encode
 from archai.evaluation.benchmark import evaluate_benchmark
 from archai.evaluation.cohorts import ROOT, phase2f_cohorts
 from archai.evaluation.comparison import compare_reports
+from archai.services.cost_estimator import COST_MODEL_VERSION
 from archai_ml.diversity import (
     DIVERSITY_VERSION,
     MAXIMUM_SEARCH_NODES,
@@ -51,6 +52,7 @@ def run_qualification(run, output, stage="development"):
     expected = json.loads((ROOT / "data/benchmarks/phase2f-manifest.json").read_text())
     config = manifest["protocol"]
     if (manifest != expected or config["version"] != DIVERSITY_VERSION
+            or config["cost_model_version"] != COST_MODEL_VERSION
             or config["reflow_fractions"] != list(REFLOW_FRACTIONS)
             or config["maximum_search_nodes"] != MAXIMUM_SEARCH_NODES
             or config["minimum_separation"] != .025):

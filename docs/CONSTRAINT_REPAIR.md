@@ -3,7 +3,10 @@
 Phase 2E projects the frozen Phase 2D proposal into ArchAI's existing rectangular
 corridor/perimeter family. Its purpose is to close raw geometry failures and
 measure the repaired generator, including whether the neural model adds value.
-The production API remains on its existing deterministic generator.
+The default API uses the deterministic generator. Phase 2F adds an explicitly
+experimental serving wrapper and bounded diversity expansion; see
+[the Phase 2F protocol](PHASE2F_PROTOCOL.md). The Phase 2E algorithm and reports
+below remain unchanged for reproducible comparison.
 
 ## Contract frozen before the comparison
 

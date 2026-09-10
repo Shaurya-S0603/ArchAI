@@ -186,11 +186,18 @@ jobs:
         run: >-
           python -m archai_ml.qualification --run diversity-artifacts/frozen/run
           --output diversity-artifacts/development --stage development --enforce
+      - name: Open locked release holdout and run one thousand fresh stress briefs
+        if: github.ref == 'refs/heads/feature/phase2f'
+        run: >-
+          python -m archai_ml.qualification --run diversity-artifacts/frozen/run
+          --output diversity-artifacts/release --stage release --enforce
       - uses: actions/upload-artifact@v5
         if: ${{ !cancelled() }}
         with:
           name: phase2f-diversity
-          path: diversity-artifacts/development/
+          path: |
+            diversity-artifacts/development/
+            diversity-artifacts/release/
           retention-days: 30
 
   browser:

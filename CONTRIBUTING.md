@@ -50,9 +50,17 @@ comparison. External data must be registered and approved under
 committed.
 
 For ML or repair changes, install `requirements-ml.txt` after the development
-requirements and run `pytest tests/test_ml.py tests/test_repair.py --cov=archai_ml
---cov-fail-under=90`. Follow the [training guide](docs/LEARNED_BASELINE.md) and
-[repair protocol](docs/CONSTRAINT_REPAIR.md) for frozen experiment checks.
+requirements and run:
+
+```bash
+pytest tests/test_ml.py tests/test_repair.py tests/test_diversity.py \
+  tests/test_generation_engine.py tests/test_qualification.py \
+  --cov=archai_ml --cov-fail-under=90
+```
+
+Follow the [training guide](docs/LEARNED_BASELINE.md),
+[repair protocol](docs/CONSTRAINT_REPAIR.md) and
+[Phase 2F protocol](docs/PHASE2F_PROTOCOL.md) for frozen experiment checks.
 Never overwrite historical benchmark reports with a new run: write fresh results
 to the ignored artifact directories and commit a new, named summary deliberately.
 

@@ -25,7 +25,10 @@ or integration requirement, it should be added as an explicitly scoped service.
 ```mermaid
 flowchart TD
     Browser["HTML/CSS/JavaScript client"] -->|JSON API| Flask["Flask application"]
-    Flask --> Generator["Deterministic production generator"]
+    Flask --> Engine["Configured generation service"]
+    Engine --> Generator["Deterministic default and fallback"]
+    Engine --> Neural["Experimental neural repair and diversity"]
+    Neural --> Topology
     Benchmark --> Solver["Optional CP-SAT candidate"]
     Generator --> Topology["Wall and opening topology"]
     Topology --> Zoning["Furniture and clearance zones"]
@@ -140,10 +143,10 @@ program features without observed target geometry. The graph regressor predicts
 raw boxes and shared-boundary labels. Training selects a checkpoint on validation;
 test scoring is a separate command bound to that dataset and checkpoint digest.
 
-The application does not import `archai_ml` and no neural candidate is registered
-for production. Neural boxes require deterministic repair, topology construction
-and complete release gates before API integration. Dedicated ML CI verifies the
-optional package independently of the existing backend coverage gate.
+The default application does not import PyTorch. The optional Phase 2F serving
+adapter loads the frozen model only when configured by the operator. Raw neural
+boxes always pass through repair, topology construction and strict validation.
+Dedicated ML CI verifies the optional package independently of backend coverage.
 See [training and evaluation](LEARNED_BASELINE.md).
 
 ## Phase 2E repair boundary
@@ -153,11 +156,27 @@ slots through CP-SAT room assignment. It performs independent strict geometry,
 program, coverage, topology and compliance checks before candidate selection.
 Type-matched center distance and geometry fingerprints reject near duplicates
 and whole-plan reflections. It returns up to five validated layouts with explicit
-shortfall/failure diagnostics; it does not satisfy the production five-result
-contract yet.
+shortfall/failure diagnostics. Phase 2F expands this restricted pool when needed
+to meet the five-result contract; the Phase 2E module remains a frozen comparator.
 
 `archai_ml/repair_evaluation.py` compares the frozen neural model and a train-only
 reference with identical repair settings. It records per-case failures, coordinate
 displacement, warm CPU latency, optional fresh-brief stress evidence and immutable
 artifacts. The dedicated CI job enforces repair-component validity separately from
 full generator release gates. See [repair contract](CONSTRAINT_REPAIR.md).
+
+## Phase 2F experimental serving boundary
+
+`archai_ml/diversity.py` adds bounded corridor-position reflow and compatible-set
+selection with the unchanged 0.025 separation threshold. Every output receives
+independent geometry/topology validation; reflected or repeated concepts cannot
+fill the result set. `archai_ml/qualification.py` binds fresh cohorts and the
+frozen model, comparing learned and type-mean proposals under identical processing.
+
+`services/generation_engine.py` reads operator configuration once during app
+startup. `archai_ml/inference.py` verifies and caches the frozen checkpoint per
+worker, serializes inference and retains no request history. The route validates
+all five concepts again before response scoring. Missing dependencies, checkpoint
+failure, shortfalls and rejected output trigger the deterministic fallback;
+response metadata identifies the engine actually used. Model paths and exceptions
+are never exposed in responses. See [configuration and protocol](PHASE2F_PROTOCOL.md).

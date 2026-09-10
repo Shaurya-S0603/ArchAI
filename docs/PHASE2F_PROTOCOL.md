@@ -2,6 +2,19 @@
 
 Frozen before new cohort evaluation on September 8, 2026.
 
+Amendment on September 10, before opening test/stress: development evaluation
+exposed a cost-definition defect, not a generation failure. Two baseline variants
+of development brief 13 had rounding gaps of 0.01296/0.02592 square metres and
+received false budget passes. All candidates have the same building footprint.
+Cost model `gross-footprint-v2` now bills that complete footprint, including
+circulation and unassigned space, for every generator and edited plan. Interior
+gaps cannot earn a discount and overlaps cannot add a surcharge. Budget flags use
+the same exact budget threshold; comparison tolerances are unchanged. Reports
+record the cost-model version and reject cross-version budget comparisons.
+Historical reports retain their original room-area cost model. The initial
+development gate failure remains part of the release evidence. Generation,
+training, geometry checks, cohort identities and separation thresholds are unchanged.
+
 The engineering target is five independently valid, pairwise distinct concepts,
 with the Phase 2E separation threshold (0.025 of the footprint diagonal), strict
 geometry tolerances and frozen Phase 2D model unchanged. The model remains an
@@ -47,3 +60,49 @@ Passing these engineering gates permits the user-authorized Phase 2 development
 preview merge. Independent licensed real-plan validation, blinded preference
 above 60%, and demonstrated neural quality benefit remain model-qualification
 requirements; no external data or trained weights are admitted to Git by this work.
+
+## Reproduction and experimental serving
+
+First reproduce the frozen checkpoint using [the training guide](LEARNED_BASELINE.md).
+Keep its manifest, weights, history, reference and training report together. The
+server accepts only the frozen synthetic data and tensor-state identities used
+in the qualification report; an arbitrary valid checkpoint is insufficient.
+
+```bash
+python -m pip install -r requirements-dev.txt
+python -m pip install -r requirements-ml.txt
+python -m archai_ml.qualification --run ml/runs/phase2d-v1 \
+  --output diversity-artifacts/development --stage development --enforce
+python -m archai_ml.qualification --run ml/runs/phase2d-v1 \
+  --output diversity-artifacts/release --stage release --enforce
+```
+
+Output directories must be new. Each contains checksummed JSON reports and
+case-level diagnostics. The release command opens the prospectively locked test
+and stress cohorts; do not use it to tune the generator.
+
+To opt into experimental serving in a local Python deployment:
+
+```bash
+ARCHAI_GENERATOR=experimental-neural ARCHAI_MODEL_RUN=/absolute/path/to/run python app.py
+```
+
+The default `ARCHAI_GENERATOR=deterministic-baseline` requires no model or solver
+installation. The default Docker image includes only that web runtime; experimental
+serving needs the source checkout, optional requirements and a trusted local run.
+Set configuration before starting workers. Restart workers after replacing a run;
+there is no upload endpoint or live model reload. Each worker loads once and
+serializes neural requests; concurrent queueing and cold startup are outside the
+single-request warm CPU latency measurement.
+
+`POST /api/v1/layouts/generate` adds a top-level `generator` object:
+
+```json
+{"requested":"experimental-neural","used":"deterministic-baseline","fallback":true,"reason":"engine_unavailable"}
+```
+
+Successful experimental responses use `experimental-neural`, with `fallback:false`
+and `reason:null`. Invalid candidates use `candidate_rejected`; the response never
+includes checkpoint paths or exception details. Baseline output retains its
+existing preliminary compliance reporting and is not relabeled as strict neural
+output. The optional engine is a development feature, not the recommended default.

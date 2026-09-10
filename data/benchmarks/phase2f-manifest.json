@@ -41,6 +41,7 @@
         "seed": 20260909
       }
     },
+    "cost_model_version": "gross-footprint-v2",
     "maximum_search_nodes": 20000,
     "minimum_separation": 0.025,
     "reflow_fractions": [

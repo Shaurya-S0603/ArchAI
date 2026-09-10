@@ -25,6 +25,9 @@ MAXIMUM_ALIGNMENT_REGRESSION = 0.01
 def compare_reports(baseline: dict[str, Any], candidate: dict[str, Any]) -> dict[str, Any]:
     if baseline["dataset_sha256"] != candidate["dataset_sha256"]:
         raise ValueError("Candidate reports must use the same benchmark dataset.")
+    cost_version = baseline.get("cost_model_version", "room-area-v1")
+    if cost_version != candidate.get("cost_model_version", "room-area-v1"):
+        raise ValueError("Candidate reports must use the same cost model.")
 
     baseline_summary = baseline["summary"]
     candidate_summary = candidate["summary"]
@@ -71,6 +74,7 @@ def compare_reports(baseline: dict[str, Any], candidate: dict[str, Any]) -> dict
     }
     return {
         "comparison_schema_version": 1,
+        "cost_model_version": cost_version,
         "application_version": VERSION,
         "dataset_sha256": baseline["dataset_sha256"],
         "baseline": {

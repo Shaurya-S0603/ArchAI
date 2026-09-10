@@ -13,7 +13,7 @@ from typing import Any
 from archai.evaluation.dataset import BenchmarkCase, dataset_digest
 from archai.models import DesignBrief, Layout
 from archai.services.compliance import analyze_compliance
-from archai.services.cost_estimator import estimate_cost
+from archai.services.cost_estimator import COST_MODEL_VERSION, estimate_cost
 from archai.services.layout_generator import (
     PREFERRED_ADJACENCIES,
     adjacency_pairs,
@@ -241,6 +241,7 @@ def evaluate_benchmark(
     }
     return {
         "report_schema_version": 1,
+        "cost_model_version": COST_MODEL_VERSION,
         "application_version": VERSION,
         "candidate": candidate_name,
         "evaluated_at": datetime.now(UTC).replace(microsecond=0).isoformat(),
