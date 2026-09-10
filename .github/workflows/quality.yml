@@ -1,8 +1,14 @@
 name: Quality
 
 on:
+  workflow_dispatch:
+    inputs:
+      release_qualification:
+        description: "Repeat the published release holdout and 1000-brief stress regression"
+        type: boolean
+        default: false
   push:
-    branches: [main, development, feature/phase2f]
+    branches: [main, development]
   pull_request:
     branches: [main]
 
@@ -186,8 +192,8 @@ jobs:
         run: >-
           python -m archai_ml.qualification --run diversity-artifacts/frozen/run
           --output diversity-artifacts/development --stage development --enforce
-      - name: Open locked release holdout and run one thousand fresh stress briefs
-        if: github.ref == 'refs/heads/feature/phase2f'
+      - name: Repeat release holdout and one thousand stress briefs
+        if: github.event_name == 'workflow_dispatch' && inputs.release_qualification
         run: >-
           python -m archai_ml.qualification --run diversity-artifacts/frozen/run
           --output diversity-artifacts/release --stage release --enforce

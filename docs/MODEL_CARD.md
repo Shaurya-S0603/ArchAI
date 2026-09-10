@@ -2,18 +2,19 @@
 
 **Component:** ArchAI transparent baseline, CP-SAT candidate and supervised graph research model
 
-**Version:** v0.2.0-dev.5
+**Version:** v0.2.0-alpha.1
 
 **Maintained by:** Shaurya Singhal
 
 ## Status
 
-The production application uses the deterministic baseline. Two offline research
-candidates are available: the CP-SAT solver and Phase 2D's trained supervised
-graph regressor with Phase 2E constrained repair. Raw neural proposals overlap;
-repair returns strictly valid plans on the 100-brief benchmark. Five-concept
-shortfalls and unproven neural benefit block product integration. No
-reinforcement-learning model is included.
+The default application uses the deterministic baseline. The CP-SAT solver remains
+an offline comparator. Phase 2F adds an operator-enabled experimental engine using
+the frozen supervised graph model, strict repair and bounded diversity search.
+Invalid or unavailable experimental output triggers an identified deterministic
+fallback. Raw neural proposals are never served. Neural superiority, independent
+real-plan evaluation and human preference remain unqualified. No reinforcement
+learning or learned ranking model is included.
 
 ## Purpose
 
@@ -115,7 +116,33 @@ CPU or deployment. The fixed Phase 2C CP-SAT report records 99.39% adjacency on
 this benchmark; it is a historical comparison, not a fresh timing measurement.
 See [repair evidence and stress results](../reports/phase2e-repair.md) and
 [the exact contract](CONSTRAINT_REPAIR.md). All 1,000 fresh stress briefs return strict repair (4,447 layouts, zero crashes),
-but five concepts are returned for only 71.1%. Full generator gates remain unmet.
+but Phase 2E returned five concepts for only 71.1%. Phase 2F addresses this shortfall
+with fresh qualification under the [new protocol](PHASE2F_PROTOCOL.md).
+
+## Phase 2F method and serving
+
+The model and CP-SAT repair settings remain frozen. On shortfall, the search moves
+the corridor within an interval constrained by every room's minimum area and
+width, rebuilding both perimeter strips on shared millimetre edges. A bounded
+compatible-set search selects five plans under the unchanged 0.025 separation
+threshold, repeated-type matching and reflection rejection. This expands room
+proportions within one layout family; it does not establish new topology diversity.
+
+A trusted local checkpoint is checksum- and identity-verified once per worker.
+Inference is serialized, stores no request history and validates all five outputs
+at the serving boundary. The API reports the selected engine and any fallback.
+Warm single-request timing excludes worker queueing, checkpoint load and HTTP
+transport. Cost model `gross-footprint-v2` charges the complete building footprint;
+historical budget results used room-area sums and must not be mixed with new ones.
+See [qualification and reproduction](PHASE2F_PROTOCOL.md).
+
+Fresh Phase 2F development/validation (32/32), release holdout (100) and stress
+(1,000) cohorts all return five strictly valid distinct concepts per brief.
+Holdout adjacency is 99.14% versus baseline 65.36% and matched reference 99.67%.
+Stress returns 5,000 valid plans, zero failed briefs/crashes and 0.785 s warm p95;
+holdout p95 is 0.799 s. The learned pipeline's benchmark diversity is 0.1666 versus
+0.1530 for the matched reference, but overall neural superiority remains unproven.
+See [full qualification evidence](../reports/phase2f-qualification.md).
 
 ## Data
 
@@ -142,6 +169,8 @@ model or distributed checkpoint. Kaggle candidates are recorded in
 - generated geometry may require substantial professional revision;
 - the score is a transparent heuristic, not confidence or design approval;
 - regional, cultural, climatic, and site-specific requirements are not modeled.
+- budget fit is a check on the fixed building footprint and requested program;
+  rearranging interior partitions cannot reduce its quoted construction area;
 - raw learned boxes overlap; squared-error regression can average multiple teacher arrangements;
 - desired-graph conditioning is trained only on default type-based requests;
 - arbitrary input graphs, stochastic diversity and independent real-plan performance are unvalidated.

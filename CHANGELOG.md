@@ -3,6 +3,36 @@
 Development milestones are listed newest first. Historical entries describe their
 release-time scope; see [current status](docs/STATUS.md) for today's release gates.
 
+## v0.2.0-alpha.1 — Phase 2A–2F engineering preview
+
+September 10, 2026. Phase 2F completes synthetic generator qualification and
+adds experimental application integration to the Phase 2 model pipeline.
+
+- Expand short candidate sets through bounded corridor reflow and compatible-set
+  selection with the unchanged strict geometry and 0.025 separation rules.
+- Validate fresh 32/32 development/validation cohorts, a locked 100-brief holdout
+  and 1,000 stress briefs. Every brief returns five strict valid distinct plans.
+- Add an operator-controlled frozen neural engine, checkpoint verification,
+  per-worker caching, repeated/concurrent serving tests and observable fallback.
+- Correct cost estimates to cover the complete building footprint. Bind budget
+  comparisons to the cost-model version and refresh saved legacy quotes on load.
+- Add an eighth CI job, durable qualification reports, alpha version metadata
+  and current setup/model documentation. Remove temporary feature-only CI triggers.
+- Retain reproducibility evidence while excluding generated runs and checkpoints
+  from Git and the default web Docker context.
+
+The 100-brief holdout records 99.14% adjacency versus 65.36% for the baseline,
+with 0.799 s warm CPU p95. Stress returns 5,000 validated distinct plans with
+zero failed briefs or crashes and 0.785 s p95. The matched reference reaches
+99.67% adjacency, so neural superiority remains unproven. All raw proposals still
+overlap and require repair. Real-plan qualification, human preference and learned
+ranking remain open; the deterministic generator stays the default.
+
+Validation: 87 local backend tests at 94.07% coverage; 71 ML/serving tests at
+98.22%; eight qualification CI jobs green; production startup/export smoke passed.
+See [qualification evidence](reports/phase2f-qualification.md) and
+[experimental setup](docs/PHASE2F_PROTOCOL.md).
+
 ## v0.2.0-dev.5 — Phase 2E constrained neural repair
 
 Released September 7, 2026 on `development` for review.

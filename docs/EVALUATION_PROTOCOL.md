@@ -127,6 +127,14 @@ see `TRAINING_DATA_PIPELINE.md` for exact exclusion limits.
 
 ## Phase 2E repair comparison
 
+Phase 2F adds a [separate prospective qualification protocol](PHASE2F_PROTOCOL.md)
+with fresh development/validation, a 100-brief release holdout and 1,000 stress
+briefs. Its `gross-footprint-v2` cost model bills the full building envelope for
+all candidates. Reports bind both the dataset digest and cost-model version;
+cross-version budget comparisons are rejected. Historical Phase 2A–2E figures
+retain their original room-area cost semantics. Gate thresholds, model
+weights and strict geometry tolerances are unchanged.
+
 The [repair contract](CONSTRAINT_REPAIR.md) adds strict post-repair geometry and
 actual-door connectivity validation, plus type-matched/reflection-aware distinct
 selection. Up to five valid concepts may be returned; missing concepts fail the

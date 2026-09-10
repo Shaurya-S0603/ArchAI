@@ -1,9 +1,9 @@
 # Phase 2D supervised graph baseline
 
 Phase 2D adds an optional CPU research model and a reproducible experiment over
-the admitted Phase 2C synthetic pilot. The web application continues to use the
-deterministic generator. Neural output is a raw proposal requiring constraint
-repair before product integration.
+the admitted Phase 2C synthetic pilot. The default web application uses the
+deterministic generator. Raw neural output requires constraint repair; Phase 2F
+adds [experimental serving and qualification](PHASE2F_PROTOCOL.md).
 
 ## Reproduce
 
@@ -21,7 +21,9 @@ python -m archai_ml evaluate --dataset data/processed/pilot-v1 \
   --run ml/runs/phase2d-v1 --output ml/runs/phase2d-test-v1 --split test
 python -m archai_ml predict --run ml/runs/phase2d-v1 \
   --program ml/configs/example-program.json
-pytest tests/test_ml.py tests/test_repair.py --cov=archai_ml --cov-fail-under=90
+pytest tests/test_ml.py tests/test_repair.py tests/test_diversity.py \
+  tests/test_generation_engine.py tests/test_qualification.py \
+  --cov=archai_ml --cov-fail-under=90
 ```
 
 On Windows activate `.venv-ml\Scripts\activate` instead. The ML requirements file
@@ -33,7 +35,7 @@ CPU index installation when avoiding CUDA packages.
 
 ## Input and target contract
 
-`archai_ml` is separate from `archai`; the web package never imports it. The data
+`archai_ml` is optional; the default web configuration never imports PyTorch. The data
 adapter validates the Phase 2C dataset once and caches its rows. Callers must
 select a nonempty train, validation or test split explicitly. No IDs, source IDs,
 building IDs, split labels, observed boxes or observed edges enter model inputs.

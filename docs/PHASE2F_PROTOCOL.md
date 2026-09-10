@@ -95,6 +95,12 @@ there is no upload endpoint or live model reload. Each worker loads once and
 serializes neural requests; concurrent queueing and cold startup are outside the
 single-request warm CPU latency measurement.
 
+Budget estimates use the complete building footprint in `gross-footprint-v2`.
+Moving or resizing rooms inside an unchanged footprint does not alter the charged
+area. Saved projects are reanalyzed under this cost version when loaded; historical
+room-area quotes can therefore change. Budget optimization through smaller
+building footprints is outside this candidate's geometry contract.
+
 `POST /api/v1/layouts/generate` adds a top-level `generator` object:
 
 ```json

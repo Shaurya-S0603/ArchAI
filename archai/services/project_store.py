@@ -10,7 +10,7 @@ from uuid import uuid4
 from archai.database import get_db, transaction
 from archai.models import DesignBrief, Layout
 from archai.services.compliance import analyze_compliance
-from archai.services.cost_estimator import estimate_cost
+from archai.services.cost_estimator import COST_MODEL_VERSION, estimate_cost
 from archai.services.layout_generator import calculate_layout_metrics, calculate_layout_score
 from archai.services.topology import build_topology
 from archai.services.zoning import build_zones
@@ -81,7 +81,9 @@ def _row_to_project(row: Any) -> dict[str, Any]:
         "created_at": row["created_at"],
         "updated_at": row["updated_at"],
     }
-    if project["schema_version"] < PROJECT_SCHEMA_VERSION:
+    outdated_cost = any(result.get("cost", {}).get("cost_model_version") != COST_MODEL_VERSION
+                        for result in project["results"])
+    if project["schema_version"] < PROJECT_SCHEMA_VERSION or outdated_cost:
         brief, results, active_index = _validated_state(project)
         project.update(
             {

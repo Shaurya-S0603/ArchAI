@@ -5,10 +5,10 @@ residential design brief into five editable 2D layout directions. It provides
 transparent preliminary planning checks, an editable cost baseline, an interactive
 3D massing preview, and JSON/SVG/PNG/PDF/OBJ export.
 
-> **Current development preview:** `v0.2.0-dev.5`, adding Phase 2E's constrained
-> neural repair and matched generator evaluation. Repaired research outputs pass
-> strict validity checks; diversity still blocks product integration. BIM,
-> jurisdictional compliance and VR remain future work.
+> **Current development preview:** `v0.2.0-alpha.1`, completing the Phase 2A–2F
+> engineering sequence: evaluated generators, governed data, a trained CPU model,
+> strict repair, distinct candidate search and experimental serving with fallback.
+> Independent real-plan and human-preference qualification remains open.
 > See the [traceability matrix](docs/REQUIREMENTS_TRACEABILITY.md) for the exact
 > implementation boundary.
 
@@ -16,7 +16,7 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 
 | Item | Status |
 |---|---|
-| Release | `v0.2.0-dev.5 - Phase 2E constrained neural repair` |
+| Release | `v0.2.0-alpha.1 - Phase 2 model development preview` |
 | Application | Executable Flask editor with benchmarked baseline and solver candidate |
 | Cost | No paid API or runtime dependency |
 | Deployment | Local, Docker, or free-tier Render |
@@ -33,20 +33,24 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 | Phase 2C | Governed room graphs, deduplication, splits and 592-plan synthetic pilot | [Data contract](docs/TRAINING_DATA_PIPELINE.md) |
 | Phase 2D | Reproducible supervised CPU graph model and held-out evaluation | [Experiment](reports/phase2d-baseline.md) |
 | Phase 2E | Strict proposal repair, distinct-concept selection and matched evaluation | [Repair report](reports/phase2e-repair.md) |
+| Phase 2F | Bounded diverse search, experimental serving/fallback and fresh qualification | [Protocol](docs/PHASE2F_PROTOCOL.md) |
 
-Phase 2E repairs overlapping proposals from the frozen Phase 2D model using
-corridor-slot constraints. Every one of the 100 benchmark briefs returns at least
-one strictly valid plan: 443 total, all with connected door circulation and no
-room overlaps. Adjacency satisfaction is 99.48%, versus the heuristic's 65.54%.
+Phase 2F expands repaired proposals into five pairwise distinct concepts within
+ArchAI's supported corridor layout family. Every experimental response passes
+independent geometry, room-program, circulation and duplicate checks. The default
+application continues to use the deterministic generator; an operator can enable
+the frozen neural engine with an automatic, observable fallback.
 
-Only 79% of briefs return at least four distinct concepts and 72% return five.
-The matched reference-plus-repair scores 99.62% adjacency, so this result does not
-establish neural superiority. The application continues to use its deterministic
-five-concept generator. External datasets remain pending source admission.
+Use the [training guide](docs/LEARNED_BASELINE.md) to reproduce the checkpoint and
+[Phase 2F protocol](docs/PHASE2F_PROTOCOL.md) for qualification and serving setup.
+PyTorch and OR-Tools are optional; no paid service is required. External datasets
+remain pending source admission. A qualified model release also requires real-plan
+validation, human preference evidence and demonstrated neural quality benefit.
 
-Use the [training guide](docs/LEARNED_BASELINE.md) to reproduce the frozen CPU run,
-then the [repair contract](docs/CONSTRAINT_REPAIR.md) to evaluate it. PyTorch and
-OR-Tools remain optional research dependencies; no paid service is required.
+The [Phase 2F qualification report](reports/phase2f-qualification.md) records
+five strict valid distinct concepts for every one of 100 held-out briefs and
+1,000 stress briefs. Holdout adjacency is 99.14% versus 65.36% for the baseline;
+observed warm CPU p95 is 0.799 seconds on the measured runner.
 
 ## Working features
 
@@ -59,7 +63,7 @@ OR-Tools remain optional research dependencies; no paid service is required.
 - furniture-use and accessibility clearance overlays;
 - preliminary checks for dimensions, overlaps, bounds, connectivity, functional
   adjacency, daylight potential, and large-plan egress review;
-- local parametric cost estimate with a budget comparison;
+- local parametric cost estimate for the complete building footprint, with a budget comparison;
 - dependency-free orbitable 3D concept massing;
 - JSON, SVG, PNG, vector PDF, and Wavefront OBJ downloads plus browser printing;
 - responsive, keyboard-accessible interface;
@@ -201,6 +205,7 @@ service replacement or redeployment.
 - [Dataset governance](docs/DATASET_GOVERNANCE.md)
 - [External dataset candidate register](docs/DATASET_CANDIDATES.md)
 - [Evaluation protocol](docs/EVALUATION_PROTOCOL.md)
+- [Phase 2F qualification and experimental serving](docs/PHASE2F_PROTOCOL.md)
 - [Constraint repair and reproduction](docs/CONSTRAINT_REPAIR.md)
 - [Learned baseline and reproduction](docs/LEARNED_BASELINE.md)
 - [Generator model card](docs/MODEL_CARD.md)

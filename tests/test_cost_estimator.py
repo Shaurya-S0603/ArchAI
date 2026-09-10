@@ -1,10 +1,12 @@
 """A fixed building envelope has one cost regardless of its interior partition."""
 
+import json
 from copy import deepcopy
 from dataclasses import replace
 
 import pytest
 
+from archai.database import get_db
 from archai.evaluation.benchmark import evaluate_benchmark
 from archai.evaluation.cohorts import phase2f_cohorts
 from archai.evaluation.comparison import compare_reports
@@ -40,3 +42,25 @@ def test_comparisons_reject_different_cost_semantics():
     old.pop("cost_model_version")
     with pytest.raises(ValueError, match="same cost model"):
         compare_reports(old, current)
+
+
+def test_loading_saved_project_refreshes_legacy_cost_version(app, client, brief):
+    generated = client.post("/api/v1/layouts/generate", json=brief).get_json()
+    response = client.post("/api/v1/projects", json={
+        "name": "Legacy quote", "brief": generated["brief"],
+        "results": generated["results"], "active_index": 0})
+    saved = response.get_json()["project"]
+    old_results = deepcopy(saved["results"])
+    for result in old_results:
+        result["cost"].pop("cost_model_version")
+        result["cost"]["estimated_total"] = 1
+    with app.app_context():
+        db = get_db()
+        db.execute("UPDATE projects SET results_json = ? WHERE id = ?",
+                   (json.dumps(old_results), saved["id"]))
+        db.commit()
+    loaded = client.get(f"/api/v1/projects/{saved['id']}").get_json()["project"]
+    assert loaded["schema_version"] == saved["schema_version"] == 3
+    assert [r["cost"] for r in loaded["results"]] == [r["cost"] for r in saved["results"]]
+    assert [r["layout"]["rooms"] for r in loaded["results"]] == [
+        r["layout"]["rooms"] for r in saved["results"]]

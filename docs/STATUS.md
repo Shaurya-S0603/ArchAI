@@ -1,72 +1,80 @@
 # ArchAI project status
 
-**Updated:** September 7, 2026
-**Development version:** `v0.2.0-dev.5` — Phase 2E constrained neural repair
-**Review:** `development` into `main`, draft PR #2
+**Updated:** September 10, 2026
 
-The repair component is implemented and evaluated. The complete learned generator
-is not ready for product integration: distinct five-concept output and measurable
-neural benefit remain open. The Flask application uses the deterministic generator.
+**Development preview:** `v0.2.0-alpha.1` — Phase 2A–2F engineering delivery
 
-## Delivered
+**Release review:** [PR #2](https://github.com/Shaurya-S0603/ArchAI/pull/2)
 
-| Area | Current capability | Evidence |
+Phase 2F closes the synthetic five-concept generation and experimental serving
+gates. The full model remains unqualified for default promotion: independent
+real-plan validation, human preference and neural quality benefit remain open.
+The default application uses the deterministic generator.
+
+## Delivered against the execution plan
+
+| Increment | Delivered |
+|---|---|
+| 2A–2B | Frozen evaluation, transparent metrics and optional CP-SAT baseline |
+| 2C | Governed room graphs, grouped splits and 592 admitted synthetic plans |
+| 2D | Reproducible 60,261-parameter CPU model; frozen epoch-96 checkpoint |
+| 2E | Strict proposal repair, topology validation and matched comparison |
+| 2F | Bounded distinct search, verified experimental serving/fallback and fresh qualification |
+
+## Evidence and release gates
+
+| Gate | Evidence | Status |
 |---|---|---|
-| Editor | SQLite persistence, room editing, topology, zoning, 2D/3D and exports | [Changelog](../CHANGELOG.md) |
-| Evaluation | Frozen 100-brief benchmark and optional CP-SAT generator | [Protocol](EVALUATION_PROTOCOL.md) |
-| Data | Governed canonical room graphs; 592 admitted synthetic plans | [Pipeline](TRAINING_DATA_PIPELINE.md) |
-| Learning | Frozen 60,261-parameter CPU model, validation-selected epoch 96 | [Experiment](../reports/phase2d-baseline.md) |
-| Repair | Constrained slot assignment, independent strict validation and distinct selection | [Contract](CONSTRAINT_REPAIR.md) |
+| Fresh development/validation | 32 + 32 briefs, five valid distinct plans each | Pass |
+| Locked release holdout | 100 briefs, 500 strict valid distinct plans | Pass |
+| Adjacency gain | 65.36% baseline to 99.14%, +33.78 percentage points | Pass |
+| Warm CPU p95 below 5 seconds | 0.799 s holdout; 0.785 s stress | Pass on measured runner |
+| 1,000-brief stress | 5,000 valid distinct plans; zero failed briefs/crashes | Pass |
+| Experimental API and fallback | Repeated-model responses, rejection paths and missing-model fallback tested | Pass |
+| Neural superiority | Matched reference adjacency 99.67%; both return five distinct plans | Open |
+| Independent licensed real plans | No external source admitted | Open |
+| Blinded preference above 60% | No human preference study completed | Open |
+| Learned ranking | Transparent metric ranker retained; preference data required | Open |
 
-## Phase 2E evidence and release gates
+All raw neural proposals still overlap; strict repair is mandatory. Diversity
+covers room proportions within the supported corridor family. Timing excludes
+cold startup, concurrent queueing and HTTP transport.
 
-All 100 benchmark briefs return valid repair: 443 layouts, all with exact room
-programs, valid dimensions/areas, no overlaps, complete footprint coverage,
-connected doors, entry and habitable-room windows. The raw model overlaps on
-every benchmark brief. Repair does not certify structural or regulatory compliance.
-
-| Gate | Result | Status |
-|---|---|---|
-| At least one strict repair per benchmark brief | 100/100 | Pass |
-| Adjacency gain over the heuristic | 65.54% to 99.48%, +33.94 percentage points | Pass |
-| Four distinct concepts per brief | 79/100 | Open |
-| Five-concept output contract | 72/100 | Open |
-| Observed warm CPU p95 under 5 seconds | 0.970 s in the final feature run | Pass on measured runner |
-| Neural improvement over matched repair reference | Adjacency 99.48% vs 99.62%; five-concept rate 72% vs 68% | Mixed; superiority unproven |
-| Fresh-brief repair stress | 1,000/1,000 valid; 4,447 layouts; zero crashes | Pass for repair |
-| Full five-concept stress contract | Five concepts for 71.1% of stress briefs | Open |
-| Independent licensed real-plan validation | No external source admitted | Open |
-| Blinded preference above 60% and product fallback integration | Not evaluated/integrated | Open |
-
-The [repair report](../reports/phase2e-repair.md) contains run links, exact timings,
-stress results, immutable model/data identities and the remaining generator gates.
-The [roadmap](ROADMAP.md) records the next development slice.
+The [qualification report](../reports/phase2f-qualification.md) includes exact
+model/data/cohort identities, all observed metrics, run/artifact links and the
+initial budget-gate failure. The correction charges the complete building
+footprint consistently; no geometry, diversity or comparison threshold was relaxed.
+Saved projects with an old cost version are reanalyzed when loaded.
 
 ## Verification and repository hygiene
 
-CI separately verifies backend tests/coverage, baseline regression, solver
-comparison, pilot integrity, ML/repair tests and frozen training, repaired-model
-comparison, and Chromium/accessibility. The repaired research module has 53 tests;
-the web/backend suite has 68, with 98.62% and 94.06% coverage respectively.
-All seven jobs pass on the corrected Phase 2E feature commit. Runtime verification is performed in GitHub Actions;
-local checks cover compiled source, JavaScript syntax, links and whitespace.
+The qualification commit passes all eight CI jobs: backend, baseline, solver,
+dataset, learned model, repair, diversity and Chromium/accessibility. The ML/serving
+suite has 71 passing tests at 98.22% coverage. The final local backend suite has
+87 passing tests at 94.07%, including saved-cost refresh. Two-worker/four-thread
+Gunicorn generation and PDF export pass. Python lint, JavaScript syntax and
+documentation links are clean.
 
-Historical release notes are consolidated in one changelog. Repeated README and
-status material and obsolete feature-branch workflow entries are removed. Frozen
-reports, benchmark inputs, source provenance and small QA fixtures are retained
-because they support reproducibility. Generated datasets, checkpoints, databases,
-build output and runtime reports belong outside tracked source. The production
-Docker context is limited to web runtime files.
+Version/configuration/documentation changes and saved-cost refresh follow the
+qualification commit; the model, generation algorithm and cohorts are unchanged.
+Standard CI repeats development/validation gates. The published holdout/stress
+regression can be requested manually; future model tuning needs a new holdout.
 
-## Next actions and decisions
+Historical release notes are consolidated in [the changelog](../CHANGELOG.md).
+Frozen reports, source provenance and the small QA fixture are retained.
+Datasets, checkpoints, databases, build output and runtime reports remain outside
+tracked source. Temporary feature-only CI triggers are removed from the alpha.
 
-1. Phase 2F: improve distinct proposals/templates under the same strict constraints.
-2. Use fresh development/validation briefs for iteration and a new locked release
-   holdout; do not tune against the already reported benchmark/test results.
-3. Demonstrate a neural contribution against the matched reference and strong
-   CP-SAT baseline before production integration.
-4. Complete real-plan source admission and blinded human evaluation. No decision
-   is needed to continue synthetic research. Source licensing requires review
-   before external data or restricted checkpoints are introduced.
+## Prioritized next sprint
 
-Promotion of draft PR #2 to `main` remains a separate user decision.
+1. Demonstrate neural benefit using identical repair budgets and new evaluation
+   cohorts; expand beyond the deterministic corridor teacher family.
+2. Review and admit a licensed real-plan source, then validate its adapter and
+   held-out generalization.
+3. Establish blinded, consented pairwise preference evaluation; learn ranking only
+   when suitable evidence exists.
+4. Revisit default neural promotion after those gates pass.
+
+Decisions needed for later research: intended checkpoint distribution rights,
+which real-plan source to admit after review, and the human evaluation protocol.
+See [roadmap](ROADMAP.md) and [experimental setup](PHASE2F_PROTOCOL.md).
