@@ -1,95 +1,80 @@
-# ArchAI - Project Status
+# ArchAI project status
 
-**Last updated:** September 1, 2026
+**Updated:** September 10, 2026
 
-**Release branch:** `development` (draft review into `main`)
+**Development preview:** `v0.2.0-alpha.1` — Phase 2A–2F engineering delivery
 
-**Current milestone:** Phase 1 complete - v0.1 development preview
+**Release review:** [PR #2](https://github.com/Shaurya-S0603/ArchAI/pull/2)
 
-## Overall status
+Phase 2F closes the synthetic five-concept generation and experimental serving
+gates. The full model remains unqualified for default promotion: independent
+real-plan validation, human preference and neural quality benefit remain open.
+The default application uses the deterministic generator.
 
-ArchAI now supports local project persistence, constrained room resizing, semantic
-plan topology, deterministic furniture/accessibility zones, and printable plan
-output while retaining the Python, Flask, HTML, CSS, and JavaScript stack.
-The development preview is an editor release, not the complete trained AI,
-BIM, code-certification, or VR product described in the research plan.
+## Delivered against the execution plan
 
-**Project health:** green for Phase 1, research-stage for later phases.
+| Increment | Delivered |
+|---|---|
+| 2A–2B | Frozen evaluation, transparent metrics and optional CP-SAT baseline |
+| 2C | Governed room graphs, grouped splits and 592 admitted synthetic plans |
+| 2D | Reproducible 60,261-parameter CPU model; frozen epoch-96 checkpoint |
+| 2E | Strict proposal repair, topology validation and matched comparison |
+| 2F | Bounded distinct search, verified experimental serving/fallback and fresh qualification |
 
-## Implemented
+## Evidence and release gates
 
-- Flask application factory, production WSGI entrypoint, and versioned JSON API;
-- validated residential design survey;
-- five deterministic corridor/perimeter layout concepts;
-- room adjacency graph and ranking metrics;
-- generic preliminary rule checks with clear professional-review boundaries;
-- parametric local cost baseline and budget comparison;
-- editable SVG plan with pointer/keyboard movement and undo/redo;
-- interactive browser 3D massing preview;
-- JSON, SVG, PNG, vector PDF, and OBJ exports plus browser printing;
-- Windows and Unix launchers, Dockerfile, and free Render blueprint;
-- automated Python tests and lint configuration;
-- architecture, traceability, roadmap, and corrected model documentation.
+| Gate | Evidence | Status |
+|---|---|---|
+| Fresh development/validation | 32 + 32 briefs, five valid distinct plans each | Pass |
+| Locked release holdout | 100 briefs, 500 strict valid distinct plans | Pass |
+| Adjacency gain | 65.36% baseline to 99.14%, +33.78 percentage points | Pass |
+| Warm CPU p95 below 5 seconds | 0.799 s holdout; 0.785 s stress | Pass on measured runner |
+| 1,000-brief stress | 5,000 valid distinct plans; zero failed briefs/crashes | Pass |
+| Experimental API and fallback | Repeated-model responses, rejection paths and missing-model fallback tested | Pass |
+| Neural superiority | Matched reference adjacency 99.67%; both return five distinct plans | Open |
+| Independent licensed real plans | No external source admitted | Open |
+| Blinded preference above 60% | No human preference study completed | Open |
+| Learned ranking | Transparent metric ranker retained; preference data required | Open |
 
-## Phase 1A implemented
+All raw neural proposals still overlap; strict repair is mandatory. Diversity
+covers room proportions within the supported corridor family. Timing excludes
+cold startup, concurrent queueing and HTTP transport.
 
-- SQLite project store with a forward-only migration ledger;
-- save, list, load, update, and delete project API routes;
-- server-side schema validation plus compliance and cost recomputation on save;
-- browser project library with accessible status feedback;
-- four corner resize handles with grid snapping, footprint bounds, minimum room
-  dimensions, and room-type minimum areas;
-- undo/redo support for move and resize operations.
+The [qualification report](../reports/phase2f-qualification.md) includes exact
+model/data/cohort identities, all observed metrics, run/artifact links and the
+initial budget-gate failure. The correction charges the complete building
+footprint consistently; no geometry, diversity or comparison threshold was relaxed.
+Saved projects with an old cost version are reanalyzed when loaded.
 
-## Phase 1B implemented
+## Verification and repository hygiene
 
-- one continuous 1.8 m corridor spine in every generated concept;
-- perimeter room strips that preserve minimum dimensions and corridor access;
-- deterministic deduplicated exterior, interior, and exposed-boundary walls;
-- a connected spanning set of interior doors plus one exterior entry door;
-- exterior windows for every generated habitable room;
-- automatic wall/opening rebuilding after geometry edits;
-- topology-aware compliance and accessibility door-width feedback;
-- semantic topology in JSON persistence and SVG exports;
-- automatic schema v1 to schema v2 project upgrades on load.
+The qualification commit passes all eight CI jobs: backend, baseline, solver,
+dataset, learned model, repair, diversity and Chromium/accessibility. The ML/serving
+suite has 71 passing tests at 98.22% coverage. The final local backend suite has
+87 passing tests at 94.07%, including saved-cost refresh. Two-worker/four-thread
+Gunicorn generation and PDF export pass. Python lint, JavaScript syntax and
+documentation links are clean.
 
-## Phase 1C implemented
+Version/configuration/documentation changes and saved-cost refresh follow the
+qualification commit; the model, generation algorithm and cohorts are unchanged.
+Standard CI repeats development/validation gates. The published holdout/stress
+regression can be requested manually; future model tuning needs a new holdout.
 
-- deterministic furniture-use zones for supported room types;
-- door-approach clearances derived from semantic openings;
-- 1.5 m turning-circle overlays for accessible bathrooms and circulation space;
-- automatic zoning rebuilding after generation, editing, analysis, save, and load;
-- schema v3 project snapshots with automatic upgrades from schemas v1 and v2;
-- browser-native PNG downloads and print-specific page styling;
-- vector A3 landscape PDF plan sheets with title block, scale, north arrow,
-  planning checks, and a professional-review disclaimer;
-- free, local PDF generation with the BSD-licensed ReportLab toolkit.
+Historical release notes are consolidated in [the changelog](../CHANGELOG.md).
+Frozen reports, source provenance and the small QA fixture are retained.
+Datasets, checkpoints, databases, build output and runtime reports remain outside
+tracked source. Temporary feature-only CI triggers are removed from the alpha.
 
-## Phase 1D quality gate implemented
+## Prioritized next sprint
 
-- exact numeric room editing as a no-drag alternative;
-- keyboard-operated concept tabs, room selection, movement, focus treatment, and
-  skip navigation;
-- minimum interactive target sizing and focus-obscuring safeguards;
-- serial Playwright coverage for generation, editing, undo, 3D switching,
-  persistence, reload, and PDF export;
-- automated axe checks for WCAG 2.0, 2.1, and 2.2 A/AA rules in initial and
-  generated interface states;
-- GitHub Actions jobs for Python quality and Chromium browser quality.
+1. Demonstrate neural benefit using identical repair budgets and new evaluation
+   cohorts; expand beyond the deterministic corridor teacher family.
+2. Review and admit a licensed real-plan source, then validate its adapter and
+   held-out generalization.
+3. Establish blinded, consented pairwise preference evaluation; learn ranking only
+   when suitable evidence exists.
+4. Revisit default neural promotion after those gates pass.
 
-## Verification
-
-- 21 backend tests passing with 92% Python statement coverage;
-- Python lint clean;
-- all JavaScript modules pass syntax checks;
-- Flask development and Gunicorn production entrypoints respond successfully.
-- browser tests and accessibility checks run locally and on the development CI workflow.
-
-## Next milestone
-
-Phase 2 begins with licensed-data provenance, evaluation metrics, and transparent
-baseline comparisons before any trained generator is shipped.
-
-The trained generator begins only after a licensed data pipeline and held-out
-evaluation framework are established. See `docs/ROADMAP.md` and
-`docs/REQUIREMENTS_TRACEABILITY.md`.
+Decisions needed for later research: intended checkpoint distribution rights,
+which real-plan source to admit after review, and the human evaluation protocol.
+See [roadmap](ROADMAP.md) and [experimental setup](PHASE2F_PROTOCOL.md).

@@ -1,0 +1,12 @@
+# Only the web runtime belongs in the production build context.
+**
+!Dockerfile
+!requirements.txt
+!LICENSE
+!app.py
+!wsgi.py
+!archai/
+!archai/**
+**/__pycache__/
+**/*.pyc
+**/*.pyo

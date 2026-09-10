@@ -1,0 +1,13 @@
+{
+  "version": "adaptive-corridor-diversity-v1",
+  "cost_model_version": "gross-footprint-v2",
+  "minimum_separation": 0.025,
+  "reflow_fractions": [0.5, 0.25, 0.75, 0.125, 0.875, 0.0, 1.0, 0.375, 0.625],
+  "maximum_search_nodes": 20000,
+  "cohorts": {
+    "development": {"seed": 20260908, "count": 32},
+    "validation": {"seed": 20260909, "count": 32},
+    "test": {"seed": 20260910, "count": 100},
+    "stress": {"seed": 20260911, "count": 1000}
+  }
+}

@@ -3,10 +3,10 @@
 This matrix separates what is executable now from what remains research or product
 work. It prevents roadmap statements from being mistaken for shipped capability.
 
-| Documented capability | v0.1 development status | Evidence / next step |
+| Documented capability | v0.2 development status | Evidence / next step |
 |---|---|---|
 | Structured design survey | Working | Browser form plus `DesignBrief` validation |
-| Five optimized layout concepts | Working baseline | Deterministic corridor/perimeter partition generation and adjacency scoring; ML is not yet used |
+| Five optimized layout concepts | Default baseline and experimental candidate | Deterministic layouts; optional frozen neural repair with bounded diversity and fallback |
 | Graph/shape-grammar planning | Partial | Corridor partitioning, room adjacency, and connected door graphs are implemented |
 | Drag-and-drop editing | Partial | Rooms can be moved and resized; wall/opening topology rebuilds after each edit; keyboard movement works |
 | Non-drag room editing | Working | Exact numeric position/dimension editor plus keyboard room movement |
@@ -20,7 +20,13 @@ work. It prevents roadmap statements from being mistaken for shipped capability.
 | Interactive 3D model | Partial | Orbitable browser massing preview; semantic openings are still limited to the 2D plan |
 | JSON/SVG/PNG/PDF/OBJ export | Working | Browser downloads, browser-native PNG rasterization, and Python OBJ/PDF endpoints |
 | IFC/BIM export | Not implemented | Add a semantic building model and IfcOpenShell exporter |
-| Trained neural/RL generator | Not implemented | Establish dataset licenses, evaluation set, baseline metrics, and reproducible training first |
+| Constraint-solver generator | Working candidate | CP-SAT candidate passes the frozen Phase 2B comparison and remains behind the offline evaluation boundary |
+| Trained neural generator | Experimental integration | Frozen graph model, strict repair and diversity; independent real-plan quality and neural superiority remain unqualified |
+| Neural constraint repair | Working research component | Exact program, strict geometry/coverage and rebuilt connected doors; 100-brief repair gate passes |
+| Distinct learned concepts | Partial | At least four distinct repairs for 79% of briefs and five for 72%; no duplicate padding |
+| Reinforcement-learning fine-tuning | Not implemented | Establish a valid supervised hybrid and evidence before an optional RL experiment |
+| Versioned generator evaluation | Working baseline | 100 synthetic briefs, immutable digest, fixed splits, independent metrics, reports, and CI gates |
+| Dataset governance | Working policy | Kaggle and original-source candidates are registered but excluded until license, provenance, privacy, split, derivative, and redistribution review |
 | Site/sun/wind analysis | Not implemented | Add geospatial input and verified environmental model |
 | VR/AR walkthrough | Not implemented | Build WebXR experience after stable 3D semantic geometry |
 | Structural integrity verification | Not implemented | Keep outside automated claims without a validated engineering integration |

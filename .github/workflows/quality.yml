@@ -1,6 +1,12 @@
 name: Quality
 
 on:
+  workflow_dispatch:
+    inputs:
+      release_qualification:
+        description: "Repeat the published release holdout and 1000-brief stress regression"
+        type: boolean
+        default: false
   push:
     branches: [main, development]
   pull_request:
@@ -24,6 +30,181 @@ jobs:
         run: ruff check .
       - name: Test Python
         run: pytest --cov=archai --cov-fail-under=90
+
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Evaluate deterministic baseline
+        run: >-
+          python -m archai.evaluation
+          --enforce
+          --json benchmark-artifacts/baseline.json
+          --markdown benchmark-artifacts/baseline.md
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2a-benchmark
+          path: benchmark-artifacts/
+          retention-days: 30
+
+  solver-comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install solver dependencies
+        run: python -m pip install -r requirements-solver.txt
+      - name: Compare CP-SAT candidate to the frozen baseline
+        run: >-
+          python -m archai.evaluation.comparison
+          --enforce
+          --json solver-artifacts/comparison.json
+          --markdown solver-artifacts/comparison.md
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2b-solver-comparison
+          path: solver-artifacts/
+          retention-days: 30
+
+  dataset-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install application dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Build and verify the synthetic pilot
+        run: |
+          python -m archai.datasets pilot --output dataset-artifacts/pilot --count 120
+          python -m archai.datasets validate dataset-artifacts/pilot
+      - name: Verify frozen pilot geometry and split counts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          actual = json.loads(Path('dataset-artifacts/pilot/report.json').read_text())
+          expected = json.loads(Path('reports/phase2c-dataset.json').read_text())
+          assert actual == expected, 'Pilot regression: review preprocessing/version changes'
+          PY
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2c-synthetic-pilot
+          path: dataset-artifacts/
+          retention-days: 30
+
+  learned-baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install test and optional CPU model dependencies
+        run: |
+          python -m pip install -r requirements-dev.txt
+          python -m pip install -r requirements-ml.txt
+      - name: Test model, masks, splits and checkpoint integrity
+        run: pytest tests/test_ml.py tests/test_repair.py tests/test_diversity.py tests/test_generation_engine.py tests/test_qualification.py --cov=archai_ml --cov-fail-under=90
+      - name: Regenerate admitted pilot
+        run: python -m archai.datasets pilot --output ml-artifacts/pilot --count 120
+      - name: Train frozen supervised configuration using train and validation only
+        run: >-
+          python -m archai_ml train --dataset ml-artifacts/pilot
+          --output ml-artifacts/run --config ml/configs/phase2d-v1.json --enforce
+      - name: Evaluate selected checkpoint on held-out groups
+        run: >-
+          python -m archai_ml evaluate --dataset ml-artifacts/pilot
+          --run ml-artifacts/run --output ml-artifacts/test --split test
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2d-learned-baseline
+          path: ml-artifacts/
+          retention-days: 30
+
+  repair-comparison:
+    needs: learned-baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install CPU model and solver dependencies
+        run: |
+          python -m pip install -r requirements-dev.txt
+          python -m pip install -r requirements-ml.txt
+      - uses: actions/download-artifact@v8
+        with:
+          name: phase2d-learned-baseline
+          path: repair-artifacts/frozen
+      - name: Evaluate frozen neural repair and matched reference on all 100 briefs
+        run: >-
+          python -m archai_ml.repair_evaluation --run repair-artifacts/frozen/run
+          --output repair-artifacts/comparison --config ml/configs/phase2e-v1.json --enforce
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2e-repair-comparison
+          path: repair-artifacts/comparison/
+          retention-days: 30
+
+  diversity-comparison:
+    needs: learned-baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install CPU model and solver dependencies
+        run: |
+          python -m pip install -r requirements-dev.txt
+          python -m pip install -r requirements-ml.txt
+      - uses: actions/download-artifact@v8
+        with:
+          name: phase2d-learned-baseline
+          path: diversity-artifacts/frozen
+      - name: Evaluate fresh development and validation cohorts with matched reference
+        run: >-
+          python -m archai_ml.qualification --run diversity-artifacts/frozen/run
+          --output diversity-artifacts/development --stage development --enforce
+      - name: Repeat release holdout and one thousand stress briefs
+        if: github.event_name == 'workflow_dispatch' && inputs.release_qualification
+        run: >-
+          python -m archai_ml.qualification --run diversity-artifacts/frozen/run
+          --output diversity-artifacts/release --stage release --enforce
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2f-diversity
+          path: |
+            diversity-artifacts/development/
+            diversity-artifacts/release/
+          retention-days: 30
 
   browser:
     runs-on: ubuntu-latest

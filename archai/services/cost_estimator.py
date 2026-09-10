@@ -6,6 +6,8 @@ from typing import Any
 
 from archai.models import DesignBrief, Layout
 
+COST_MODEL_VERSION = "gross-footprint-v2"
+
 STYLE_RATE_SGD_M2 = {
     "modern": 2650.0,
     "classic": 3100.0,
@@ -30,7 +32,10 @@ def estimate_cost(layout: Layout, brief: DesignBrief) -> dict[str, Any]:
     base_rate = STYLE_RATE_SGD_M2[brief.style]
     sustainability_factor = 1.06 if brief.sustainability else 1.0
     complexity_factor = 1.0 + max(0, len(layout.rooms) - 8) * 0.012
-    total_sgd = layout.floor_area * base_rate * sustainability_factor * complexity_factor
+    # Structure, roof and circulation occupy the complete building footprint.
+    # Interior rounding gaps must not earn a discount, nor overlaps a surcharge.
+    gross_area = layout.building_bounds["width"] * layout.building_bounds["depth"]
+    total_sgd = gross_area * base_rate * sustainability_factor * complexity_factor
     conversion = CURRENCY_FROM_SGD[brief.currency]
     total = total_sgd * conversion
     rate = base_rate * sustainability_factor * complexity_factor * conversion
@@ -41,7 +46,8 @@ def estimate_cost(layout: Layout, brief: DesignBrief) -> dict[str, Any]:
     ]
     return {
         "currency": brief.currency,
-        "floor_area_m2": round(layout.floor_area, 2),
+        "cost_model_version": COST_MODEL_VERSION,
+        "floor_area_m2": round(gross_area, 2),
         "rate_per_m2": round(rate, 2),
         "estimated_total": round(total, 2),
         "budget": round(brief.budget, 2),
@@ -49,6 +55,7 @@ def estimate_cost(layout: Layout, brief: DesignBrief) -> dict[str, Any]:
         "within_budget": budget_delta >= 0 if budget_delta is not None else None,
         "breakdown": breakdown,
         "assumptions": [
+            "Costs cover the complete building footprint, including circulation and unassigned space.",
             "Concept-stage baseline rates are stored locally and are not live supplier quotations.",
             "Land, tax, financing, professional fees, permits, and unusual site work are excluded.",
             "Replace the editable regional rate table before relying on any project decision.",

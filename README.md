@@ -5,9 +5,10 @@ residential design brief into five editable 2D layout directions. It provides
 transparent preliminary planning checks, an editable cost baseline, an interactive
 3D massing preview, and JSON/SVG/PNG/PDF/OBJ export.
 
-> **Current development preview:** `v0.1.0-dev.1`, completing the Phase 1
-> architectural editor. It is not yet the trained AI, BIM,
-> jurisdictional compliance, or VR system described by the long-term research plan.
+> **Current development preview:** `v0.2.0-alpha.1`, completing the Phase 2A–2F
+> engineering sequence: evaluated generators, governed data, a trained CPU model,
+> strict repair, distinct candidate search and experimental serving with fallback.
+> Independent real-plan and human-preference qualification remains open.
 > See the [traceability matrix](docs/REQUIREMENTS_TRACEABILITY.md) for the exact
 > implementation boundary.
 
@@ -15,31 +16,41 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 
 | Item | Status |
 |---|---|
-| Release | `v0.1.0-dev.1 - Phase 1 complete` |
-| Application | Executable Flask architectural editor |
+| Release | `v0.2.0-alpha.1 - Phase 2 model development preview` |
+| Application | Executable Flask editor with benchmarked baseline and solver candidate |
 | Cost | No paid API or runtime dependency |
 | Deployment | Local, Docker, or free-tier Render |
 | License | MIT |
 | Safety boundary | Preliminary concepts only; not for construction |
 
-## Phase 1 delivery
+## Model development
 
-- local SQLite project library with forward-only schema migrations;
-- validated save, list, load, update, and delete project APIs;
-- four-corner room resizing with 0.25 m snapping, footprint limits, a 1.8 m
-  minimum dimension, and room-type minimum areas;
-- saved projects retain the brief, all five concepts, the selected concept,
-  analysis, and cost state;
-- server-side revalidation and recalculation before project data is stored.
-- continuous corridor spines with perimeter room strips;
-- deduplicated exterior, interior, and exposed room-boundary wall segments;
-- connected interior doors, an exterior entry door, and habitable-room windows;
-- automatic topology rebuilding after every move, resize, save, and legacy-project load;
-- deterministic furniture-use, door-approach, and accessibility turning zones;
-- browser PNG export, printable plan views, and vector A3 PDF plan sheets;
-- schema v3 project snapshots with automatic in-memory upgrade from schemas v1 and v2;
-- no-drag numeric room editing and keyboard-operable concept tabs;
-- Playwright end-to-end coverage and automated axe WCAG 2.2 A/AA checks in CI.
+| Milestone | Delivered | Evidence |
+|---|---|---|
+| Phase 1 | Persistent, editable 2D/3D plans, topology, zoning, exports and browser accessibility checks | [Changelog](CHANGELOG.md) |
+| Phase 2A | Frozen 100-brief generator benchmark and CI regression gates | [Baseline](reports/phase2a-baseline.md) |
+| Phase 2B | Optional CP-SAT generator and reviewed dataset candidate register | [Comparison](reports/phase2b-comparison.md) |
+| Phase 2C | Governed room graphs, deduplication, splits and 592-plan synthetic pilot | [Data contract](docs/TRAINING_DATA_PIPELINE.md) |
+| Phase 2D | Reproducible supervised CPU graph model and held-out evaluation | [Experiment](reports/phase2d-baseline.md) |
+| Phase 2E | Strict proposal repair, distinct-concept selection and matched evaluation | [Repair report](reports/phase2e-repair.md) |
+| Phase 2F | Bounded diverse search, experimental serving/fallback and fresh qualification | [Protocol](docs/PHASE2F_PROTOCOL.md) |
+
+Phase 2F expands repaired proposals into five pairwise distinct concepts within
+ArchAI's supported corridor layout family. Every experimental response passes
+independent geometry, room-program, circulation and duplicate checks. The default
+application continues to use the deterministic generator; an operator can enable
+the frozen neural engine with an automatic, observable fallback.
+
+Use the [training guide](docs/LEARNED_BASELINE.md) to reproduce the checkpoint and
+[Phase 2F protocol](docs/PHASE2F_PROTOCOL.md) for qualification and serving setup.
+PyTorch and OR-Tools are optional; no paid service is required. External datasets
+remain pending source admission. A qualified model release also requires real-plan
+validation, human preference evidence and demonstrated neural quality benefit.
+
+The [Phase 2F qualification report](reports/phase2f-qualification.md) records
+five strict valid distinct concepts for every one of 100 held-out briefs and
+1,000 stress briefs. Holdout adjacency is 99.14% versus 65.36% for the baseline;
+observed warm CPU p95 is 0.799 seconds on the measured runner.
 
 ## Working features
 
@@ -52,7 +63,7 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 - furniture-use and accessibility clearance overlays;
 - preliminary checks for dimensions, overlaps, bounds, connectivity, functional
   adjacency, daylight potential, and large-plan egress review;
-- local parametric cost estimate with a budget comparison;
+- local parametric cost estimate for the complete building footprint, with a budget comparison;
 - dependency-free orbitable 3D concept massing;
 - JSON, SVG, PNG, vector PDF, and Wavefront OBJ downloads plus browser printing;
 - responsive, keyboard-accessible interface;
@@ -73,6 +84,9 @@ verify any design used for permitting, procurement, or construction.
 | Plan sheets | ReportLab vector PDF generation |
 | Production server | Gunicorn |
 | Tests | Pytest, Playwright, and axe-core |
+| Evaluation | Versioned JSONL benchmark and standard-library Python harness |
+| Optional learned model | PyTorch CPU graph regressor and constrained proposal repair |
+| Optional solver | OR-Tools CP-SAT 9.15 (research/evaluation extra) |
 | Packaging | Local virtual environment or Docker |
 
 "Java" is interpreted as **JavaScript** for this web project. The current
@@ -120,11 +134,25 @@ ruff check .
 npm ci
 npx playwright install chromium
 npm run test:e2e
+python -m archai.evaluation --enforce
+python -m archai.evaluation.comparison --enforce
 ```
 
 The browser suite starts its own local Flask server, exercises the complete
 generate/edit/save/load/export workflow, and checks initial and generated states
 for automated WCAG 2.2 A/AA violations.
+
+The generator benchmark evaluates the committed 100-case dataset and returns a
+non-zero exit code if a required quality threshold regresses. To save fresh reports without overwriting the frozen evidence:
+
+```bash
+python -m archai.evaluation --enforce \
+  --json benchmark-artifacts/baseline.json \
+  --markdown benchmark-artifacts/baseline.md
+python -m archai.evaluation.comparison --enforce \
+  --json solver-artifacts/comparison.json \
+  --markdown solver-artifacts/comparison.md
+```
 
 ## Docker
 
@@ -168,12 +196,18 @@ service replacement or redeployment.
 
 ## Project documentation
 
+- [Release changelog](CHANGELOG.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Requirements traceability](docs/REQUIREMENTS_TRACEABILITY.md)
 - [Delivery roadmap](docs/ROADMAP.md)
 - [Current project status](docs/STATUS.md)
 - [Accessibility audit](docs/ACCESSIBILITY_AUDIT.md)
-- [v0.1 development release notes](docs/RELEASE_NOTES_v0.1.0-dev.1.md)
+- [Dataset governance](docs/DATASET_GOVERNANCE.md)
+- [External dataset candidate register](docs/DATASET_CANDIDATES.md)
+- [Evaluation protocol](docs/EVALUATION_PROTOCOL.md)
+- [Phase 2F qualification and experimental serving](docs/PHASE2F_PROTOCOL.md)
+- [Constraint repair and reproduction](docs/CONSTRAINT_REPAIR.md)
+- [Learned baseline and reproduction](docs/LEARNED_BASELINE.md)
 - [Generator model card](docs/MODEL_CARD.md)
 - [Contribution guide](CONTRIBUTING.md)
 

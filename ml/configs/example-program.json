@@ -1,0 +1,4 @@
+{
+  "footprint_m": [16, 20],
+  "room_types": ["bathroom", "bedroom", "bedroom", "corridor", "dining", "kitchen", "living"]
+}

@@ -23,24 +23,56 @@
 - [x] printable plan sheets and PNG/PDF export;
 - [x] end-to-end browser tests and WCAG 2.2 AA audit.
 
-Current development release: `v0.1.0-dev.1` completes Phase 1 with deterministic
+The `v0.1.0-dev.1` release completed Phase 1 with deterministic
 zoning, printable PNG/PDF output, no-drag room editing, browser workflow tests,
 and automated WCAG 2.2 A/AA checks.
 
 Exit condition: a saved project can be edited, reloaded, printed, and exported
 without geometry corruption. **Satisfied by the v0.1 development preview.**
 
-## Phase 2 - Evaluated generative intelligence
+## Phase 2 - Model development preview and qualification
 
-- document dataset licenses, provenance, exclusions, and splits;
-- establish heuristic and constraint-solver baselines;
-- define validity, adjacency, diversity, and user-alignment metrics;
-- train a model only when it beats the baseline on a held-out evaluation set;
-- publish reproducible training scripts, checkpoints, model card, and failure cases;
-- keep the deterministic generator as a no-GPU fallback.
+The Phase 2A–2F engineering sequence delivers a reproducible synthetic model
+pipeline and an experimental application integration. A qualified model release
+still requires the research gates below. This distinction remains explicit in
+`v0.2.0-alpha.1`; merging the preview does not certify the model.
 
-Exit condition: the trained generator is measurably better than the transparent
-baseline and never bypasses hard constraints.
+Implemented:
+
+- [x] dataset licensing, provenance, exclusions and grouped splits;
+- [x] frozen generator benchmark, transparent metrics and CI regression gates;
+- [x] optional CP-SAT baseline and governed room-graph preprocessing;
+- [x] reproducible supervised CPU graph model and validation-selected checkpoint;
+- [x] independent strict geometry, program, circulation and window validation;
+- [x] bounded candidate expansion and pairwise distinct selection;
+- [x] operator-enabled experimental engine, checkpoint integrity and tested fallback;
+- [x] prospective development, validation, release and 1,000-brief stress protocol;
+- [x] model card, failure evidence, reproduction commands and runtime packaging.
+
+The [Phase 2F protocol](PHASE2F_PROTOCOL.md) defines the final engineering checks.
+The [qualification report](../reports/phase2f-qualification.md) passes those checks:
+five strict valid distinct plans for every 100-brief holdout and 1,000-brief stress
+input, with observed warm p95 below one second on the measured runner.
+The immutable Phase 2A–2E reports remain historical comparisons, including the
+Phase 2E five-concept shortfall and the original room-area cost calculation.
+
+Remaining model qualification, in priority order:
+
+1. Demonstrate neural quality benefit against identical repair budgets and a
+   strong solver reference. The current deterministic proposal/teacher family
+   still limits topology diversity; more varied learned proposals need new
+   development cohorts and a new locked holdout.
+2. Admit an independently licensed real-plan source, validate its adapter and
+   evaluate generalization. Unresolved Kaggle provenance/rights remain quarantined.
+3. Collect blinded, consented preference judgments and meet the above-60% gate.
+   Train a learned ranker only when appropriate ranking data exists; transparent
+   metric ranking remains in this preview.
+4. Promote the neural engine to default only after those gates pass. Until then,
+   keep the deterministic engine available and report experimental fallback.
+
+No external-data decision is required to use the synthetic preview. Source rights,
+intended checkpoint distribution and the human evaluation protocol need review
+before those later research steps begin.
 
 ## Phase 3 - Semantic 3D and BIM
 

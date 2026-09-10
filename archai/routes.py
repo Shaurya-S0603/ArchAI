@@ -4,16 +4,16 @@ from __future__ import annotations
 
 from io import BytesIO
 
-from flask import Blueprint, jsonify, render_template, request, send_file
+from flask import Blueprint, current_app, jsonify, render_template, request, send_file
 
 from archai.models import DesignBrief, Layout
 from archai.services.compliance import analyze_compliance
 from archai.services.cost_estimator import estimate_cost
 from archai.services.exporter import layout_to_obj
+from archai.services.generation_engine import generate_for_app
 from archai.services.layout_generator import (
     calculate_layout_metrics,
     calculate_layout_score,
-    generate_layouts,
 )
 from archai.services.plan_exporter import layout_to_pdf
 from archai.services.project_store import (
@@ -45,7 +45,7 @@ def health():
 def generate():
     try:
         brief = DesignBrief.from_dict(request.get_json(silent=True) or {})
-        layouts = generate_layouts(brief)
+        layouts, generator = generate_for_app(current_app, brief)
         results = []
         for layout in layouts:
             compliance = analyze_compliance(layout, brief)
@@ -53,7 +53,7 @@ def generate():
             layout.score = layout.score * 0.75 + compliance["score"] * 0.25
             results.append({"layout": layout.to_dict(), "compliance": compliance, "cost": cost})
         results.sort(key=lambda item: item["layout"]["score"], reverse=True)
-        return jsonify({"brief": brief.to_dict(), "results": results})
+        return jsonify({"brief": brief.to_dict(), "results": results, "generator": generator})
     except ValueError as exc:
         return jsonify({"error": str(exc)}), 400
 

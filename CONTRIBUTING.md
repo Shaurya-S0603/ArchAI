@@ -1,6 +1,6 @@
 # Contributing to ArchAI
 
-Thank you for helping build ArchAI. The v0.1 development preview is a
+Thank you for helping build ArchAI. The v0.2 development preview is a
 Python/Flask application with a browser-native HTML, CSS, and JavaScript frontend.
 
 ## Development setup
@@ -30,16 +30,45 @@ Open `http://127.0.0.1:5000`.
 
 ```bash
 pytest
-ruff format --check .
 ruff check .
 node --check archai/static/js/app.js
 npm run test:e2e
+python -m archai.evaluation --enforce
+python -m archai.evaluation.comparison --enforce
 ```
 
 All tests and checks must pass. Add tests whenever backend behavior changes.
 For UI work, add or update Playwright coverage and verify keyboard navigation,
 visible focus, narrow-screen layout, reduced-motion behavior, and the axe A/AA
 audit in both initial and generated interface states.
+Changes to generation, topology, zoning, or compliance must also pass the full
+100-case benchmark. Include fresh JSON and Markdown reports when deliberately
+changing a frozen metric or threshold.
+Solver work must install `requirements-solver.txt` and pass the Phase 2B
+comparison. External data must be registered and approved under
+`docs/DATASET_GOVERNANCE.md` before any sample, cache, or derived artifact is
+committed.
+
+For ML or repair changes, install `requirements-ml.txt` after the development
+requirements and run:
+
+```bash
+pytest tests/test_ml.py tests/test_repair.py tests/test_diversity.py \
+  tests/test_generation_engine.py tests/test_qualification.py \
+  --cov=archai_ml --cov-fail-under=90
+```
+
+Follow the [training guide](docs/LEARNED_BASELINE.md),
+[repair protocol](docs/CONSTRAINT_REPAIR.md) and
+[Phase 2F protocol](docs/PHASE2F_PROTOCOL.md) for frozen experiment checks.
+Never overwrite historical benchmark reports with a new run: write fresh results
+to the ignored artifact directories and commit a new, named summary deliberately.
+
+Keep release history in [CHANGELOG.md](CHANGELOG.md), current gates in
+`docs/STATUS.md`, and upcoming work in `docs/ROADMAP.md`. Do not add duplicate
+per-release note files or commit generated data, checkpoints, build directories,
+package metadata or runtime reports. The production Docker context includes only
+the web runtime and its requirements; offline experiments stay outside that image.
 
 ## Branches and commits
 
@@ -65,6 +94,9 @@ Prefer Conventional Commit messages:
 - Do not add paid APIs or proprietary runtime dependencies to the default build.
 - Document the source, license, date, and assumptions for every dataset or
   regional rule pack.
+- Version benchmark data instead of mutating an existing dataset release.
+- Evaluate candidate generators through the shared `DesignBrief -> list[Layout]`
+  interface and keep hard constraints outside learned components.
 - Never commit credentials, personal data, generated virtual environments, or
   large model checkpoints.
 
