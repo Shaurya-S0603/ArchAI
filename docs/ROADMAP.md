@@ -74,6 +74,12 @@ No external-data decision is required to use the synthetic preview. Source right
 intended checkpoint distribution and the human evaluation protocol need review
 before those later research steps begin.
 
+Before default-engine promotion, [Phase 2G](PHASE2G_PROTOCOL.md) tests explicit
+concept conditioning against a same-capacity token ablation, a concept/type mean
+and an adjacency-only solver. Three predeclared training seeds and new grouped
+cohorts separate prediction improvement from post-repair quality. Validation-only
+results do not close the independent model-qualification gates above.
+
 ## Phase 3 - Semantic 3D and BIM
 
 - procedural wall, slab, door, window, and roof meshes;

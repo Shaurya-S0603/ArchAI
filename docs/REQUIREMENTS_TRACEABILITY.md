@@ -23,7 +23,8 @@ work. It prevents roadmap statements from being mistaken for shipped capability.
 | Constraint-solver generator | Working candidate | CP-SAT candidate passes the frozen Phase 2B comparison and remains behind the offline evaluation boundary |
 | Trained neural generator | Experimental integration | Frozen graph model, strict repair and diversity; independent real-plan quality and neural superiority remain unqualified |
 | Neural constraint repair | Working research component | Exact program, strict geometry/coverage and rebuilt connected doors; 100-brief repair gate passes |
-| Distinct learned concepts | Partial | At least four distinct repairs for 79% of briefs and five for 72%; no duplicate padding |
+| Distinct learned concepts | Qualified synthetic engineering preview | Phase 2F: five strict valid distinct concepts for all 100 holdout and 1,000 stress briefs; diversity remains within the corridor family |
+| Concept-conditioned learned proposals | Research implementation | Phase 2G pairs concept conditioning with a same-capacity token ablation and matched solver controls; validation evidence is required before a quality claim |
 | Reinforcement-learning fine-tuning | Not implemented | Establish a valid supervised hybrid and evidence before an optional RL experiment |
 | Versioned generator evaluation | Working baseline | 100 synthetic briefs, immutable digest, fixed splits, independent metrics, reports, and CI gates |
 | Dataset governance | Working policy | Kaggle and original-source candidates are registered but excluded until license, provenance, privacy, split, derivative, and redistribution review |

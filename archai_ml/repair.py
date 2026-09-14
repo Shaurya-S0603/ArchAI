@@ -171,8 +171,11 @@ def _slots(template, bounds):
     return slots
 
 
-def project_layout(brief, proposal, template, variant=0, config=DEFAULT_REPAIR_CONFIG):
+def project_layout(brief, proposal, template, variant=0, config=DEFAULT_REPAIR_CONFIG,
+                   *, proposal_weight=1):
     config.validate()
+    if type(proposal_weight) is not int or proposal_weight not in (0, 1):
+        raise ValueError("Proposal objective weight must be zero or one.")
     specs = validate_proposal(brief, proposal)
     bounds = building_bounds_for_brief(brief)
     if template.building_bounds != bounds:
@@ -230,7 +233,7 @@ def project_layout(brief, proposal, template, variant=0, config=DEFAULT_REPAIR_C
             adjacent = _same_side_neighbor(model, side_vars[i], side_vars[j],
                                            positions[i], positions[j], f"{i}-{j}")
             rewards.append(weight * adjacent)
-    model.minimize(sum(displacement) - config.adjacency_reward * sum(rewards))
+    model.minimize(proposal_weight * sum(displacement) - config.adjacency_reward * sum(rewards))
     solver = cp.CpSolver()
     solver.parameters.max_deterministic_time = config.deterministic_limit
     solver.parameters.num_search_workers = 1

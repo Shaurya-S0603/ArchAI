@@ -19,7 +19,7 @@ class RoomGraphModel(nn.Module):
         self.edge_head = nn.Sequential(nn.Linear(hidden_size * 2, hidden_size), nn.SiLU(),
                                        nn.Linear(hidden_size, 1))
 
-    def forward(self, inputs: dict) -> dict:
+    def forward(self, inputs: dict, context=None) -> dict:
         mask = inputs["room_mask"]
         m = mask.unsqueeze(-1)
         pair = mask.unsqueeze(1) & mask.unsqueeze(2)
@@ -28,6 +28,8 @@ class RoomGraphModel(nn.Module):
         h = torch.nn.functional.silu(self.input(torch.cat([
             self.embedding(inputs["type_ids"]), inputs["features"]
         ], dim=-1))) * m
+        if context is not None:
+            h = (h + context.unsqueeze(1)) * m
         for layer, norm in zip(self.messages, self.norms, strict=True):
             global_h = h.sum(1, keepdim=True) / m.sum(1, keepdim=True).clamp_min(1)
             neighbors = torch.bmm(graph, h)

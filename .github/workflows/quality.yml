@@ -123,7 +123,7 @@ jobs:
           python -m pip install -r requirements-dev.txt
           python -m pip install -r requirements-ml.txt
       - name: Test model, masks, splits and checkpoint integrity
-        run: pytest tests/test_ml.py tests/test_repair.py tests/test_diversity.py tests/test_generation_engine.py tests/test_qualification.py --cov=archai_ml --cov-fail-under=90
+        run: pytest tests/test_ml.py tests/test_repair.py tests/test_diversity.py tests/test_generation_engine.py tests/test_qualification.py tests/test_conditioning_ml.py --cov=archai_ml --cov-fail-under=90
       - name: Regenerate admitted pilot
         run: python -m archai.datasets pilot --output ml-artifacts/pilot --count 120
       - name: Train frozen supervised configuration using train and validation only
@@ -204,6 +204,41 @@ jobs:
           path: |
             diversity-artifacts/development/
             diversity-artifacts/release/
+          retention-days: 30
+
+  concept-conditioning:
+    needs: learned-baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [20260912, 20260913, 20260914]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install CPU model and solver dependencies
+        run: |
+          python -m pip install -r requirements-dev.txt
+          python -m pip install -r requirements-ml.txt
+      - name: Prepare fresh grouped concept-labelled data
+        run: python -m archai_ml.benefit prepare --output conditioning-artifacts/data
+      - name: Train paired models with the same initialization and budget
+        run: >-
+          python -m archai_ml.benefit train-pair --data conditioning-artifacts/data
+          --output conditioning-artifacts/runs --seed ${{ matrix.seed }}
+      - name: Evaluate all controls on validation only
+        run: >-
+          python -m archai_ml.benefit compare --data conditioning-artifacts/data
+          --runs conditioning-artifacts/runs --output conditioning-artifacts/comparison --enforce
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2g-conditioning-${{ matrix.seed }}
+          path: conditioning-artifacts/
           retention-days: 30
 
   browser:

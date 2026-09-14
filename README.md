@@ -34,6 +34,7 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 | Phase 2D | Reproducible supervised CPU graph model and held-out evaluation | [Experiment](reports/phase2d-baseline.md) |
 | Phase 2E | Strict proposal repair, distinct-concept selection and matched evaluation | [Repair report](reports/phase2e-repair.md) |
 | Phase 2F | Bounded diverse search, experimental serving/fallback and fresh qualification | [Protocol](docs/PHASE2F_PROTOCOL.md) |
+| Phase 2G | Concept-conditioned model experiment, fresh grouped data and equal-budget controls | [Protocol](docs/PHASE2G_PROTOCOL.md) |
 
 Phase 2F expands repaired proposals into five pairwise distinct concepts within
 ArchAI's supported corridor layout family. Every experimental response passes
