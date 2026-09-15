@@ -5,10 +5,10 @@ residential design brief into five editable 2D layout directions. It provides
 transparent preliminary planning checks, an editable cost baseline, an interactive
 3D massing preview, and JSON/SVG/PNG/PDF/OBJ export.
 
-> **Current development preview:** `v0.2.0-alpha.1`, completing the Phase 2A–2F
-> engineering sequence: evaluated generators, governed data, a trained CPU model,
-> strict repair, distinct candidate search and experimental serving with fallback.
-> Independent real-plan and human-preference qualification remains open.
+> **Current development preview:** `v0.2.0-alpha.2`, adding the Phase 2G
+> concept-conditioning experiment to the Phase 2A–2F engineering alpha.
+> Raw prediction improves across three seeds; downstream neural superiority,
+> independent real-plan evaluation and human-preference qualification remain open.
 > See the [traceability matrix](docs/REQUIREMENTS_TRACEABILITY.md) for the exact
 > implementation boundary.
 
@@ -16,7 +16,7 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 
 | Item | Status |
 |---|---|
-| Release | `v0.2.0-alpha.1 - Phase 2 model development preview` |
+| Release | `v0.2.0-alpha.2 - Phase 2G research preview` |
 | Application | Executable Flask editor with benchmarked baseline and solver candidate |
 | Cost | No paid API or runtime dependency |
 | Deployment | Local, Docker, or free-tier Render |
@@ -34,6 +34,7 @@ transparent preliminary planning checks, an editable cost baseline, an interacti
 | Phase 2D | Reproducible supervised CPU graph model and held-out evaluation | [Experiment](reports/phase2d-baseline.md) |
 | Phase 2E | Strict proposal repair, distinct-concept selection and matched evaluation | [Repair report](reports/phase2e-repair.md) |
 | Phase 2F | Bounded diverse search, experimental serving/fallback and fresh qualification | [Protocol](docs/PHASE2F_PROTOCOL.md) |
+| Phase 2G | Concept conditioning, fresh grouped data and three-seed matched comparison | [Results](reports/phase2g-conditioning.md) |
 
 Phase 2F expands repaired proposals into five pairwise distinct concepts within
 ArchAI's supported corridor layout family. Every experimental response passes
@@ -51,6 +52,12 @@ The [Phase 2F qualification report](reports/phase2f-qualification.md) records
 five strict valid distinct concepts for every one of 100 held-out briefs and
 1,000 stress briefs. Holdout adjacency is 99.14% versus 65.36% for the baseline;
 observed warm CPU p95 is 0.799 seconds on the measured runner.
+
+The [Phase 2G experiment](reports/phase2g-conditioning.md) reduces raw validation
+coordinate error by 35.89–36.55% against a same-capacity token ablation. All four
+arms return five valid, distinct plans on the same 32 validation briefs across
+three seeds. The conditioned model still trails simpler controls after repair;
+its checkpoint remains offline, and the 100-brief reserved test is unscored.
 
 ## Working features
 
@@ -206,6 +213,7 @@ service replacement or redeployment.
 - [External dataset candidate register](docs/DATASET_CANDIDATES.md)
 - [Evaluation protocol](docs/EVALUATION_PROTOCOL.md)
 - [Phase 2F qualification and experimental serving](docs/PHASE2F_PROTOCOL.md)
+- [Phase 2G concept-conditioning protocol](docs/PHASE2G_PROTOCOL.md)
 - [Constraint repair and reproduction](docs/CONSTRAINT_REPAIR.md)
 - [Learned baseline and reproduction](docs/LEARNED_BASELINE.md)
 - [Generator model card](docs/MODEL_CARD.md)

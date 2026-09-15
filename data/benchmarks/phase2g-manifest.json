@@ -1,0 +1,19 @@
+{
+  "version": "concept-conditioning-v1",
+  "records_digest": "b93e367c78c62344567205ecc592207f1700c8eae6e797071a1cee7ae6c1a1fd",
+  "context_sha256": "8cd345030ad00141172e23a10cc1fdb59e94369fb194af93ef4f729e02738d0c",
+  "cohorts": {
+    "test": {
+      "count": 100,
+      "sha256": "16ee6b0e654e1c7d0c7cbf1e57c77e1244af91a1af776c0971c6dc9c1205ba71"
+    },
+    "train": {
+      "count": 120,
+      "sha256": "c42044dba79fc26765b42c5c1869538ec9766048a919e851a413c70480555c23"
+    },
+    "validation": {
+      "count": 32,
+      "sha256": "b4b6537b3f998794a5cc17b893218fe6214a246b6eb198ce9e8eeb30b4d7d6cb"
+    }
+  }
+}

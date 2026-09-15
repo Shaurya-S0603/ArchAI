@@ -1,0 +1,16 @@
+{
+  "version": "concept-conditioning-v1",
+  "cohorts": {
+    "train": {"count": 120, "seed": 2026091201},
+    "validation": {"count": 32, "seed": 2026091202},
+    "test": {"count": 100, "seed": 2026091203}
+  },
+  "training_seeds": [20260912, 20260913, 20260914],
+  "training": {"epochs": 120, "batch_size": 32, "hidden_size": 64, "layers": 4, "learning_rate": 0.002},
+  "repair": {"deterministic_limit": 0.03, "adjacency_reward": 500, "passes": 2, "minimum_separation": 0.025},
+  "raw_mae_relative_improvement": 0.1,
+  "bootstrap_samples": 2000,
+  "bootstrap_seed": 20260912,
+  "warm_cpu_p95_limit_seconds": 5,
+  "cost_model_version": "gross-footprint-v2"
+}

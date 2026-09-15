@@ -2,7 +2,7 @@
 
 **Component:** ArchAI transparent baseline, CP-SAT candidate and supervised graph research model
 
-**Version:** v0.2.0-alpha.1
+**Version:** v0.2.0-alpha.2
 
 **Maintained by:** Shaurya Singhal
 
@@ -15,6 +15,10 @@ Invalid or unavailable experimental output triggers an identified deterministic
 fallback. Raw neural proposals are never served. Neural superiority, independent
 real-plan evaluation and human preference remain unqualified. No reinforcement
 learning or learned ranking model is included.
+
+Phase 2G adds an offline concept-conditioned model and three-seed controlled
+experiment. Its raw prediction improvement does not pass the downstream benefit
+gate; these checkpoints are incompatible with the existing serving loader.
 
 ## Purpose
 
@@ -143,6 +147,30 @@ Stress returns 5,000 valid plans, zero failed briefs/crashes and 0.785 s warm p9
 holdout p95 is 0.799 s. The learned pipeline's benchmark diversity is 0.1666 versus
 0.1530 for the matched reference, but overall neural superiority remains unproven.
 See [full qualification evidence](../reports/phase2f-qualification.md).
+
+## Phase 2G research evidence
+
+Both experimental arms have 60,581 parameters and add the same five-token
+embedding to the graph representation. The conditioned arm receives a selected
+teacher-control token; the ablation always receives token zero. Identical
+initialization, minibatches and budgets isolate this intervention. Checkpoints
+are selected by validation loss across 120 epochs for each of three fixed seeds.
+
+Fresh synthetic cohorts contain 592 training, 158 validation and 493 reserved
+test targets, with prior programs and duplicate groups excluded. Test targets are
+not scored. On the same 32 validation briefs, conditioning reduces raw coordinate
+MAE by 35.89–36.55% and improves repaired diversity by 31.42–35.14% against token
+ablation. All 158 raw neural validation outputs still overlap for every seed.
+
+All four compared arms return five strictly valid, distinct plans per brief.
+Conditioned adjacency is 98.98–99.13%, compared with 100% for the train-only
+concept/type reference and 99.89% for the solver-only control. Both cheap controls
+also have higher diversity. No seed passes the overall neural-benefit gate.
+Warm p95 is 0.818–1.075 seconds for the conditioned pipeline on the measured
+runners. These are validation results within one teacher family, not independent
+architectural quality evidence. The Phase 2F serving checkpoint remains frozen.
+See [all results and failures](../reports/phase2g-conditioning.md) and
+[the prospective protocol](PHASE2G_PROTOCOL.md).
 
 ## Data
 

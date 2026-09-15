@@ -1,0 +1,938 @@
+{
+  "version": "phase2g-validation-summary-v1",
+  "recorded_on": "2026-09-15",
+  "evaluated_on": "2026-09-14",
+  "outcome": "engineering_passed_neural_benefit_not_demonstrated",
+  "source": {
+    "repository": "Shaurya-S0603/ArchAI",
+    "head_sha": "953b608197126e16470a7915322d7199397853e1",
+    "evaluated_pr_merge_sha": "8946d76eb2106e4b657784a2b61e921e37bf5876",
+    "tree_sha": "7faadd60ceaf745b8c4657f73e8e3610ebfa637b",
+    "run_id": 34825488348,
+    "run_url": "https://github.com/Shaurya-S0603/ArchAI/actions/runs/34825488348",
+    "conclusion": "success",
+    "jobs_passed": 11
+  },
+  "dataset": {
+    "cohorts": {
+      "test": {
+        "count": 100,
+        "excluded_geometry_collisions": 0,
+        "excluded_program_collisions": 7,
+        "sha256": "16ee6b0e654e1c7d0c7cbf1e57c77e1244af91a1af776c0971c6dc9c1205ba71"
+      },
+      "train": {
+        "count": 120,
+        "excluded_geometry_collisions": 0,
+        "excluded_program_collisions": 9,
+        "sha256": "c42044dba79fc26765b42c5c1869538ec9766048a919e851a413c70480555c23"
+      },
+      "validation": {
+        "count": 32,
+        "excluded_geometry_collisions": 0,
+        "excluded_program_collisions": 4,
+        "sha256": "b4b6537b3f998794a5cc17b893218fe6214a246b6eb198ce9e8eeb30b4d7d6cb"
+      }
+    },
+    "context_sha256": "8cd345030ad00141172e23a10cc1fdb59e94369fb194af93ef4f729e02738d0c",
+    "dataset_manifest_sha256": "e269a5798cfb7f21ee5553d56d299bed8feb3a531d7eaa46f62f3bb92836f81c",
+    "report": {
+      "accepted_records": 1243,
+      "evaluation_exclusion_keys": 0,
+      "exact_duplicates_removed": 17,
+      "group_count": 252,
+      "input_records": 1260,
+      "records_digest": "b93e367c78c62344567205ecc592207f1700c8eae6e797071a1cee7ae6c1a1fd",
+      "rejected_records": 0,
+      "rejection_reasons": {},
+      "room_type_counts": {
+        "balcony": 225,
+        "bathroom": 3731,
+        "bedroom": 4309,
+        "corridor": 1243,
+        "dining": 1243,
+        "garage": 309,
+        "kitchen": 1243,
+        "laundry": 280,
+        "living": 1243,
+        "lounge": 295,
+        "storage": 309,
+        "study": 280,
+        "utility": 288
+      },
+      "schema_version": 1,
+      "split_counts": {
+        "test": 493,
+        "train": 592,
+        "validation": 158
+      },
+      "valid_records": 1260
+    },
+    "version": "concept-conditioning-v1"
+  },
+  "test_evidence": {
+    "backend": {
+      "passed": 93,
+      "skipped": 4,
+      "coverage_percent": 93.83,
+      "job_id": 103916543179
+    },
+    "ml": {
+      "passed": 84,
+      "coverage_percent": 97.57,
+      "job_id": 103916543243
+    },
+    "legacy_state_digest": "344a53149ef17be0a3b21e5284c4df742c27c59852629cbfbbc788d7a543f3c1"
+  },
+  "seed_reports": [
+    {
+      "job_id": 103917492948,
+      "artifact": {
+        "id": 10339992599,
+        "name": "phase2g-conditioning-20260912",
+        "sha256": "230f254d9477ace8e3600d718b5a1ed69fb6c147c2828b833cf5a29dc9236679",
+        "expires_at": "2026-10-14T09:09:58Z",
+        "url": "https://github.com/Shaurya-S0603/ArchAI/actions/runs/34825488348/artifacts/10339992599"
+      },
+      "training": {
+        "conditioned": {
+          "config": {
+            "batch_size": 32,
+            "epochs": 120,
+            "hidden_size": 64,
+            "layers": 4,
+            "learning_rate": 0.002,
+            "seed": 20260912
+          },
+          "parameters": 60581,
+          "best_epoch": 92,
+          "initial_validation_loss": 0.15007774079147773,
+          "selected_validation_loss": 0.02465439253026926,
+          "learning_passed": true,
+          "state_digest": "23badaaa715f6c4b36ee250cade3a648cc9710115f15600d9a4a25f19a743555"
+        },
+        "unconditioned": {
+          "config": {
+            "batch_size": 32,
+            "epochs": 120,
+            "hidden_size": 64,
+            "layers": 4,
+            "learning_rate": 0.002,
+            "seed": 20260912
+          },
+          "parameters": 60581,
+          "best_epoch": 115,
+          "initial_validation_loss": 0.15007774079147773,
+          "selected_validation_loss": 0.04149603956862341,
+          "learning_passed": true,
+          "state_digest": "8f7ccdf738bdf1714e1c1f59ea87437a2b53a2ee09745c7597d001341a339e59"
+        }
+      },
+      "comparison": {
+        "data_identity": {
+          "context_sha256": "8cd345030ad00141172e23a10cc1fdb59e94369fb194af93ef4f729e02738d0c",
+          "dataset_manifest_sha256": "e269a5798cfb7f21ee5553d56d299bed8feb3a531d7eaa46f62f3bb92836f81c",
+          "version": "concept-conditioning-v1"
+        },
+        "engineering_gates": {
+          "all_arms_five_strict_distinct": true,
+          "both_models_learn": true,
+          "complete_case_accounting": true,
+          "equal_solver_attempt_budgets": true
+        },
+        "engineering_passed": true,
+        "environment": {
+          "device": "cpu",
+          "git_revision": "8946d76eb2106e4b657784a2b61e921e37bf5876",
+          "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "python": "3.12.14",
+          "python_source_digest": "8615598ebf4102a39f6993c4f095e0ee3da321f4fa4707895517862ee4b34da9",
+          "pytorch": "2.10.0+cpu",
+          "threads": 1
+        },
+        "neural_gates": {
+          "all_arms_five_strict_distinct": true,
+          "no_budget_or_diversity_regression": false,
+          "observed_warm_p95_under_five_seconds": true,
+          "positive_adjacency_interval_vs_all_controls": false,
+          "raw_mae_improves_ten_percent": true
+        },
+        "paired_adjacency": {
+          "concept_type_reference": {
+            "briefs": 32,
+            "losses": 6,
+            "mean_delta": -0.010059374999999999,
+            "percentile_95_interval": [
+              -0.018721874999999995,
+              -0.0031375000000000014
+            ],
+            "resampling_unit": "brief",
+            "scope": "validation exploratory interval, conditional on this training seed",
+            "ties": 26,
+            "wins": 0
+          },
+          "solver_only": {
+            "briefs": 32,
+            "losses": 6,
+            "mean_delta": -0.008921875,
+            "percentile_95_interval": [
+              -0.01648125,
+              -0.0025562499999999995
+            ],
+            "resampling_unit": "brief",
+            "scope": "validation exploratory interval, conditional on this training seed",
+            "ties": 26,
+            "wins": 0
+          },
+          "unconditioned": {
+            "briefs": 32,
+            "losses": 2,
+            "mean_delta": -0.0027375000000000003,
+            "percentile_95_interval": [
+              -0.008065625,
+              0.0005687499999999998
+            ],
+            "resampling_unit": "brief",
+            "scope": "validation exploratory interval, conditional on this training seed",
+            "ties": 29,
+            "wins": 1
+          }
+        },
+        "protocol_digest": "fb91977549d87939f6ab298e66e783a5845c478357cbcb3c96d7df6aa5fe6d1d",
+        "qualified_model_release": false,
+        "raw_mae_relative_improvement": 0.3654853859878552,
+        "raw_validation": {
+          "concept_type_reference": {
+            "adjacency_f1": 0.7294714257850595,
+            "box_mae": 0.1893100274282067,
+            "box_mse": 0.05034438814294579,
+            "geometric_valid_rate": 0,
+            "inside_rate": 1,
+            "loss": 0.07124909626532204,
+            "mean_room_iou": 0.10498266155888909,
+            "minimum_area_rate": 1,
+            "no_overlap_rate": 0,
+            "plan_count": 158,
+            "room_count": 1931
+          },
+          "conditioned": {
+            "adjacency_f1": 0.8266841072596468,
+            "box_mae": 0.06465434978688585,
+            "box_mse": 0.012824969239830045,
+            "geometric_valid_rate": 0,
+            "inside_rate": 1,
+            "loss": 0.02465439253026926,
+            "mean_room_iou": 0.303294943874207,
+            "minimum_area_rate": 1,
+            "no_overlap_rate": 0,
+            "plan_count": 158,
+            "room_count": 1931
+          },
+          "unconditioned": {
+            "adjacency_f1": 0.7524387999263759,
+            "box_mae": 0.10189576151456196,
+            "box_mse": 0.025985647149187243,
+            "geometric_valid_rate": 0,
+            "inside_rate": 1,
+            "loss": 0.04149603956862341,
+            "mean_room_iou": 0.1101126115227042,
+            "minimum_area_rate": 0.9367088607594937,
+            "no_overlap_rate": 0,
+            "plan_count": 158,
+            "room_count": 1931
+          }
+        },
+        "remaining_requirements": [
+          "confirmation on a newly locked holdout after selection",
+          "independent licensed real-plan evaluation",
+          "blinded human preference above 60 percent"
+        ],
+        "repair_budget": {
+          "adjacency_reward": 500,
+          "deterministic_limit": 0.03,
+          "minimum_separation": 0.025,
+          "passes": 2
+        },
+        "results": {
+          "concept_type_reference": {
+            "benchmark": {
+              "budget_fit_rate": 0.6875,
+              "case_count": 32,
+              "case_success_rate": 1,
+              "concept_count_pass_rate": 1,
+              "hard_constraint_pass_rate": 1,
+              "mean_accessibility_score": 1,
+              "mean_adjacency_satisfaction": 1,
+              "mean_diversity_score": 0.2319,
+              "mean_user_alignment_score": 0.9688,
+              "program_match_rate": 1
+            },
+            "diagnostics": {
+              "cases": 32,
+              "failed_solver_attempts": 0,
+              "five_strict_distinct_rate": 1,
+              "mean_displacement": 0.19107766669877452,
+              "raw_no_overlap_rate": 0,
+              "raw_valid_rate": 0,
+              "solver_attempts": 320,
+              "warm_seconds_p95": 1.1050590109999803
+            }
+          },
+          "conditioned": {
+            "benchmark": {
+              "budget_fit_rate": 0.6875,
+              "case_count": 32,
+              "case_success_rate": 1,
+              "concept_count_pass_rate": 1,
+              "hard_constraint_pass_rate": 1,
+              "mean_accessibility_score": 1,
+              "mean_adjacency_satisfaction": 0.9899,
+              "mean_diversity_score": 0.2271,
+              "mean_user_alignment_score": 0.9688,
+              "program_match_rate": 1
+            },
+            "diagnostics": {
+              "cases": 32,
+              "failed_solver_attempts": 0,
+              "five_strict_distinct_rate": 1,
+              "mean_displacement": 0.09815602423966706,
+              "raw_no_overlap_rate": 0,
+              "raw_valid_rate": 0,
+              "solver_attempts": 320,
+              "warm_seconds_p95": 1.0748200080000174
+            }
+          },
+          "solver_only": {
+            "benchmark": {
+              "budget_fit_rate": 0.6875,
+              "case_count": 32,
+              "case_success_rate": 1,
+              "concept_count_pass_rate": 1,
+              "hard_constraint_pass_rate": 1,
+              "mean_accessibility_score": 1,
+              "mean_adjacency_satisfaction": 0.9989,
+              "mean_diversity_score": 0.2428,
+              "mean_user_alignment_score": 0.9688,
+              "program_match_rate": 1
+            },
+            "diagnostics": {
+              "cases": 32,
+              "failed_solver_attempts": 0,
+              "five_strict_distinct_rate": 1,
+              "mean_displacement": null,
+              "raw_no_overlap_rate": 0,
+              "raw_valid_rate": 0,
+              "solver_attempts": 320,
+              "warm_seconds_p95": 0.8868400780000343
+            }
+          },
+          "unconditioned": {
+            "benchmark": {
+              "budget_fit_rate": 0.6875,
+              "case_count": 32,
+              "case_success_rate": 1,
+              "concept_count_pass_rate": 1,
+              "hard_constraint_pass_rate": 1,
+              "mean_accessibility_score": 1,
+              "mean_adjacency_satisfaction": 0.9927,
+              "mean_diversity_score": 0.1728,
+              "mean_user_alignment_score": 0.9688,
+              "program_match_rate": 1
+            },
+            "diagnostics": {
+              "cases": 32,
+              "failed_solver_attempts": 0,
+              "five_strict_distinct_rate": 1,
+              "mean_displacement": 0.10359241819449444,
+              "raw_no_overlap_rate": 0,
+              "raw_valid_rate": 0,
+              "solver_attempts": 320,
+              "warm_seconds_p95": 1.0827730819999601
+            }
+          }
+        },
+        "seed": 20260912,
+        "stage": "validation",
+        "state_digests": {
+          "conditioned": "23badaaa715f6c4b36ee250cade3a648cc9710115f15600d9a4a25f19a743555",
+          "unconditioned": "8f7ccdf738bdf1714e1c1f59ea87437a2b53a2ee09745c7597d001341a339e59"
+        },
+        "test_evaluated": false,
+        "total_deterministic_work_limit_per_brief": 0.3,
+        "validation_neural_benefit": false,
+        "version": "concept-conditioning-v1"
+      }
+    },
+    {
+      "job_id": 103917492943,
+      "artifact": {
+        "id": 10340108841,
+        "name": "phase2g-conditioning-20260913",
+        "sha256": "5e4e9dae7ef23ddcbd1a63ea6578b26950ecff8f7b54a5fcd3d7b3fb5af4aeaa",
+        "expires_at": "2026-10-14T09:09:55Z",
+        "url": "https://github.com/Shaurya-S0603/ArchAI/actions/runs/34825488348/artifacts/10340108841"
+      },
+      "training": {
+        "conditioned": {
+          "config": {
+            "batch_size": 32,
+            "epochs": 120,
+            "hidden_size": 64,
+            "layers": 4,
+            "learning_rate": 0.002,
+            "seed": 20260913
+          },
+          "parameters": 60581,
+          "best_epoch": 75,
+          "initial_validation_loss": 0.14877029857303523,
+          "selected_validation_loss": 0.024380715233804303,
+          "learning_passed": true,
+          "state_digest": "785ee32725a507bfda29ff13fafffed147320cf8f6222363274b441cd72ddad2"
+        },
+        "unconditioned": {
+          "config": {
+            "batch_size": 32,
+            "epochs": 120,
+            "hidden_size": 64,
+            "layers": 4,
+            "learning_rate": 0.002,
+            "seed": 20260913
+          },
+          "parameters": 60581,
+          "best_epoch": 105,
+          "initial_validation_loss": 0.14877029857303523,
+          "selected_validation_loss": 0.04152286392223986,
+          "learning_passed": true,
+          "state_digest": "58eaef2a58d19c75ce540130734a6d00f2efe04346b6fe6bbd50b2da59f68cbc"
+        }
+      },
+      "comparison": {
+        "data_identity": {
+          "context_sha256": "8cd345030ad00141172e23a10cc1fdb59e94369fb194af93ef4f729e02738d0c",
+          "dataset_manifest_sha256": "e269a5798cfb7f21ee5553d56d299bed8feb3a531d7eaa46f62f3bb92836f81c",
+          "version": "concept-conditioning-v1"
+        },
+        "engineering_gates": {
+          "all_arms_five_strict_distinct": true,
+          "both_models_learn": true,
+          "complete_case_accounting": true,
+          "equal_solver_attempt_budgets": true
+        },
+        "engineering_passed": true,
+        "environment": {
+          "device": "cpu",
+          "git_revision": "8946d76eb2106e4b657784a2b61e921e37bf5876",
+          "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "python": "3.12.14",
+          "python_source_digest": "8615598ebf4102a39f6993c4f095e0ee3da321f4fa4707895517862ee4b34da9",
+          "pytorch": "2.10.0+cpu",
+          "threads": 1
+        },
+        "neural_gates": {
+          "all_arms_five_strict_distinct": true,
+          "no_budget_or_diversity_regression": false,
+          "observed_warm_p95_under_five_seconds": true,
+          "positive_adjacency_interval_vs_all_controls": false,
+          "raw_mae_improves_ten_percent": true
+        },
+        "paired_adjacency": {
+          "concept_type_reference": {
+            "briefs": 32,
+            "losses": 6,
+            "mean_delta": -0.008712499999999998,
+            "percentile_95_interval": [
+              -0.016784374999999997,
+              -0.0022031249999999968
+            ],
+            "resampling_unit": "brief",
+            "scope": "validation exploratory interval, conditional on this training seed",
+            "ties": 26,
+            "wins": 0
+          },
+          "solver_only": {
+            "briefs": 32,
+            "losses": 6,
+            "mean_delta": -0.007574999999999998,
+            "percentile_95_interval": [
+              -0.014371874999999996,
+              -0.0018937499999999996
+            ],
+            "resampling_unit": "brief",
+            "scope": "validation exploratory interval, conditional on this training seed",
+            "ties": 26,
+            "wins": 0
+          },
+          "unconditioned": {
+            "briefs": 32,
+            "losses": 3,
+            "mean_delta": -0.003496875,
+            "percentile_95_interval": [
+              -0.009893749999999996,
+              0.0005499999999999984
+            ],
+            "resampling_unit": "brief",
+            "scope": "validation exploratory interval, conditional on this training seed",
+            "ties": 28,
+            "wins": 1
+          }
+        },
+        "protocol_digest": "fb91977549d87939f6ab298e66e783a5845c478357cbcb3c96d7df6aa5fe6d1d",
+        "qualified_model_release": false,
+        "raw_mae_relative_improvement": 0.36244199759027584,
+        "raw_validation": {
+          "concept_type_reference": {
+            "adjacency_f1": 0.7294714257850595,
+            "box_mae": 0.1893100274282067,
+            "box_mse": 0.05034438814294579,
+            "geometric_valid_rate": 0,
+            "inside_rate": 1,
+            "loss": 0.07124909626532204,
+            "mean_room_iou": 0.10498266155888909,
+            "minimum_area_rate": 1,
+            "no_overlap_rate": 0,
+            "plan_count": 158,
+            "room_count": 1931
+          },
+          "conditioned": {
+            "adjacency_f1": 0.8253339930727362,
+            "box_mae": 0.06478219745938238,
+            "box_mse": 0.012779278066231142,
+            "geometric_valid_rate": 0,
+            "inside_rate": 1,
+            "loss": 0.024380715233804303,
+            "mean_room_iou": 0.2948053637543594,
+            "minimum_area_rate": 1,
+            "no_overlap_rate": 0,
+            "plan_count": 158,
+            "room_count": 1931
+          },
+          "unconditioned": {
+            "adjacency_f1": 0.7641172265904217,
+            "box_mae": 0.1016098883780465,
+            "box_mse": 0.026057733272036882,
+            "geometric_valid_rate": 0,
+            "inside_rate": 1,
+            "loss": 0.04152286392223986,
+            "mean_room_iou": 0.11404336764366746,
+            "minimum_area_rate": 0.9367088607594937,
+            "no_overlap_rate": 0,
+            "plan_count": 158,
+            "room_count": 1931
+          }
+        },
+        "remaining_requirements": [
+          "confirmation on a newly locked holdout after selection",
+          "independent licensed real-plan evaluation",
+          "blinded human preference above 60 percent"
+        ],
+        "repair_budget": {
+          "adjacency_reward": 500,
+          "deterministic_limit": 0.03,
+          "minimum_separation": 0.025,
+          "passes": 2
+        },
+        "results": {
+          "concept_type_reference": {
+            "benchmark": {
+              "budget_fit_rate": 0.6875,
+              "case_count": 32,
+              "case_success_rate": 1,
+              "concept_count_pass_rate": 1,
+              "hard_constraint_pass_rate": 1,
+              "mean_accessibility_score": 1,
+              "mean_adjacency_satisfaction": 1,
+              "mean_diversity_score": 0.2319,
+              "mean_user_alignment_score": 0.9688,
+              "program_match_rate": 1
+            },
+            "diagnostics": {
+              "cases": 32,
+              "failed_solver_attempts": 0,
+              "five_strict_distinct_rate": 1,
+              "mean_displacement": 0.19107766669877452,
+              "raw_no_overlap_rate": 0,
+              "raw_valid_rate": 0,
+              "solver_attempts": 320,
+              "warm_seconds_p95": 1.1017189089999988
+            }
+          },
+          "conditioned": {
+            "benchmark": {
+              "budget_fit_rate": 0.6875,
+              "case_count": 32,
+              "case_success_rate": 1,
+              "concept_count_pass_rate": 1,
+              "hard_constraint_pass_rate": 1,
+              "mean_accessibility_score": 1,
+              "mean_adjacency_satisfaction": 0.9913,
+              "mean_diversity_score": 0.2303,
+              "mean_user_alignment_score": 0.9688,
+              "program_match_rate": 1
+            },
+            "diagnostics": {
+              "cases": 32,
+              "failed_solver_attempts": 0,
+              "five_strict_distinct_rate": 1,
+              "mean_displacement": 0.09889663595525998,
+              "raw_no_overlap_rate": 0,
+              "raw_valid_rate": 0,
+              "solver_attempts": 320,
+              "warm_seconds_p95": 1.06237648299998
+            }
+          },
+          "solver_only": {
+            "benchmark": {
+              "budget_fit_rate": 0.6875,
+              "case_count": 32,
+              "case_success_rate": 1,
+              "concept_count_pass_rate": 1,
+              "hard_constraint_pass_rate": 1,
+              "mean_accessibility_score": 1,
+              "mean_adjacency_satisfaction": 0.9989,
+              "mean_diversity_score": 0.2428,
+              "mean_user_alignment_score": 0.9688,
+              "program_match_rate": 1
+            },
+            "diagnostics": {
+              "cases": 32,
+              "failed_solver_attempts": 0,
+              "five_strict_distinct_rate": 1,
+              "mean_displacement": null,
+              "raw_no_overlap_rate": 0,
+              "raw_valid_rate": 0,
+              "solver_attempts": 320,
+              "warm_seconds_p95": 0.8796771619999504
+            }
+          },
+          "unconditioned": {
+            "benchmark": {
+              "budget_fit_rate": 0.6875,
+              "case_count": 32,
+              "case_success_rate": 1,
+              "concept_count_pass_rate": 1,
+              "hard_constraint_pass_rate": 1,
+              "mean_accessibility_score": 1,
+              "mean_adjacency_satisfaction": 0.9948,
+              "mean_diversity_score": 0.175,
+              "mean_user_alignment_score": 0.9688,
+              "program_match_rate": 1
+            },
+            "diagnostics": {
+              "cases": 32,
+              "failed_solver_attempts": 0,
+              "five_strict_distinct_rate": 1,
+              "mean_displacement": 0.10443426748110662,
+              "raw_no_overlap_rate": 0,
+              "raw_valid_rate": 0,
+              "solver_attempts": 320,
+              "warm_seconds_p95": 1.0602079710000112
+            }
+          }
+        },
+        "seed": 20260913,
+        "stage": "validation",
+        "state_digests": {
+          "conditioned": "785ee32725a507bfda29ff13fafffed147320cf8f6222363274b441cd72ddad2",
+          "unconditioned": "58eaef2a58d19c75ce540130734a6d00f2efe04346b6fe6bbd50b2da59f68cbc"
+        },
+        "test_evaluated": false,
+        "total_deterministic_work_limit_per_brief": 0.3,
+        "validation_neural_benefit": false,
+        "version": "concept-conditioning-v1"
+      }
+    },
+    {
+      "job_id": 103917493289,
+      "artifact": {
+        "id": 10340167112,
+        "name": "phase2g-conditioning-20260914",
+        "sha256": "47fe8cea38fd1f92f18b319c5774f9d29485cb51aaeb10a20ed4f91470924094",
+        "expires_at": "2026-10-14T09:08:09Z",
+        "url": "https://github.com/Shaurya-S0603/ArchAI/actions/runs/34825488348/artifacts/10340167112"
+      },
+      "training": {
+        "conditioned": {
+          "config": {
+            "batch_size": 32,
+            "epochs": 120,
+            "hidden_size": 64,
+            "layers": 4,
+            "learning_rate": 0.002,
+            "seed": 20260914
+          },
+          "parameters": 60581,
+          "best_epoch": 70,
+          "initial_validation_loss": 0.14082902933977828,
+          "selected_validation_loss": 0.02459889655060406,
+          "learning_passed": true,
+          "state_digest": "236d639fca95868d9673642178cd19b0458e7cee20c66079d3ecf8d18fa77dcb"
+        },
+        "unconditioned": {
+          "config": {
+            "batch_size": 32,
+            "epochs": 120,
+            "hidden_size": 64,
+            "layers": 4,
+            "learning_rate": 0.002,
+            "seed": 20260914
+          },
+          "parameters": 60581,
+          "best_epoch": 86,
+          "initial_validation_loss": 0.14082902933977828,
+          "selected_validation_loss": 0.0416339518903177,
+          "learning_passed": true,
+          "state_digest": "f5d57ea6395a7f697e4d40a37b03151c85a41ece208b7aa621d8c308be5f9841"
+        }
+      },
+      "comparison": {
+        "data_identity": {
+          "context_sha256": "8cd345030ad00141172e23a10cc1fdb59e94369fb194af93ef4f729e02738d0c",
+          "dataset_manifest_sha256": "e269a5798cfb7f21ee5553d56d299bed8feb3a531d7eaa46f62f3bb92836f81c",
+          "version": "concept-conditioning-v1"
+        },
+        "engineering_gates": {
+          "all_arms_five_strict_distinct": true,
+          "both_models_learn": true,
+          "complete_case_accounting": true,
+          "equal_solver_attempt_budgets": true
+        },
+        "engineering_passed": true,
+        "environment": {
+          "device": "cpu",
+          "git_revision": "8946d76eb2106e4b657784a2b61e921e37bf5876",
+          "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "python": "3.12.14",
+          "python_source_digest": "8615598ebf4102a39f6993c4f095e0ee3da321f4fa4707895517862ee4b34da9",
+          "pytorch": "2.10.0+cpu",
+          "threads": 1
+        },
+        "neural_gates": {
+          "all_arms_five_strict_distinct": true,
+          "no_budget_or_diversity_regression": false,
+          "observed_warm_p95_under_five_seconds": true,
+          "positive_adjacency_interval_vs_all_controls": false,
+          "raw_mae_improves_ten_percent": true
+        },
+        "paired_adjacency": {
+          "concept_type_reference": {
+            "briefs": 32,
+            "losses": 5,
+            "mean_delta": -0.010162500000000001,
+            "percentile_95_interval": [
+              -0.020490625000000005,
+              -0.0022749999999999992
+            ],
+            "resampling_unit": "brief",
+            "scope": "validation exploratory interval, conditional on this training seed",
+            "ties": 27,
+            "wins": 0
+          },
+          "solver_only": {
+            "briefs": 32,
+            "losses": 5,
+            "mean_delta": -0.009025000000000002,
+            "percentile_95_interval": [
+              -0.018965625000000003,
+              -0.001471875000000001
+            ],
+            "resampling_unit": "brief",
+            "scope": "validation exploratory interval, conditional on this training seed",
+            "ties": 27,
+            "wins": 0
+          },
+          "unconditioned": {
+            "briefs": 32,
+            "losses": 2,
+            "mean_delta": -0.0029250000000000005,
+            "percentile_95_interval": [
+              -0.009896875000000003,
+              0.00220625
+            ],
+            "resampling_unit": "brief",
+            "scope": "validation exploratory interval, conditional on this training seed",
+            "ties": 29,
+            "wins": 1
+          }
+        },
+        "protocol_digest": "fb91977549d87939f6ab298e66e783a5845c478357cbcb3c96d7df6aa5fe6d1d",
+        "qualified_model_release": false,
+        "raw_mae_relative_improvement": 0.35888510649583516,
+        "raw_validation": {
+          "concept_type_reference": {
+            "adjacency_f1": 0.7294714257850595,
+            "box_mae": 0.1893100274282067,
+            "box_mse": 0.05034438814294579,
+            "geometric_valid_rate": 0,
+            "inside_rate": 1,
+            "loss": 0.07124909626532204,
+            "mean_room_iou": 0.10498266155888909,
+            "minimum_area_rate": 1,
+            "no_overlap_rate": 0,
+            "plan_count": 158,
+            "room_count": 1931
+          },
+          "conditioned": {
+            "adjacency_f1": 0.8204108681245859,
+            "box_mae": 0.06485139638386138,
+            "box_mse": 0.012895340625638482,
+            "geometric_valid_rate": 0,
+            "inside_rate": 1,
+            "loss": 0.02459889655060406,
+            "mean_room_iou": 0.301507788825566,
+            "minimum_area_rate": 1,
+            "no_overlap_rate": 0,
+            "plan_count": 158,
+            "room_count": 1931
+          },
+          "unconditioned": {
+            "adjacency_f1": 0.7569648093841642,
+            "box_mae": 0.10115409428316469,
+            "box_mse": 0.025988679547065408,
+            "geometric_valid_rate": 0,
+            "inside_rate": 1,
+            "loss": 0.0416339518903177,
+            "mean_room_iou": 0.09949570057739068,
+            "minimum_area_rate": 1,
+            "no_overlap_rate": 0,
+            "plan_count": 158,
+            "room_count": 1931
+          }
+        },
+        "remaining_requirements": [
+          "confirmation on a newly locked holdout after selection",
+          "independent licensed real-plan evaluation",
+          "blinded human preference above 60 percent"
+        ],
+        "repair_budget": {
+          "adjacency_reward": 500,
+          "deterministic_limit": 0.03,
+          "minimum_separation": 0.025,
+          "passes": 2
+        },
+        "results": {
+          "concept_type_reference": {
+            "benchmark": {
+              "budget_fit_rate": 0.6875,
+              "case_count": 32,
+              "case_success_rate": 1,
+              "concept_count_pass_rate": 1,
+              "hard_constraint_pass_rate": 1,
+              "mean_accessibility_score": 1,
+              "mean_adjacency_satisfaction": 1,
+              "mean_diversity_score": 0.2319,
+              "mean_user_alignment_score": 0.9688,
+              "program_match_rate": 1
+            },
+            "diagnostics": {
+              "cases": 32,
+              "failed_solver_attempts": 0,
+              "five_strict_distinct_rate": 1,
+              "mean_displacement": 0.19107766669877452,
+              "raw_no_overlap_rate": 0,
+              "raw_valid_rate": 0,
+              "solver_attempts": 320,
+              "warm_seconds_p95": 0.8312337780000121
+            }
+          },
+          "conditioned": {
+            "benchmark": {
+              "budget_fit_rate": 0.6875,
+              "case_count": 32,
+              "case_success_rate": 1,
+              "concept_count_pass_rate": 1,
+              "hard_constraint_pass_rate": 1,
+              "mean_accessibility_score": 1,
+              "mean_adjacency_satisfaction": 0.9898,
+              "mean_diversity_score": 0.2269,
+              "mean_user_alignment_score": 0.9688,
+              "program_match_rate": 1
+            },
+            "diagnostics": {
+              "cases": 32,
+              "failed_solver_attempts": 0,
+              "five_strict_distinct_rate": 1,
+              "mean_displacement": 0.10018848232097617,
+              "raw_no_overlap_rate": 0,
+              "raw_valid_rate": 0,
+              "solver_attempts": 320,
+              "warm_seconds_p95": 0.8180370219999986
+            }
+          },
+          "solver_only": {
+            "benchmark": {
+              "budget_fit_rate": 0.6875,
+              "case_count": 32,
+              "case_success_rate": 1,
+              "concept_count_pass_rate": 1,
+              "hard_constraint_pass_rate": 1,
+              "mean_accessibility_score": 1,
+              "mean_adjacency_satisfaction": 0.9989,
+              "mean_diversity_score": 0.2428,
+              "mean_user_alignment_score": 0.9688,
+              "program_match_rate": 1
+            },
+            "diagnostics": {
+              "cases": 32,
+              "failed_solver_attempts": 0,
+              "five_strict_distinct_rate": 1,
+              "mean_displacement": null,
+              "raw_no_overlap_rate": 0,
+              "raw_valid_rate": 0,
+              "solver_attempts": 320,
+              "warm_seconds_p95": 0.6595924310000214
+            }
+          },
+          "unconditioned": {
+            "benchmark": {
+              "budget_fit_rate": 0.6875,
+              "case_count": 32,
+              "case_success_rate": 1,
+              "concept_count_pass_rate": 1,
+              "hard_constraint_pass_rate": 1,
+              "mean_accessibility_score": 1,
+              "mean_adjacency_satisfaction": 0.9928,
+              "mean_diversity_score": 0.1679,
+              "mean_user_alignment_score": 0.9688,
+              "program_match_rate": 1
+            },
+            "diagnostics": {
+              "cases": 32,
+              "failed_solver_attempts": 0,
+              "five_strict_distinct_rate": 1,
+              "mean_displacement": 0.10465151074899928,
+              "raw_no_overlap_rate": 0,
+              "raw_valid_rate": 0,
+              "solver_attempts": 320,
+              "warm_seconds_p95": 0.7966491299999916
+            }
+          }
+        },
+        "seed": 20260914,
+        "stage": "validation",
+        "state_digests": {
+          "conditioned": "236d639fca95868d9673642178cd19b0458e7cee20c66079d3ecf8d18fa77dcb",
+          "unconditioned": "f5d57ea6395a7f697e4d40a37b03151c85a41ece208b7aa621d8c308be5f9841"
+        },
+        "test_evaluated": false,
+        "total_deterministic_work_limit_per_brief": 0.3,
+        "validation_neural_benefit": false,
+        "version": "concept-conditioning-v1"
+      }
+    }
+  ],
+  "interpretation": {
+    "independent_validation_briefs": 32,
+    "raw_validation_targets": 158,
+    "training_seeds_are_independent_briefs": false,
+    "test_evaluated": false,
+    "qualified_model_release": false,
+    "limits": [
+      "Same synthetic teacher and restricted corridor family as earlier work.",
+      "Validation selects checkpoints and is exploratory, not held-out qualification.",
+      "All raw model proposals overlap and require strict repair.",
+      "Raw adjacency F1 measures supervised shared-boundary labels, not post-repair desired-adjacency satisfaction.",
+      "Observed latency excludes cold starts, HTTP and concurrent queueing.",
+      "All three seeds are reported; no winning seed is selected."
+    ]
+  }
+}

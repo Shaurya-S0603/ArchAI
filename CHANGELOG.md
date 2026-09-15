@@ -3,6 +3,34 @@
 Development milestones are listed newest first. Historical entries describe their
 release-time scope; see [current status](docs/STATUS.md) for today's release gates.
 
+## v0.2.0-alpha.2 — Phase 2G concept-conditioning research preview
+
+September 15, 2026. Add an explicit concept token and a matched experiment to
+measure whether more accurate neural proposals improve the repaired plans.
+
+- Add a 60,581-parameter concept-conditioned graph model and an identical-capacity
+  token ablation with shared initialization, training data and minibatch order.
+- Freeze fresh grouped cohorts: 592 training, 158 validation and 493 reserved
+  test targets after previous-program exclusion and duplicate removal.
+- Compare three declared training seeds with train-only concept/type means and
+  solver-only controls under identical repair budgets and strict output checks.
+- Record all seed results, paired brief-level intervals, state/data identities
+  and failed research gates in a durable report. Keep the holdout unscored.
+- Add three experiment CI jobs and data/model integrity and failure-path tests.
+- Correct the stale five-concept requirement row to the completed Phase 2F gate.
+
+Raw coordinate error falls 35.89–36.55% against token ablation, and repaired
+diversity improves 31.42–35.14% against that arm. All four methods return five
+strictly valid, distinct plans for every one of the same 32 validation briefs.
+All raw predictions still overlap; adjacency and diversity trail the simpler
+controls. Overall neural benefit is not demonstrated. The deterministic default
+and frozen Phase 2F experimental engine retain their existing behavior.
+
+Validation: 93 backend tests at 93.83% CI coverage; 84 ML/serving/research tests
+at 97.57%; all eleven implementation CI jobs pass and the legacy checkpoint
+reproduces exactly. See [the results](reports/phase2g-conditioning.md) and
+[prospective protocol](docs/PHASE2G_PROTOCOL.md).
+
 ## v0.2.0-alpha.1 — Phase 2A–2F engineering preview
 
 September 10, 2026. Phase 2F completes synthetic generator qualification and
