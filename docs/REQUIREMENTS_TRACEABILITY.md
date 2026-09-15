@@ -24,7 +24,7 @@ work. It prevents roadmap statements from being mistaken for shipped capability.
 | Trained neural generator | Experimental integration | Frozen graph model, strict repair and diversity; independent real-plan quality and neural superiority remain unqualified |
 | Neural constraint repair | Working research component | Exact program, strict geometry/coverage and rebuilt connected doors; 100-brief repair gate passes |
 | Distinct learned concepts | Qualified synthetic engineering preview | Phase 2F: five strict valid distinct concepts for all 100 holdout and 1,000 stress briefs; diversity remains within the corridor family |
-| Concept-conditioned learned proposals | Research implementation | Phase 2G pairs concept conditioning with a same-capacity token ablation and matched solver controls; validation evidence is required before a quality claim |
+| Concept-conditioned learned proposals | Research experiment complete | Phase 2G reduces raw MAE by 35.89–36.55% across three seeds; matched repaired adjacency/diversity still trail simpler controls, so model promotion remains open |
 | Reinforcement-learning fine-tuning | Not implemented | Establish a valid supervised hybrid and evidence before an optional RL experiment |
 | Versioned generator evaluation | Working baseline | 100 synthetic briefs, immutable digest, fixed splits, independent metrics, reports, and CI gates |
 | Dataset governance | Working policy | Kaggle and original-source candidates are registered but excluded until license, provenance, privacy, split, derivative, and redistribution review |

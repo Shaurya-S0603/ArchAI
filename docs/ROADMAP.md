@@ -74,11 +74,18 @@ No external-data decision is required to use the synthetic preview. Source right
 intended checkpoint distribution and the human evaluation protocol need review
 before those later research steps begin.
 
-Before default-engine promotion, [Phase 2G](PHASE2G_PROTOCOL.md) tests explicit
-concept conditioning against a same-capacity token ablation, a concept/type mean
-and an adjacency-only solver. Three predeclared training seeds and new grouped
-cohorts separate prediction improvement from post-repair quality. Validation-only
-results do not close the independent model-qualification gates above.
+[Phase 2G](PHASE2G_PROTOCOL.md) is delivered as `v0.2.0-alpha.2`: concept
+conditioning reduces raw coordinate MAE by 35.89–36.55% against same-capacity
+token ablation across three fixed training seeds. The concept/type reference and
+adjacency-only solver still win on repaired adjacency and diversity. All raw
+plans overlap, all repaired arms satisfy the five-concept contract, and the
+reserved test remains unscored. See [the results](../reports/phase2g-conditioning.md).
+
+The next model slice should inspect validation losses to the strong controls,
+then prospectively test geometry-aware training or discrete slot prediction
+under the same budgets. More diverse topology data and independent real-plan
+evaluation remain necessary; lower raw MAE alone cannot justify promotion.
+Phase 3 remains the next product track after this research increment.
 
 ## Phase 3 - Semantic 3D and BIM
 
