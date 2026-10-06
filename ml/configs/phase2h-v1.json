@@ -1,0 +1,17 @@
+{
+  "version": "geometry-tail-v1",
+  "data_protocol_digest": "fb91977549d87939f6ab298e66e783a5845c478357cbcb3c96d7df6aa5fe6d1d",
+  "records_digest": "b93e367c78c62344567205ecc592207f1700c8eae6e797071a1cee7ae6c1a1fd",
+  "training_seeds": [20260912, 20260913, 20260914],
+  "training": {"epochs": 120, "batch_size": 32, "hidden_size": 64, "layers": 4, "learning_rate": 0.002},
+  "worst_overlap_weight": 0.5,
+  "checkpoint_selection": "unchanged_base_validation_loss",
+  "raw_worst_overlap_reduction": 0.2,
+  "maximum_relative_mae_regression": 0.05,
+  "adjacency_noninferiority_margin": 0.005,
+  "repair": {"deterministic_limit": 0.03, "adjacency_reward": 500, "passes": 2, "minimum_separation": 0.025},
+  "bootstrap_samples": 2000,
+  "bootstrap_seed": 20260912,
+  "warm_cpu_p95_limit_seconds": 5,
+  "cost_model_version": "gross-footprint-v2"
+}

@@ -25,6 +25,7 @@ ml-artifacts/
 repair-artifacts/
 diversity-artifacts/
 conditioning-artifacts/
+geometry-artifacts/
 build/
 dist/
 *.egg-info/
