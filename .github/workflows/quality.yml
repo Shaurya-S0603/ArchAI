@@ -10,7 +10,7 @@ on:
   push:
     branches: [main, development]
   pull_request:
-    branches: [main]
+    branches: [main, development]
 
 permissions:
   contents: read
@@ -123,7 +123,7 @@ jobs:
           python -m pip install -r requirements-dev.txt
           python -m pip install -r requirements-ml.txt
       - name: Test model, masks, splits and checkpoint integrity
-        run: pytest tests/test_ml.py tests/test_repair.py tests/test_diversity.py tests/test_generation_engine.py tests/test_qualification.py tests/test_conditioning_ml.py --cov=archai_ml --cov-fail-under=90
+        run: pytest tests/test_ml.py tests/test_repair.py tests/test_diversity.py tests/test_generation_engine.py tests/test_qualification.py tests/test_conditioning_ml.py tests/test_geometry_ml.py --cov=archai_ml --cov-fail-under=90
       - name: Regenerate admitted pilot
         run: python -m archai.datasets pilot --output ml-artifacts/pilot --count 120
       - name: Train frozen supervised configuration using train and validation only
@@ -239,6 +239,41 @@ jobs:
         with:
           name: phase2g-conditioning-${{ matrix.seed }}
           path: conditioning-artifacts/
+          retention-days: 30
+
+  geometry-objective:
+    needs: learned-baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [20260912, 20260913, 20260914]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install CPU model and solver dependencies
+        run: |
+          python -m pip install -r requirements-dev.txt
+          python -m pip install -r requirements-ml.txt
+      - name: Reproduce the frozen development dataset
+        run: python -m archai_ml.benefit prepare --output geometry-artifacts/data
+      - name: Train the declared geometry pair
+        run: >-
+          python -m archai_ml.geometry train-pair --data geometry-artifacts/data
+          --output geometry-artifacts/runs --seed ${{ matrix.seed }}
+      - name: Compare geometry and all matched controls on validation only
+        run: >-
+          python -m archai_ml.geometry compare --data geometry-artifacts/data
+          --runs geometry-artifacts/runs --output geometry-artifacts/comparison --enforce
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: phase2h-geometry-${{ matrix.seed }}
+          path: geometry-artifacts/
           retention-days: 30
 
   browser:
